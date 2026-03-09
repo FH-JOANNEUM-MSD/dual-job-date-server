@@ -7,6 +7,9 @@
 *.test
 *.out
 
+#idea dependencies
+.idea
+
 # Go build directories
 /bin/
 /dist/
