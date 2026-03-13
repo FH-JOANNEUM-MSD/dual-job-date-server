@@ -43,12 +43,10 @@ Wenn du neuen Code auf GitHub gepusht hast, führe diese Befehle nacheinander au
 3. **Container neu starten (Löschen & Run):**
     ```bash
    docker rm -f go-server
-    docker run -d \
-    -p 8080:8080 \
-    --name go-server \
-    --restart always \
-    --env-file .env \
-    msd23-backend
+    docker run -d -p 80:80 
+   --name go-server 
+   --restart always 
+   --env-file .env msd23-backend
 
 ## Verbindungsinfos
 * Base URL: http://49.13.22.97:8080
