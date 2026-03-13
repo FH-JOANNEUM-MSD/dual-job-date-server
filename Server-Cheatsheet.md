@@ -49,7 +49,7 @@ Wenn du neuen Code auf GitHub gepusht hast, führe diese Befehle nacheinander au
    --env-file .env msd23-backend
 
 ## Verbindungsinfos
-* Base URL: http://49.13.22.97:8080
+* Base URL: http://49.13.22.97:80
 
 * SSH Login: ssh root@49.13.22.97
 
