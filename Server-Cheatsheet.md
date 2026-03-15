@@ -38,10 +38,11 @@ Wenn du neuen Code auf GitHub gepusht hast, führe diese Befehle nacheinander au
 
 2. **Image neu bauen:**
     ```bash
-    docker build -t msd23-backend .
+    docker build -t go-server .
 
 3. **Container neu starten (Löschen & Run):**
     ```bash
+   docker stop go-server
    docker rm -f go-server
    docker run -d \
    -p 443:443 \
