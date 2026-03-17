@@ -44,5 +44,8 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/events/active", handlers.GetActiveEventHandler).Methods("GET")
 	api.HandleFunc("/slots", handlers.GetAllSlotsHandler).Methods("GET")
 
+	//Login
+	//Check user
+	api.HandleFunc("/me", handlers.GetMyIDHandler).Methods("GET")
 	return r
 }
