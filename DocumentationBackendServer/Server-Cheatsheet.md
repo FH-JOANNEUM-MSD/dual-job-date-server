@@ -7,11 +7,8 @@ Nutze diesen Workflow, wenn du Änderungen im `main`-Branch fertig hast und die 
 Damit Kubernetes merkt, dass es ein neues Image gibt, erhöhen wir die Versionsnummer (z.B. von `v1` auf `v2`).
 
 ```bash
-# 1. Neues Image bauen (Tag erhöhen! v1 -> v2 -> v3...)
-docker build -t ghcr.io/jakemoes/dual-job-dating-backend:v2 .
-
-# 2. Zu GitHub hochladen
-docker push ghcr.io/jakemoes/dual-job-dating-backend:v2
+# 1. Neues Image bauen (Tag erhöhen! v1 -> v2 -> v3...) 
+ocker buildx build --platform linux/amd64 -t ghcr.io/jakemoes/dual-job-dating-backend:v3 --push .
 ```
 
 # Schritt 2: Auf dem Server aktualisieren (SSH)
