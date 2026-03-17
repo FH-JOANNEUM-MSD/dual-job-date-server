@@ -17,7 +17,6 @@ docker push ghcr.io/jakemoes/dual-job-dating-backend:v2
 # Schritt 2: Auf dem Server aktualisieren (SSH)
 **Einlogen:**
 ```bash
-ssh root@irfc-prod-1.fh-joanneum.at
 cd ~/msd-dual-jobdating/dual-job-date-server
 ```
 **Yaml anbassen:**
