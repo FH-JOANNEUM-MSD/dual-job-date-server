@@ -38,6 +38,7 @@ func NewRouter() *mux.Router {
 	// Spezifische Daten für einen Studenten (Meetings & Preferences)
 	api.HandleFunc("/students/{id}/preferences", handlers.GetPreferencesByStudentHandler).Methods("GET")
 	api.HandleFunc("/students/{id}/meetings", handlers.GetMeetingsByStudentHandler).Methods("GET")
+	api.HandleFunc("/meetings/assign", handlers.AssignMeetingsByPreferencesHandler).Methods("POST")
 
 	// Event & Zeitplan
 	api.HandleFunc("/events/active", handlers.GetActiveEventHandler).Methods("GET")
