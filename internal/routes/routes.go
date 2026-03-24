@@ -57,5 +57,7 @@ func NewRouter() *mux.Router {
 	// SLOT LÖSCHEN
 	api.HandleFunc("/slots/{id}", handlers.DeleteSlotHandler).Methods("DELETE")
 	api.HandleFunc("/students/{id}", handlers.DeleteStudentHandler).Methods("DELETE")
+
+	api.HandleFunc("/invite", handlers.InviteUserHandler).Methods("POST")
 	return r
 }
