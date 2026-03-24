@@ -1,9 +1,10 @@
 package database
 
 import (
-	"os"
-	"github.com/nedpals/supabase-go"
 	"log"
+	"os"
+
+	"github.com/nedpals/supabase-go"
 )
 
 var SupabaseClient *supabase.Client

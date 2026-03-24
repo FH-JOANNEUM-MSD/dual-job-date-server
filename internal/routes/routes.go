@@ -47,5 +47,14 @@ func NewRouter() *mux.Router {
 	//Login
 	//Check user
 	api.HandleFunc("/me", handlers.GetMyIDHandler).Methods("GET")
+
+	//Update
+	// Die Route erwartet jetzt eine ID, z.B. /companies/42
+	api.HandleFunc("/companies/{id}", handlers.UpdateCompanyHandler).Methods("PATCH")
+
+	//Delete
+	// SLOT LÖSCHEN
+	api.HandleFunc("/slots/{id}", handlers.DeleteSlotHandler).Methods("DELETE")
+	api.HandleFunc("/students/{id}", handlers.DeleteStudentHandler).Methods("DELETE")
 	return r
 }

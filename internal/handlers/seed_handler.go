@@ -1,16 +1,65 @@
 package handlers
 
 import (
+	"bytes"
 	"dual-job-date-server/internal/database"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
 )
 
+// Hilfsfunktion: Legt den User im Supabase Auth an und gibt die ECHTE UUID zurück
+func createAuthUser(email, password string) (string, error) {
+	supabaseURL := os.Getenv("SUPABASE_URL")
+	supabaseKey := os.Getenv("SUPABASE_KEY") // MUSS der service_role key sein!
+
+	url := supabaseURL + "/auth/v1/admin/users"
+	payload := map[string]interface{}{
+		"email":         email,
+		"password":      password,
+		"email_confirm": true, // Direkt bestätigen, sonst können sie sich nicht einloggen
+	}
+	body, _ := json.Marshal(payload)
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Add("Authorization", "Bearer "+supabaseKey)
+	req.Header.Add("apikey", supabaseKey)
+	req.Header.Add("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	// 422 bedeutet meistens: User existiert schon.
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+		return "", fmt.Errorf("auth creation failed with status: %d", resp.StatusCode)
+	}
+
+	var result map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return "", err
+	}
+
+	authID, ok := result["id"].(string)
+	if !ok {
+		return "", fmt.Errorf("could not parse auth ID")
+	}
+
+	return authID, nil
+}
+
 func SeedDatabase(w http.ResponseWriter, r *http.Request) {
-	// Helper function to insert a slice of maps into a table using bulk insert
 	insertRows := func(table string, rows []map[string]interface{}) error {
 		var result interface{}
 		if err := database.SupabaseClient.DB.From(table).Insert(rows).Execute(&result); err != nil {
@@ -19,14 +68,7 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 		return nil
 	}
 
-	// Slices für alle Tabellen vorbereiten
-	var users []map[string]interface{}
-	var students []map[string]interface{}
-	var companies []map[string]interface{}
-	var events []map[string]interface{}
-	var slots []map[string]interface{}
-	var preferences []map[string]interface{}
-	var meetings []map[string]interface{}
+	var users, students, companies, events, slots, preferences, meetings []map[string]interface{}
 
 	// ---------- GAME OF THRONES STUDENTEN (15) ----------
 	studentNames := [][]string{
@@ -39,22 +81,31 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 		{"Samwell", "Tarly", "Maester Studies"},
 		{"Robb", "Stark", "Military Strategy"},
 		{"Margaery", "Tyrell", "Public Relations"},
-		{"Brienne", "of Tarth", "Honor & Ethics"},
+		{"Brienne", "of_Tarth", "Honor & Ethics"},
 		{"Jorah", "Mormont", "Exile Survival"},
 		{"Theon", "Greyjoy", "Maritime Navigation"},
 		{"Gendry", "Baratheon", "Advanced Blacksmithing"},
 		{"Podrick", "Payne", "Squire Fundamentals"},
-		{"Missandei", "of Naath", "Multilingual Translation"},
+		{"Missandei", "of_Naath", "Multilingual Translation"},
 	}
 
 	for i, data := range studentNames {
+		// 1. E-Mail generieren (z.B. jon.snow@westeros.com)
+		email := strings.ToLower(data[0] + "." + data[1] + "@westeros.com")
+
+		// 2. User ECHT in Supabase Auth anlegen
+		authUUID, err := createAuthUser(email, "WinterIsComing123!")
+		if err != nil {
+			http.Error(w, "Auth Fehler bei "+email+": "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		idUUID := uuid.New().String()
-		userUUID := uuid.New().String()
-		studentID := i + 1 // Explizite ID für Relationen
+		studentID := i + 1
 
 		users = append(users, map[string]interface{}{
 			"id":         idUUID,
-			"user_id":    userUUID,
+			"user_id":    authUUID, // HIER IST DIE MAGIE!
 			"role":       "student",
 			"first_name": data[0],
 			"last_name":  data[1],
@@ -64,7 +115,7 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 			"id":            studentID,
 			"user_id":       idUUID,
 			"study_program": data[2],
-			"semester":      (i % 6) + 1, // Semester 1 bis 6 gemischt
+			"semester":      (i % 6) + 1,
 		})
 	}
 
@@ -74,23 +125,30 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 		Active                       bool
 	}{
 		{"Tywin", "Lannister", "Lannister Gold & Loans", "A Lannister always pays his debts.", "https://lannister.gold", true},
-		{"Ned", "Stark", "Winterfell Logistics", "Winter is coming. We bring the supplies.", "https://winterfell.net", true},
-		{"Olenna", "Tyrell", "Highgarden Agriculture", "Growing strong crops for all of Westeros.", "https://highgarden.ag", true},
+		{"Ned", "Stark", "Winterfell Logistics", "Winter is coming.", "https://winterfell.net", true},
+		{"Olenna", "Tyrell", "Highgarden Agriculture", "Growing strong.", "https://highgarden.ag", true},
 		{"Euron", "Greyjoy", "Iron Fleet Shipping", "What is dead may never die.", "https://ironfleet.sea", true},
-		{"Petyr", "Baelish", "Vale Investments & Info", "Chaos is a ladder.", "https://baelish.info", false}, // Inactive
-		{"Jeor", "Mormont", "The Wall Security", "The sword in the darkness.", "https://nightswatch.gov", true},
-		{"Roose", "Bolton", "Dreadfort Flaying Services", "Our blades are sharp.", "https://dreadfort.co", false}, // Inactive
-		{"Khal", "Drogo", "Dothraki Equine Exports", "Best horses in Essos.", "https://dothraki.horse", true},
+		{"Petyr", "Baelish", "Vale Investments", "Chaos is a ladder.", "https://baelish.info", false},
+		{"Jeor", "Mormont", "The Wall Security", "Sword in the darkness.", "https://nightswatch.gov", true},
+		{"Roose", "Bolton", "Dreadfort Flaying", "Our blades are sharp.", "https://dreadfort.co", false},
+		{"Khal", "Drogo", "Dothraki Equine", "Best horses.", "https://dothraki.horse", true},
 	}
 
 	for i, data := range companyData {
+		email := strings.ToLower(data.First + "." + data.Last + "@" + strings.Split(data.Web, "://")[1])
+
+		authUUID, err := createAuthUser(email, "WinterIsComing123!")
+		if err != nil {
+			http.Error(w, "Auth Fehler bei "+email+": "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		idUUID := uuid.New().String()
-		userUUID := uuid.New().String()
-		companyID := i + 1 // Explizite ID
+		companyID := i + 1
 
 		users = append(users, map[string]interface{}{
 			"id":         idUUID,
-			"user_id":    userUUID,
+			"user_id":    authUUID, // UND HIER!
 			"role":       "company",
 			"first_name": data.First,
 			"last_name":  data.Last,
@@ -116,7 +174,6 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 	)
 
 	// ---------- SLOTS (16) ----------
-	// Generiert Slots von 09:00 bis 13:00 im 15-Minuten-Takt
 	for i := 0; i < 16; i++ {
 		hour := 9 + (i / 4)
 		minute := (i % 4) * 15
@@ -134,12 +191,10 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ---------- PREFERENCES (120) ----------
-	// Jeder Student bewertet jede Company (15 * 8 = 120 Einträge)
 	prefTypes := []string{"like", "dislike", "neutral"}
 	prefID := 1
 	for sID := 1; sID <= 15; sID++ {
 		for cID := 1; cID <= 8; cID++ {
-			// Pseudo-zufällige Verteilung der Preferences, damit es nicht immer gleich aussieht
 			pType := prefTypes[(sID+cID*3)%3]
 			preferences = append(preferences, map[string]interface{}{
 				"id":              prefID,
@@ -152,11 +207,10 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ---------- MEETINGS (40+) ----------
-	// Generiere ein paar fixe Meetings für die Firmen
 	meetingID := 1
 	for cID := 1; cID <= 8; cID++ {
-		for slotID := 1; slotID <= 6; slotID++ { // 6 Meetings pro Firma
-			sID := ((cID * slotID) % 15) + 1 // Irgendein Student
+		for slotID := 1; slotID <= 6; slotID++ {
+			sID := ((cID * slotID) % 15) + 1
 			meetings = append(meetings, map[string]interface{}{
 				"id":         meetingID,
 				"slot_id":    slotID,
@@ -168,7 +222,7 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ==========================================
-	// INSERTS AUSFÜHREN (Richtige Reihenfolge!)
+	// INSERTS AUSFÜHREN
 	// ==========================================
 	if err := insertRows("users", users); err != nil {
 		http.Error(w, fmt.Sprintf("Users Error: %v", err), http.StatusInternalServerError)
