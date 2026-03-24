@@ -29,6 +29,7 @@ func NewRouter() *mux.Router {
 	// Firmen-Endpunkte
 	// Studenten sehen hier die Liste zum Voten
 	api.HandleFunc("/companies/active", handlers.GetActiveCompaniesHandler).Methods("GET")
+	api.HandleFunc("/companies/{id}/vote", handlers.VoteCompanyHandler).Methods("POST")
 	api.HandleFunc("/companies/{id}/logo", handlers.UploadCompanyLogoHandler).Methods("POST")
 
 	// Studenten-Endpunkte
