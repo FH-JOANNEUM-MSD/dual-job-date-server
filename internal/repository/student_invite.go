@@ -8,27 +8,33 @@ import (
 )
 
 func CreateStudentProfile(authUUID string, req models.InviteRequest) error {
-	// 1. Unsere interne ID generieren
 	internalUUID := uuid.New().String()
 
-	// 2. Den User in public.users eintragen
+	// 1. Eintrag in public.users
 	userInsert := map[string]interface{}{
-		"id":      internalUUID,
-		"user_id": authUUID, // Die ID, die wir von InviteAuthUser bekommen haben
-		"role":    "student",
+		"id":         internalUUID, // Das ist der PK
+		"user_id":    authUUID,     // ID vom Supabase Auth
+		"role":       "student",
+		"first_name": req.FirstName,
+		"last_name":  req.LastName,
 	}
+
 	err := database.SupabaseClient.DB.From("users").Insert(userInsert).Execute(nil)
 	if err != nil {
-		return err
+		return err // Falls hier was schiefläuft, direkt raus
 	}
 
-	// 3. Den Studenten in public.students eintragen
+	// 2. Eintrag in public.students
 	studentInsert := map[string]interface{}{
-		"user_id":       internalUUID, // Verknüpfung zu unserer internen users-Tabelle
+		"user_id":       internalUUID, // Muss exakt die ID von oben sein
 		"study_program": req.StudyProgram,
-		"semester":      req.Semester,
 	}
-	err = database.SupabaseClient.DB.From("students").Insert(studentInsert).Execute(nil)
 
+	// Nur mitschicken, wenn vorhanden (bei 0 wird es in DB NULL)
+	if req.Semester > 0 {
+		studentInsert["semester"] = req.Semester
+	}
+
+	err = database.SupabaseClient.DB.From("students").Insert(studentInsert).Execute(nil)
 	return err
 }
