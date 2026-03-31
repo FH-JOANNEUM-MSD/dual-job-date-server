@@ -8,27 +8,28 @@ import (
 )
 
 func CreateCompanyProfile(authUUID string, req models.InviteRequest) error {
-	// 1. Unsere interne ID generieren
 	internalUUID := uuid.New().String()
 
-	// 2. Den User in public.users eintragen (Ansprechpartner der Firma)
+	// 1. Eintrag in public.users
 	userInsert := map[string]interface{}{
-		"id":      internalUUID,
-		"user_id": authUUID,
-		"role":    "company",
+		"id":         internalUUID,
+		"user_id":    authUUID,
+		"role":       "company",
+		"first_name": req.FirstName,
+		"last_name":  req.LastName,
 	}
+
 	err := database.SupabaseClient.DB.From("users").Insert(userInsert).Execute(nil)
 	if err != nil {
 		return err
 	}
 
-	// 3. Die Firma in public.companies eintragen
+	// 2. Eintrag in public.companies
 	companyInsert := map[string]interface{}{
 		"user_id": internalUUID,
-		"name":    req.CompanyName,
-		// Website, Logo, etc. können später über ein Update befüllt werden
+		"name":    req.CompanyName, // Feldname aus deinem Modell
 	}
-	err = database.SupabaseClient.DB.From("companies").Insert(companyInsert).Execute(nil)
 
+	err = database.SupabaseClient.DB.From("companies").Insert(companyInsert).Execute(nil)
 	return err
 }
