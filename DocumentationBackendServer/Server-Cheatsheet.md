@@ -8,7 +8,7 @@ Damit Kubernetes merkt, dass es ein neues Image gibt, erhöhen wir die Versionsn
 
 ```bash
 # 1. Neues Image bauen (Tag erhöhen! v1 -> v2 -> v3...) 
-ocker buildx build --platform linux/amd64 -t ghcr.io/jakemoes/dual-job-dating-backend:v3 --push .
+docker buildx build --platform linux/amd64 -t ghcr.io/jakemoes/dual-job-dating-backend:v3 --push .
 ```
 
 # Schritt 2: Auf dem Server aktualisieren (SSH)

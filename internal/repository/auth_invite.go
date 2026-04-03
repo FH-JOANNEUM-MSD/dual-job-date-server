@@ -10,15 +10,30 @@ import (
 	"os"
 )
 
-// InviteAuthUser schickt den Magic-Invite-Link und gibt die Supabase Auth-UUID zurück
-func InviteAuthUser(email string) (string, error) {
+// InviteAuthUser schickt den Magic-Invite-Link inkl. Redirect-URL und gibt die Supabase Auth-UUID zurück
+func InviteAuthUser(email string, role string) (string, error) {
 	supabaseURL := os.Getenv("SUPABASE_URL")
+	// Wichtig: Hier sollte der SERVICE_ROLE_KEY genutzt werden, damit Admin-Invites erlaubt sind
 	supabaseKey := os.Getenv("SUPABASE_KEY")
 
 	inviteURL := supabaseURL + "/auth/v1/invite"
 
-	// Body für den Request vorbereiten
-	bodyData := map[string]string{"email": email}
+	// --- Logik für die Ziel-URL (Redirect) ---
+	var redirectTo string
+	if role == "student" {
+		// Deep Link für die App (Prüfe nochmal die Schreibweise 'setPassowort'!)
+		redirectTo = "dualjob://setPassword"
+	} else {
+		// Platzhalter für das Web-Team (Company)
+		// Sobald die "Lazy Dawgs" die URL liefern, hier anpassen:
+		redirectTo = "https://dual-job-webportal-placeholder.de/auth/callback"
+	}
+
+	// Body für den Request vorbereiten (jetzt als interface-map für verschiedene Typen)
+	bodyData := map[string]interface{}{
+		"email":      email,
+		"redirectTo": redirectTo,
+	}
 	bodyBytes, _ := json.Marshal(bodyData)
 
 	req, _ := http.NewRequest("POST", inviteURL, bytes.NewBuffer(bodyBytes))
@@ -33,7 +48,7 @@ func InviteAuthUser(email string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	// 1. WICHTIG: Den kompletten Body sofort lesen!
+	// 1. Den kompletten Body lesen
 	respBodyBytes, _ := io.ReadAll(resp.Body)
 
 	// 2. Auf Fehler-Statuscodes prüfen

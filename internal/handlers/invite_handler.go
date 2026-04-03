@@ -4,14 +4,13 @@ import (
 	"dual-job-date-server/internal/models"
 	"dual-job-date-server/internal/repository"
 	"encoding/json"
-	"fmt" // Für das Logging
+	"fmt"
 	"net/http"
 )
 
 func InviteUserHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.InviteRequest
 
-	// JSON Decoding mit Fehlerprüfung
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		fmt.Printf("[ERROR] JSON Decoding failed: %v\n", err)
 		http.Error(w, "Ungültiges JSON", http.StatusBadRequest)
@@ -21,7 +20,8 @@ func InviteUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("[INFO] Start Invite für Email: %s, Rolle: %s\n", req.Email, req.Role)
 
 	// 1. User im Auth-System einladen
-	authUUID, err := repository.InviteAuthUser(req.Email)
+	// JETZT NEU: Wir geben req.Role mit, damit die Funktion weiß, ob App oder Web-Link!
+	authUUID, err := repository.InviteAuthUser(req.Email, req.Role)
 	if err != nil {
 		fmt.Printf("[ERROR] Auth Invite failed for %s: %v\n", req.Email, err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -29,7 +29,7 @@ func InviteUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Printf("[DEBUG] Auth User erstellt. UUID: %s\n", authUUID)
 
-	// 2. Die "Weiche" mit Logging für das Ergebnis der Repo-Funktionen
+	// 2. Die "Weiche" (bleibt gleich, da req.Role hier ja schon genutzt wird)
 	switch req.Role {
 	case "student":
 		fmt.Println("[DEBUG] Versuche Student-Profil anzulegen...")
@@ -53,7 +53,6 @@ func InviteUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 3. Erfolg melden!
 	fmt.Printf("[SUCCESS] Alles erledigt für %s\n", req.Email)
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("Einladung verschickt und Profil in DB angelegt!"))

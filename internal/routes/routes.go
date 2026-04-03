@@ -23,6 +23,9 @@ func NewRouter() *mux.Router {
 
 	//Helper
 	api.HandleFunc("/seed", handlers.SeedDatabase).Methods("GET")
+	// --- ÖFFENTLICHE API ROUTEN (Ohne Token zugänglich) ---
+	// Diese Route muss vor der Middleware definiert werden!
+	r.HandleFunc("/api/resend-invite", handlers.HandleResendInvite).Methods("POST")
 
 	// --- API Routen (Business Logik) ---
 
