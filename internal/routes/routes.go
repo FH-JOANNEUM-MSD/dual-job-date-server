@@ -55,6 +55,7 @@ func NewRouter() *mux.Router {
 	//Update
 	// Die Route erwartet jetzt eine ID, z.B. /companies/42
 	api.HandleFunc("/companies/{id}", handlers.UpdateCompanyHandler).Methods("PATCH")
+	api.HandleFunc("/users/{id}", handlers.UpdateUserNamesHandler).Methods("PATCH")
 
 	//Delete
 	// SLOT LÖSCHEN
