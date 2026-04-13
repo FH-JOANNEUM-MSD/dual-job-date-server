@@ -1,31 +1,44 @@
-// internal/handlers/auth_handler.go
 package handlers
 
 import (
-	"dual-job-date-server/internal/auth" // Pfad anpassen!
-	"dual-job-date-server/internal/models"
 	"encoding/json"
 	"net/http"
+
+	"dual-job-date-server/internal/auth"
+	"dual-job-date-server/internal/models"
+	"dual-job-date-server/internal/repository" // Dein Repo importieren
 )
 
-// GetMyIDHandler gibt die ID des aktuell eingeloggten Users zurück
 func GetMyIDHandler(w http.ResponseWriter, r *http.Request) {
-	// Hol die ID aus dem Context (die deine Middleware dort abgelegt hat)
+	w.Header().Set("Content-Type", "application/json")
+
+	// Auth-UUID aus der Middleware
 	userID := auth.GetUserID(r.Context())
 
 	if userID == "" {
-		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Keine valide Session gefunden"})
 		return
 	}
 
-	response := models.UserAuthResponse{
-		UserID: userID,
-		Status: "authenticated",
+	// 1. Repo aufrufen (Supabase Logik passiert unsichtbar im Hintergrund)
+	role, studentID, companyID, err := repository.GetUserAuthDetails(userID)
+
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	// 2. Response bauen
+	response := models.UserAuthResponse{
+		UserID:    userID,
+		Status:    "authenticated",
+		Role:      role,
+		StudentID: studentID,
+		CompanyID: companyID,
+	}
+
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
 }
