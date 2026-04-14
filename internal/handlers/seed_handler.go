@@ -191,21 +191,18 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ---------- PREFERENCES (120) ----------
-	prefTypes := []string{"like", "dislike", "neutral"}
 	prefID := 1
 	for sID := 1; sID <= 15; sID++ {
 		for cID := 1; cID <= 8; cID++ {
-			pType := prefTypes[(sID+cID*3)%3]
 			preferences = append(preferences, map[string]interface{}{
 				"id":              prefID,
 				"student_id":      sID,
 				"company_id":      cID,
-				"preference_type": pType,
+				"preference_type": "none", // Hier fest auf "none" gesetzt
 			})
 			prefID++
 		}
 	}
-
 	// ---------- MEETINGS (40+) ----------
 	meetingID := 1
 	for cID := 1; cID <= 8; cID++ {
