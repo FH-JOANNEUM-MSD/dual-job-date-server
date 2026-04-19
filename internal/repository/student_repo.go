@@ -4,11 +4,18 @@ import (
 	"dual-job-date-server/internal/database"
 	"dual-job-date-server/internal/models"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"strconv"
+
+	"github.com/google/uuid"
 )
+
+// ErrStudentNotFound wird zurückgegeben, wenn keine Zeile in students zur ID existiert.
+var ErrStudentNotFound = errors.New("student nicht gefunden")
 
 // GetAllStudents holt alle Studenten und verknüpft sie mit den User-Daten
 func GetAllStudents() ([]models.Student, error) {
@@ -81,4 +88,53 @@ func GetAllStudents() ([]models.Student, error) {
 
 	fmt.Printf("--- ERFOLG: %d Studenten und %d User gemappt ---\n", len(students), len(rawUsers))
 	return students, nil
+}
+
+// UpdateStudent wendet partielle Änderungen auf students an und optional Vor-/Nachname in users.
+func UpdateStudent(studentID int, input models.UpdateStudentInput) error {
+	idStr := strconv.Itoa(studentID)
+
+	var rows []struct {
+		UserID string `json:"user_id"`
+	}
+	err := database.SupabaseClient.DB.From("students").Select("user_id").Eq("id", idStr).Execute(&rows)
+	if err != nil {
+		return err
+	}
+	if len(rows) == 0 {
+		return ErrStudentNotFound
+	}
+	internalUserUUID := rows[0].UserID
+
+	updateData := make(map[string]interface{})
+	if input.StudyProgram != nil {
+		updateData["study_program"] = *input.StudyProgram
+	}
+	if input.Semester != nil {
+		updateData["semester"] = *input.Semester
+	}
+
+	if len(updateData) > 0 {
+		var updated []map[string]interface{}
+		err = database.SupabaseClient.DB.From("students").Update(updateData).Eq("id", idStr).Execute(&updated)
+		if err != nil {
+			return err
+		}
+		if len(updated) == 0 {
+			return ErrStudentNotFound
+		}
+	}
+
+	if input.FirstName != nil || input.LastName != nil {
+		uid, err := uuid.Parse(internalUserUUID)
+		if err != nil {
+			return fmt.Errorf("ungültige user_id für student: %w", err)
+		}
+		return UpdateUserNames(uid, models.UpdateUserNameInput{
+			FirstName: input.FirstName,
+			LastName:  input.LastName,
+		})
+	}
+
+	return nil
 }
