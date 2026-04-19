@@ -22,7 +22,7 @@ func InviteAuthUser(email string, role string) (string, error) {
 	var redirectTo string
 	if role == "student" {
 		// Deep Link für die App (Prüfe nochmal die Schreibweise 'setPassowort'!)
-		redirectTo = "dualjob://setPassword"
+		redirectTo = "http://localhost:5173/"
 	} else {
 		// Platzhalter für das Web-Team (Company)
 		// Sobald die "Lazy Dawgs" die URL liefern, hier anpassen:
