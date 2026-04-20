@@ -93,3 +93,40 @@ func UpdateCompanyLogoURL(companyID int, logoURL string) error {
 		Eq("id", strconv.Itoa(companyID)).
 		Execute(&updated)
 }
+
+func AddCompanyImageURL(companyID int, imageURL string) error {
+	company, err := GetCompanyByID(companyID)
+	if err != nil {
+		return err
+	}
+	if company.ID == 0 {
+		return nil
+	}
+
+	imageURLs := make([]string, 0, len(company.ImageURLs)+1)
+	seen := make(map[string]struct{}, len(company.ImageURLs)+1)
+	for _, existing := range company.ImageURLs {
+		if existing == "" {
+			continue
+		}
+		if _, ok := seen[existing]; ok {
+			continue
+		}
+		seen[existing] = struct{}{}
+		imageURLs = append(imageURLs, existing)
+	}
+	if _, ok := seen[imageURL]; !ok && imageURL != "" {
+		imageURLs = append(imageURLs, imageURL)
+	}
+
+	update := map[string]interface{}{
+		"image_urls":   imageURLs,
+		"last_updated": time.Now().UTC().Format(time.RFC3339),
+	}
+	var updated []models.Company
+	return database.SupabaseClient.DB.
+		From("companies").
+		Update(update).
+		Eq("id", strconv.Itoa(companyID)).
+		Execute(&updated)
+}

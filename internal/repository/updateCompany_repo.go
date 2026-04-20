@@ -16,6 +16,9 @@ func UpdateCompany(companyID int, input models.UpdateCompanyInput) error {
 	if input.Name != nil {
 		updateData["name"] = *input.Name // Den echten Wert (*input) in die Map legen
 	}
+	if input.ShortDescription != nil {
+		updateData["short_description"] = *input.ShortDescription
+	}
 	if input.Description != nil {
 		updateData["description"] = *input.Description
 	}
@@ -24,6 +27,9 @@ func UpdateCompany(companyID int, input models.UpdateCompanyInput) error {
 	}
 	if input.LogoURL != nil {
 		updateData["logo_url"] = *input.LogoURL
+	}
+	if input.ImageURLs != nil {
+		updateData["image_urls"] = *input.ImageURLs
 	}
 	if input.Active != nil {
 		updateData["active"] = *input.Active

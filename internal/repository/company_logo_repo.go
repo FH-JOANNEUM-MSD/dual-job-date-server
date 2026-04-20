@@ -70,6 +70,9 @@ func UploadCompanyLogo(companyID int, originalName, contentType string, fileData
 	if err := UpdateCompanyLogoURL(companyID, logoURL); err != nil {
 		return CompanyLogoUploadResult{}, err
 	}
+	if err := AddCompanyImageURL(companyID, logoURL); err != nil {
+		return CompanyLogoUploadResult{}, err
+	}
 
 	return CompanyLogoUploadResult{
 		CompanyID: companyID,
