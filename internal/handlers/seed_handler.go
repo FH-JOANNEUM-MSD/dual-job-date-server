@@ -121,17 +121,17 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 
 	// ---------- GAME OF THRONES COMPANIES (8) ----------
 	companyData := []struct {
-		First, Last, Name, Desc, Web string
-		Active                       bool
+		First, Last, Name, ShortDesc, Desc, Web string
+		Active                                  bool
 	}{
-		{"Tywin", "Lannister", "Lannister Gold & Loans", "A Lannister always pays his debts.", "https://lannister.gold", true},
-		{"Ned", "Stark", "Winterfell Logistics", "Winter is coming.", "https://winterfell.net", true},
-		{"Olenna", "Tyrell", "Highgarden Agriculture", "Growing strong.", "https://highgarden.ag", true},
-		{"Euron", "Greyjoy", "Iron Fleet Shipping", "What is dead may never die.", "https://ironfleet.sea", true},
-		{"Petyr", "Baelish", "Vale Investments", "Chaos is a ladder.", "https://baelish.info", false},
-		{"Jeor", "Mormont", "The Wall Security", "Sword in the darkness.", "https://nightswatch.gov", true},
-		{"Roose", "Bolton", "Dreadfort Flaying", "Our blades are sharp.", "https://dreadfort.co", false},
-		{"Khal", "Drogo", "Dothraki Equine", "Best horses.", "https://dothraki.horse", true},
+		{"Tywin", "Lannister", "Lannister Gold & Loans", "Finanzierung fuer ambitionierte Talente.", "A Lannister always pays his debts.", "https://lannister.gold", true},
+		{"Ned", "Stark", "Winterfell Logistics", "Supply Chain in rauem Klima.", "Winter is coming.", "https://winterfell.net", true},
+		{"Olenna", "Tyrell", "Highgarden Agriculture", "Agrar-Innovation mit Fokus auf Nachhaltigkeit.", "Growing strong.", "https://highgarden.ag", true},
+		{"Euron", "Greyjoy", "Iron Fleet Shipping", "Maritime Loesungen fuer globale Routen.", "What is dead may never die.", "https://ironfleet.sea", true},
+		{"Petyr", "Baelish", "Vale Investments", "Strategische Investments fuer Wachstum.", "Chaos is a ladder.", "https://baelish.info", false},
+		{"Jeor", "Mormont", "The Wall Security", "Sicherheitsdienst fuer kritische Infrastrukturen.", "Sword in the darkness.", "https://nightswatch.gov", true},
+		{"Roose", "Bolton", "Dreadfort Flaying", "Spezialisierte Fertigung fuer Nischenbranchen.", "Our blades are sharp.", "https://dreadfort.co", false},
+		{"Khal", "Drogo", "Dothraki Equine", "Mobilitaetskonzepte rund um Pferdewirtschaft.", "Best horses.", "https://dothraki.horse", true},
 	}
 
 	for i, data := range companyData {
@@ -155,12 +155,18 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 		})
 
 		companies = append(companies, map[string]interface{}{
-			"id":           companyID,
-			"user_id":      idUUID,
-			"name":         data.Name,
-			"description":  data.Desc,
-			"website":      data.Web,
-			"logo_url":     fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
+			"id":                companyID,
+			"user_id":           idUUID,
+			"name":              data.Name,
+			"short_description": data.ShortDesc,
+			"description":       data.Desc,
+			"website":           data.Web,
+			"logo_url":          fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
+			"image_urls": strings.Join([]string{
+				fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
+				fmt.Sprintf("https://picsum.photos/seed/%s-1/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
+				fmt.Sprintf("https://picsum.photos/seed/%s-2/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
+			}, ";"),
 			"active":       data.Active,
 			"last_updated": time.Now().Format(time.RFC3339),
 		})

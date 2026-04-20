@@ -8,6 +8,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -16,8 +17,9 @@ import (
 )
 
 const (
-	defaultCompanyLogoBucket = "company-logos"
-	defaultLogoMaxBytes      = 5 * 1024 * 1024
+	defaultCompanyLogoBucket  = "company-logos"
+	defaultCompanyImageBucket = "company-images"
+	defaultLogoMaxBytes       = 5 * 1024 * 1024
 )
 
 type CompanyLogoUploadResult struct {
@@ -25,6 +27,13 @@ type CompanyLogoUploadResult struct {
 	Bucket    string `json:"bucket"`
 	ObjectKey string `json:"object_key"`
 	LogoURL   string `json:"logo_url"`
+}
+
+type CompanyImageUploadResult struct {
+	CompanyID int    `json:"company_id"`
+	Bucket    string `json:"bucket"`
+	ObjectKey string `json:"object_key"`
+	ImageURL  string `json:"image_url"`
 }
 
 type storageBucketInfo struct {
@@ -76,6 +85,52 @@ func UploadCompanyLogo(companyID int, originalName, contentType string, fileData
 		Bucket:    bucket,
 		ObjectKey: objectKey,
 		LogoURL:   logoURL,
+	}, nil
+}
+
+func UploadCompanyImage(companyID int, originalName, contentType string, fileData []byte) (CompanyImageUploadResult, error) {
+	if len(fileData) == 0 {
+		return CompanyImageUploadResult{}, fmt.Errorf("leere datei")
+	}
+
+	company, err := GetCompanyByID(companyID)
+	if err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+	if company.ID == 0 {
+		return CompanyImageUploadResult{}, fmt.Errorf("company nicht gefunden")
+	}
+
+	normalizedContentType := normalizeContentType(contentType)
+	if !isSupportedLogoContentType(normalizedContentType) {
+		return CompanyImageUploadResult{}, fmt.Errorf("nur png, jpg, jpeg oder webp erlaubt")
+	}
+
+	maxBytes := getLogoMaxBytes()
+	if len(fileData) > maxBytes {
+		return CompanyImageUploadResult{}, fmt.Errorf("datei zu gross: max %d bytes", maxBytes)
+	}
+
+	bucket := getCompanyImageBucket()
+	if err := ensurePublicBucket(bucket); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	objectKey := buildCompanyLogoObjectKey(company, originalName, normalizedContentType)
+	if err := uploadToBucket(bucket, objectKey, normalizedContentType, fileData); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	imageURL := buildPublicObjectURL(bucket, objectKey)
+	if err := AddCompanyImageURL(companyID, imageURL); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	return CompanyImageUploadResult{
+		CompanyID: companyID,
+		Bucket:    bucket,
+		ObjectKey: objectKey,
+		ImageURL:  imageURL,
 	}, nil
 }
 
@@ -228,6 +283,31 @@ func uploadToBucket(bucket, objectKey, contentType string, fileData []byte) erro
 	return nil
 }
 
+func deleteObjectFromBucket(bucket, objectKey string) error {
+	url := fmt.Sprintf("%s/storage/v1/object/%s/%s", getSupabaseURL(), bucket, objectKey)
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		return err
+	}
+	attachSupabaseAuthHeaders(req)
+
+	client := &http.Client{Timeout: 60 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("delete fehlgeschlagen (%d): %s", resp.StatusCode, string(body))
+	}
+	return nil
+}
+
 func buildCompanyLogoObjectKey(company models.Company, originalName, contentType string) string {
 	ext := strings.ToLower(filepath.Ext(originalName))
 	if ext == "" {
@@ -252,6 +332,48 @@ func buildPublicObjectURL(bucket, objectKey string) string {
 	return fmt.Sprintf("%s/storage/v1/object/public/%s/%s", getSupabaseURL(), bucket, objectKey)
 }
 
+func DeleteCompanyImageObjectByURL(rawURL string) error {
+	bucket, objectKey, ok := parsePublicObjectURL(rawURL)
+	if !ok {
+		return nil
+	}
+	if bucket != getCompanyImageBucket() {
+		return nil
+	}
+	return deleteObjectFromBucket(bucket, objectKey)
+}
+
+func parsePublicObjectURL(raw string) (bucket, objectKey string, ok bool) {
+	parsed, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil {
+		return "", "", false
+	}
+	base, err := url.Parse(getSupabaseURL())
+	if err != nil {
+		return "", "", false
+	}
+	if !strings.EqualFold(parsed.Scheme, base.Scheme) || !strings.EqualFold(parsed.Host, base.Host) {
+		return "", "", false
+	}
+
+	path := parsed.EscapedPath()
+	const prefix = "/storage/v1/object/public/"
+	if !strings.HasPrefix(path, prefix) {
+		return "", "", false
+	}
+	rest := strings.TrimPrefix(path, prefix)
+	parts := strings.SplitN(rest, "/", 2)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", false
+	}
+
+	unescapedKey, err := url.PathUnescape(parts[1])
+	if err != nil {
+		return "", "", false
+	}
+	return parts[0], unescapedKey, true
+}
+
 func attachSupabaseAuthHeaders(req *http.Request) {
 	key := os.Getenv("SUPABASE_KEY")
 	req.Header.Set("Authorization", "Bearer "+key)
@@ -267,6 +389,13 @@ func getCompanyLogoBucket() string {
 		return bucket
 	}
 	return defaultCompanyLogoBucket
+}
+
+func getCompanyImageBucket() string {
+	if bucket := strings.TrimSpace(os.Getenv("COMPANY_IMAGE_BUCKET")); bucket != "" {
+		return bucket
+	}
+	return defaultCompanyImageBucket
 }
 
 func getLogoMaxBytes() int {
