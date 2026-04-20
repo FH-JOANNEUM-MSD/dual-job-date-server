@@ -20,6 +20,47 @@ func GetActiveCompanies() ([]models.Company, error) {
 	return companies, nil
 }
 
+func GetActiveCompaniesForStudentUser(userID string, onlyUnvoted bool) ([]models.Company, error) {
+	companies, err := GetActiveCompanies()
+	if err != nil {
+		return nil, err
+	}
+
+	if !onlyUnvoted {
+		return companies, nil
+	}
+
+	studentID, err := getStudentIDByUserID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var preferences []models.Preference
+	err = database.SupabaseClient.DB.
+		From("preferences").
+		Select("company_id").
+		Eq("student_id", strconv.Itoa(studentID)).
+		Execute(&preferences)
+	if err != nil {
+		return nil, err
+	}
+
+	votedCompanyIDs := make(map[int]struct{}, len(preferences))
+	for _, preference := range preferences {
+		votedCompanyIDs[preference.CompanyID] = struct{}{}
+	}
+
+	filtered := make([]models.Company, 0, len(companies))
+	for _, company := range companies {
+		if _, voted := votedCompanyIDs[company.ID]; voted {
+			continue
+		}
+		filtered = append(filtered, company)
+	}
+
+	return filtered, nil
+}
+
 func GetCompanyByID(companyID int) (models.Company, error) {
 	var companies []models.Company
 
