@@ -9,25 +9,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// NewRouter erstellt den Router und registriert alle Routen
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 
-	// --- System & Test Routen ---
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Server läuft!"))
 	}).Methods("GET")
 
-	api := r.PathPrefix("/api").Subrouter()
-	api.Use(auth.JWTMiddleware)
-
-	//Helper
-	api.HandleFunc("/seed", handlers.SeedDatabase).Methods("GET")
-	// --- ÖFFENTLICHE API ROUTEN (Ohne Token zugänglich) ---
-	// Diese Route muss vor der Middleware definiert werden!
 	r.HandleFunc("/api/resend-invite", handlers.HandleResendInvite).Methods("POST")
 
-	// --- API Routen (Business Logik) ---
+	api := r.PathPrefix("/api").Subrouter()
+	// JWT Middleware für alle geschützten Routen
+	api.Use(auth.JWTMiddleware)
 
 	// Firmen-Endpunkte
 	// Studenten sehen hier die Liste zum Voten
@@ -36,34 +29,46 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/companies/{id}/logo", handlers.UploadCompanyLogoHandler).Methods("POST")
 	api.HandleFunc("/companies/{id}/images", handlers.UploadCompanyImageHandler).Methods("POST")
 
-	// Studenten-Endpunkte
-	// Hier können Admins alle Studierenden verwalten
-	api.HandleFunc("/students", handlers.GetAllStudentsHandler).Methods("GET")
+	// --- HELPER ---
+	// Nur Admin darf die Datenbank seeden
+	api.HandleFunc("/seed", auth.RequireRole("admin")(handlers.SeedDatabase)).Methods("GET")
+	api.HandleFunc("/invite", auth.RequireRole("admin")(handlers.InviteUserHandler)).Methods("POST")
 
-	// Spezifische Daten für einen Studenten (Meetings & Preferences)
-	api.HandleFunc("/students/{id}/preferences", handlers.GetPreferencesByStudentHandler).Methods("GET")
-	api.HandleFunc("/students/{id}/meetings", handlers.GetMeetingsByStudentHandler).Methods("GET")
-	api.HandleFunc("/students/{id}", handlers.UpdateStudentHandler).Methods("PATCH")
-	api.HandleFunc("/meetings/assign", handlers.AssignMeetingsByPreferencesHandler).Methods("POST")
+	// --- COMPANIES ---
+	// Studenten & Admins dürfen die aktiven Firmen sehen
+	api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
 
-	// Event & Zeitplan
+	// Nur Studenten dürfen voten
+	api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
+
+	// Admin oder Company selbst darf updaten/Logo hochladen
+	api.HandleFunc("/companies/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateCompanyHandler)).Methods("PATCH")
+	api.HandleFunc("/companies/{id}/logo", auth.RequireSelfOrAdmin()(handlers.UploadCompanyLogoHandler)).Methods("POST")
+
+	// --- STUDENTS ---
+	// Nur Admin darf alle Studenten sehen
+	api.HandleFunc("/students", auth.RequireRole("admin")(handlers.GetAllStudentsHandler)).Methods("GET")
+
+	// Eigene Daten: Admin oder Student selbst
+	api.HandleFunc("/students/{id}/preferences", auth.RequireSelfOrAdmin()(handlers.GetPreferencesByStudentHandler)).Methods("GET")
+	api.HandleFunc("/students/{id}/meetings", auth.RequireSelfOrAdmin()(handlers.GetMeetingsByStudentHandler)).Methods("GET")
+	api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateStudentHandler)).Methods("PATCH")
+	api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin()(handlers.DeleteStudentHandler)).Methods("DELETE")
+
+	// --- GENERAL / SYSTEM ---
+	// Admin triggert den Matching-Algo
+	api.HandleFunc("/meetings/assign", auth.RequireRole("admin")(handlers.AssignMeetingsByPreferencesHandler)).Methods("POST")
+
+	// Alle eingeloggten User dürfen Events, Slots und sich selbst sehen
 	api.HandleFunc("/events/active", handlers.GetActiveEventHandler).Methods("GET")
 	api.HandleFunc("/slots", handlers.GetAllSlotsHandler).Methods("GET")
-
-	//Login
-	//Check user
 	api.HandleFunc("/me", handlers.GetMyIDHandler).Methods("GET")
 
-	//Update
-	// Die Route erwartet jetzt eine ID, z.B. /companies/42
-	api.HandleFunc("/companies/{id}", handlers.UpdateCompanyHandler).Methods("PATCH")
-	api.HandleFunc("/users/{id}", handlers.UpdateUserNamesHandler).Methods("PATCH")
+	// Admin ODER User selbst dürfen Account updaten
+	api.HandleFunc("/users/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateUserNamesHandler)).Methods("PATCH")
 
-	//Delete
-	// SLOT LÖSCHEN
-	api.HandleFunc("/slots/{id}", handlers.DeleteSlotHandler).Methods("DELETE")
-	api.HandleFunc("/students/{id}", handlers.DeleteStudentHandler).Methods("DELETE")
+	// Nur Admin darf Slots löschen
+	api.HandleFunc("/slots/{id}", auth.RequireRole("admin")(handlers.DeleteSlotHandler)).Methods("DELETE")
 
-	api.HandleFunc("/invite", handlers.InviteUserHandler).Methods("POST")
 	return r
 }
