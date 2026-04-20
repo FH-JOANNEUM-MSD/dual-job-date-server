@@ -4,6 +4,7 @@ import (
 	"dual-job-date-server/internal/database"
 	"dual-job-date-server/internal/models"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -103,9 +104,11 @@ func AddCompanyImageURL(companyID int, imageURL string) error {
 		return nil
 	}
 
-	imageURLs := make([]string, 0, len(company.ImageURLs)+1)
-	seen := make(map[string]struct{}, len(company.ImageURLs)+1)
-	for _, existing := range company.ImageURLs {
+	rawEntries := strings.Split(company.ImageURLs, ";")
+	imageURLs := make([]string, 0, len(rawEntries)+1)
+	seen := make(map[string]struct{}, len(rawEntries)+1)
+	for _, raw := range rawEntries {
+		existing := strings.TrimSpace(raw)
 		if existing == "" {
 			continue
 		}
@@ -115,12 +118,13 @@ func AddCompanyImageURL(companyID int, imageURL string) error {
 		seen[existing] = struct{}{}
 		imageURLs = append(imageURLs, existing)
 	}
-	if _, ok := seen[imageURL]; !ok && imageURL != "" {
-		imageURLs = append(imageURLs, imageURL)
+	candidate := strings.TrimSpace(imageURL)
+	if _, ok := seen[candidate]; !ok && candidate != "" {
+		imageURLs = append(imageURLs, candidate)
 	}
 
 	update := map[string]interface{}{
-		"image_urls":   imageURLs,
+		"image_urls":   strings.Join(imageURLs, ";"),
 		"last_updated": time.Now().UTC().Format(time.RFC3339),
 	}
 	var updated []models.Company

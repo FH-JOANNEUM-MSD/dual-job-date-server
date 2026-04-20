@@ -8,6 +8,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -282,6 +283,31 @@ func uploadToBucket(bucket, objectKey, contentType string, fileData []byte) erro
 	return nil
 }
 
+func deleteObjectFromBucket(bucket, objectKey string) error {
+	url := fmt.Sprintf("%s/storage/v1/object/%s/%s", getSupabaseURL(), bucket, objectKey)
+	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	if err != nil {
+		return err
+	}
+	attachSupabaseAuthHeaders(req)
+
+	client := &http.Client{Timeout: 60 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("delete fehlgeschlagen (%d): %s", resp.StatusCode, string(body))
+	}
+	return nil
+}
+
 func buildCompanyLogoObjectKey(company models.Company, originalName, contentType string) string {
 	ext := strings.ToLower(filepath.Ext(originalName))
 	if ext == "" {
@@ -304,6 +330,48 @@ func buildCompanyLogoObjectKey(company models.Company, originalName, contentType
 
 func buildPublicObjectURL(bucket, objectKey string) string {
 	return fmt.Sprintf("%s/storage/v1/object/public/%s/%s", getSupabaseURL(), bucket, objectKey)
+}
+
+func DeleteCompanyImageObjectByURL(rawURL string) error {
+	bucket, objectKey, ok := parsePublicObjectURL(rawURL)
+	if !ok {
+		return nil
+	}
+	if bucket != getCompanyImageBucket() {
+		return nil
+	}
+	return deleteObjectFromBucket(bucket, objectKey)
+}
+
+func parsePublicObjectURL(raw string) (bucket, objectKey string, ok bool) {
+	parsed, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil {
+		return "", "", false
+	}
+	base, err := url.Parse(getSupabaseURL())
+	if err != nil {
+		return "", "", false
+	}
+	if !strings.EqualFold(parsed.Scheme, base.Scheme) || !strings.EqualFold(parsed.Host, base.Host) {
+		return "", "", false
+	}
+
+	path := parsed.EscapedPath()
+	const prefix = "/storage/v1/object/public/"
+	if !strings.HasPrefix(path, prefix) {
+		return "", "", false
+	}
+	rest := strings.TrimPrefix(path, prefix)
+	parts := strings.SplitN(rest, "/", 2)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", false
+	}
+
+	unescapedKey, err := url.PathUnescape(parts[1])
+	if err != nil {
+		return "", "", false
+	}
+	return parts[0], unescapedKey, true
 }
 
 func attachSupabaseAuthHeaders(req *http.Request) {

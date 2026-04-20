@@ -162,11 +162,11 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 			"description":       data.Desc,
 			"website":           data.Web,
 			"logo_url":          fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
-			"image_urls": []string{
+			"image_urls": strings.Join([]string{
 				fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
 				fmt.Sprintf("https://picsum.photos/seed/%s-1/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
 				fmt.Sprintf("https://picsum.photos/seed/%s-2/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
-			},
+			}, ";"),
 			"active":       data.Active,
 			"last_updated": time.Now().Format(time.RFC3339),
 		})

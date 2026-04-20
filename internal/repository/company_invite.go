@@ -30,7 +30,7 @@ func CreateCompanyProfile(authUUID string, req models.InviteRequest) error {
 		"name":              req.CompanyName, // Feldname aus deinem Modell
 		"short_description": "",
 		"description":       "",
-		"image_urls":        []string{},
+		"image_urls":        "",
 	}
 
 	err = database.SupabaseClient.DB.From("companies").Insert(companyInsert).Execute(nil)
