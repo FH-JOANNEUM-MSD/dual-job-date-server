@@ -34,6 +34,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/companies/active", handlers.GetActiveCompaniesHandler).Methods("GET")
 	api.HandleFunc("/companies/{id}/vote", handlers.VoteCompanyHandler).Methods("POST")
 	api.HandleFunc("/companies/{id}/logo", handlers.UploadCompanyLogoHandler).Methods("POST")
+	api.HandleFunc("/companies/{id}/images", handlers.UploadCompanyImageHandler).Methods("POST")
 
 	// Studenten-Endpunkte
 	// Hier können Admins alle Studierenden verwalten

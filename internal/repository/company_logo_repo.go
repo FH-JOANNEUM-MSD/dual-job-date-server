@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	defaultCompanyLogoBucket = "company-logos"
-	defaultLogoMaxBytes      = 5 * 1024 * 1024
+	defaultCompanyLogoBucket  = "company-logos"
+	defaultCompanyImageBucket = "company-images"
+	defaultLogoMaxBytes       = 5 * 1024 * 1024
 )
 
 type CompanyLogoUploadResult struct {
@@ -25,6 +26,13 @@ type CompanyLogoUploadResult struct {
 	Bucket    string `json:"bucket"`
 	ObjectKey string `json:"object_key"`
 	LogoURL   string `json:"logo_url"`
+}
+
+type CompanyImageUploadResult struct {
+	CompanyID int    `json:"company_id"`
+	Bucket    string `json:"bucket"`
+	ObjectKey string `json:"object_key"`
+	ImageURL  string `json:"image_url"`
 }
 
 type storageBucketInfo struct {
@@ -70,15 +78,58 @@ func UploadCompanyLogo(companyID int, originalName, contentType string, fileData
 	if err := UpdateCompanyLogoURL(companyID, logoURL); err != nil {
 		return CompanyLogoUploadResult{}, err
 	}
-	if err := AddCompanyImageURL(companyID, logoURL); err != nil {
-		return CompanyLogoUploadResult{}, err
-	}
 
 	return CompanyLogoUploadResult{
 		CompanyID: companyID,
 		Bucket:    bucket,
 		ObjectKey: objectKey,
 		LogoURL:   logoURL,
+	}, nil
+}
+
+func UploadCompanyImage(companyID int, originalName, contentType string, fileData []byte) (CompanyImageUploadResult, error) {
+	if len(fileData) == 0 {
+		return CompanyImageUploadResult{}, fmt.Errorf("leere datei")
+	}
+
+	company, err := GetCompanyByID(companyID)
+	if err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+	if company.ID == 0 {
+		return CompanyImageUploadResult{}, fmt.Errorf("company nicht gefunden")
+	}
+
+	normalizedContentType := normalizeContentType(contentType)
+	if !isSupportedLogoContentType(normalizedContentType) {
+		return CompanyImageUploadResult{}, fmt.Errorf("nur png, jpg, jpeg oder webp erlaubt")
+	}
+
+	maxBytes := getLogoMaxBytes()
+	if len(fileData) > maxBytes {
+		return CompanyImageUploadResult{}, fmt.Errorf("datei zu gross: max %d bytes", maxBytes)
+	}
+
+	bucket := getCompanyImageBucket()
+	if err := ensurePublicBucket(bucket); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	objectKey := buildCompanyLogoObjectKey(company, originalName, normalizedContentType)
+	if err := uploadToBucket(bucket, objectKey, normalizedContentType, fileData); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	imageURL := buildPublicObjectURL(bucket, objectKey)
+	if err := AddCompanyImageURL(companyID, imageURL); err != nil {
+		return CompanyImageUploadResult{}, err
+	}
+
+	return CompanyImageUploadResult{
+		CompanyID: companyID,
+		Bucket:    bucket,
+		ObjectKey: objectKey,
+		ImageURL:  imageURL,
 	}, nil
 }
 
@@ -270,6 +321,13 @@ func getCompanyLogoBucket() string {
 		return bucket
 	}
 	return defaultCompanyLogoBucket
+}
+
+func getCompanyImageBucket() string {
+	if bucket := strings.TrimSpace(os.Getenv("COMPANY_IMAGE_BUCKET")); bucket != "" {
+		return bucket
+	}
+	return defaultCompanyImageBucket
 }
 
 func getLogoMaxBytes() int {
