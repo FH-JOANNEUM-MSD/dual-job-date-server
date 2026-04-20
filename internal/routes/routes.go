@@ -24,10 +24,13 @@ func NewRouter() *mux.Router {
 
 	// Firmen-Endpunkte
 	// Studenten sehen hier die Liste zum Voten
-	api.HandleFunc("/companies/active", handlers.GetActiveCompaniesHandler).Methods("GET")
-	api.HandleFunc("/companies/{id}/vote", handlers.VoteCompanyHandler).Methods("POST")
-	api.HandleFunc("/companies/{id}/logo", handlers.UploadCompanyLogoHandler).Methods("POST")
-	api.HandleFunc("/companies/{id}/images", handlers.UploadCompanyImageHandler).Methods("POST")
+
+	// Firmen-Endpunkte
+	// Studenten & Admins sehen hier die Liste zum Voten/Verwalten
+	api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
+	api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
+	api.HandleFunc("/companies/{id}/logo", auth.RequireSelfOrAdmin()(handlers.UploadCompanyLogoHandler)).Methods("POST")
+	api.HandleFunc("/companies/{id}/images", auth.RequireSelfOrAdmin()(handlers.UploadCompanyImageHandler)).Methods("POST")
 
 	// --- HELPER ---
 	// Nur Admin darf die Datenbank seeden
