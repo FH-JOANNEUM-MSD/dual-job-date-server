@@ -29,6 +29,7 @@ vendor/
 
 # Environment files
 .env
+.env.*
 
 # IDEs / Editors
 .vscode/
