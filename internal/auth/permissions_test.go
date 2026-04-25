@@ -51,7 +51,7 @@ func TestRequireRole(t *testing.T) {
 }
 
 func TestRequireSelfOrAdmin(t *testing.T) {
-	protected := RequireSelfOrAdmin()(func(w http.ResponseWriter, r *http.Request) {
+	protected := RequireSelfOrAdmin("admin")(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
