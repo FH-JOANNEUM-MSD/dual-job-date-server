@@ -40,3 +40,6 @@ vendor/
 
 # Coverage reports
 coverage.out
+
+# Generierte Test-Reports
+reports/
