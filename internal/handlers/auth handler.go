@@ -21,8 +21,8 @@ func GetMyIDHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 1. Repo aufrufen (Supabase Logik passiert unsichtbar im Hintergrund)
-	role, studentID, companyID, err := repository.GetUserAuthDetails(userID)
+	// 1. Repo aufrufen (🟢 NEU: Wir fangen dbID auf)
+	dbID, role, studentID, companyID, err := repository.GetUserAuthDetails(userID)
 
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
@@ -30,9 +30,10 @@ func GetMyIDHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. Response bauen
+	// 2. Response bauen (🟢 NEU: ID zuweisen)
 	response := models.UserAuthResponse{
-		UserID:    userID,
+		ID:        dbID,   // Die echte Datenbank-UUID
+		UserID:    userID, // Die Supabase-Auth-ID
 		Status:    "authenticated",
 		Role:      role,
 		StudentID: studentID,

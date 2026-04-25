@@ -14,17 +14,18 @@ type profileRow struct {
 	ID int `json:"id"`
 }
 
-func GetUserAuthDetails(authUUID string) (role string, studentID *int, companyID *int, err error) {
+// 🟢 NEU: dbID als erster Rückgabewert hinzugefügt
+func GetUserAuthDetails(authUUID string) (dbID string, role string, studentID *int, companyID *int, err error) {
 	var users []userRow
 
 	// FIX: Kein Leerzeichen bei "id,role" !!!
 	err = database.SupabaseClient.DB.From("users").Select("id,role").Eq("user_id", authUUID).Execute(&users)
 
 	if err != nil {
-		return "", nil, nil, fmt.Errorf("datenbankfehler bei user-abfrage: %v", err)
+		return "", "", nil, nil, fmt.Errorf("datenbankfehler bei user-abfrage: %v", err)
 	}
 	if len(users) == 0 {
-		return "", nil, nil, fmt.Errorf("user nicht gefunden")
+		return "", "", nil, nil, fmt.Errorf("user nicht gefunden")
 	}
 
 	user := users[0]
@@ -43,5 +44,6 @@ func GetUserAuthDetails(authUUID string) (role string, studentID *int, companyID
 		}
 	}
 
-	return user.Role, studentID, companyID, nil
+	// 🟢 NEU: Wir geben user.ID jetzt als dbID zurück
+	return user.ID, user.Role, studentID, companyID, nil
 }
