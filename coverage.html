@@ -1,0 +1,3319 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>server: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">dual-job-date-server/cmd/server/main.go (0.0%)</option>
+				
+				<option value="file1">dual-job-date-server/internal/auth/context.go (100.0%)</option>
+				
+				<option value="file2">dual-job-date-server/internal/auth/keys.go (0.0%)</option>
+				
+				<option value="file3">dual-job-date-server/internal/auth/middleware.go (0.0%)</option>
+				
+				<option value="file4">dual-job-date-server/internal/auth/permissions.go (100.0%)</option>
+				
+				<option value="file5">dual-job-date-server/internal/database/superbase.go (0.0%)</option>
+				
+				<option value="file6">dual-job-date-server/internal/handlers/auth handler.go (0.0%)</option>
+				
+				<option value="file7">dual-job-date-server/internal/handlers/companies_handler.go (0.0%)</option>
+				
+				<option value="file8">dual-job-date-server/internal/handlers/company_images_handler.go (20.7%)</option>
+				
+				<option value="file9">dual-job-date-server/internal/handlers/company_logo_handler.go (20.7%)</option>
+				
+				<option value="file10">dual-job-date-server/internal/handlers/event_handler.go (0.0%)</option>
+				
+				<option value="file11">dual-job-date-server/internal/handlers/invite_handler.go (16.1%)</option>
+				
+				<option value="file12">dual-job-date-server/internal/handlers/meeting_assignment_handler.go (41.7%)</option>
+				
+				<option value="file13">dual-job-date-server/internal/handlers/meeting_handler.go (54.5%)</option>
+				
+				<option value="file14">dual-job-date-server/internal/handlers/prefernces_handler.go (64.5%)</option>
+				
+				<option value="file15">dual-job-date-server/internal/handlers/reinvite_handler.go (0.0%)</option>
+				
+				<option value="file16">dual-job-date-server/internal/handlers/seed_handler.go (0.0%)</option>
+				
+				<option value="file17">dual-job-date-server/internal/handlers/slot_handler.go (0.0%)</option>
+				
+				<option value="file18">dual-job-date-server/internal/handlers/slots_delete_handler.go (0.0%)</option>
+				
+				<option value="file19">dual-job-date-server/internal/handlers/student_handler.go (0.0%)</option>
+				
+				<option value="file20">dual-job-date-server/internal/handlers/student_update_handler.go (0.0%)</option>
+				
+				<option value="file21">dual-job-date-server/internal/handlers/students_delete_handler.go (0.0%)</option>
+				
+				<option value="file22">dual-job-date-server/internal/handlers/updateCompany_handler.go (0.0%)</option>
+				
+				<option value="file23">dual-job-date-server/internal/handlers/userUpdate_handler.go (0.0%)</option>
+				
+				<option value="file24">dual-job-date-server/internal/repository/auth_invite.go (0.0%)</option>
+				
+				<option value="file25">dual-job-date-server/internal/repository/auth_reinvite.go (0.0%)</option>
+				
+				<option value="file26">dual-job-date-server/internal/repository/auth_repo.go (0.0%)</option>
+				
+				<option value="file27">dual-job-date-server/internal/repository/company_invite.go (0.0%)</option>
+				
+				<option value="file28">dual-job-date-server/internal/repository/company_logo_repo.go (0.0%)</option>
+				
+				<option value="file29">dual-job-date-server/internal/repository/company_repo.go (0.0%)</option>
+				
+				<option value="file30">dual-job-date-server/internal/repository/event_repo.go (0.0%)</option>
+				
+				<option value="file31">dual-job-date-server/internal/repository/meeting_assignment_repo.go (0.0%)</option>
+				
+				<option value="file32">dual-job-date-server/internal/repository/meeting_repo.go (0.0%)</option>
+				
+				<option value="file33">dual-job-date-server/internal/repository/prefernces_slot.go (0.0%)</option>
+				
+				<option value="file34">dual-job-date-server/internal/repository/slot_repo.go (0.0%)</option>
+				
+				<option value="file35">dual-job-date-server/internal/repository/slots_delete_repo.go (0.0%)</option>
+				
+				<option value="file36">dual-job-date-server/internal/repository/student_delete_repo.go (0.0%)</option>
+				
+				<option value="file37">dual-job-date-server/internal/repository/student_invite.go (0.0%)</option>
+				
+				<option value="file38">dual-job-date-server/internal/repository/student_repo.go (0.0%)</option>
+				
+				<option value="file39">dual-job-date-server/internal/repository/updateCompany_repo.go (0.0%)</option>
+				
+				<option value="file40">dual-job-date-server/internal/repository/userUpdate_repo.go (0.0%)</option>
+				
+				<option value="file41">dual-job-date-server/internal/routes/routes.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "dual-job-date-server/internal/routes"
+        "dual-job-date-server/internal/database"
+
+        "log"
+        "net/http"
+        "os"
+        "time"
+
+        "github.com/joho/godotenv"
+)
+
+func main() <span class="cov0" title="0">{
+
+        // Lade .env
+        if err := godotenv.Load(); err != nil </span><span class="cov0" title="0">{
+                log.Println("Warnung: .env konnte nicht geladen werden")
+        }</span>
+
+        // DB init
+        <span class="cov0" title="0">database.InitSupabase()
+
+        r := routes.NewRouter()
+
+        srv := &amp;http.Server{
+                Handler:      r,
+                Addr:         "0.0.0.0:" + os.Getenv("API_PORT"),
+                WriteTimeout: 80 * time.Second,
+                ReadTimeout:  80 * time.Second,
+                IdleTimeout:  50 * time.Second,
+        }
+
+        log.Println("Server läuft auf http://0.0.0.0:" + os.Getenv("API_PORT"))
+
+        log.Fatal(srv.ListenAndServe())</span>
+}</pre>
+		
+		<pre class="file" id="file1" style="display: none">package auth
+
+import (
+        "context"
+)
+
+// GetUserID holt die Supabase User-ID aus dem Request-Context.
+func GetUserID(ctx context.Context) string <span class="cov8" title="1">{
+        userID, ok := ctx.Value("userID").(string)
+        if !ok </span><span class="cov8" title="1">{
+                return ""
+        }</span>
+        <span class="cov8" title="1">return userID</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package auth
+
+import (
+        "crypto/ecdsa"
+        "crypto/elliptic"
+        "encoding/base64"
+        "math/big"
+)
+
+// GetSupabasePublicKey konvertiert die JWK-Koordinaten in einen ECDSA Public Key.
+// Da der Key public ist, können wir ihn hier direkt hinterlegen oder später aus der .env laden.
+func GetSupabasePublicKey() *ecdsa.PublicKey <span class="cov0" title="0">{
+        // Deine X und Y Werte von Supabase
+        xStr := "5Unoc0jPrbl4FtJevJ-AR05eqT2DdOSuwqHWd31SgH0"
+        yStr := "4HA_AIR9XvfqHdswYXkRPd3hIkiQ-42DcimpF7rg4hc"
+
+        xBytes, _ := base64.RawURLEncoding.DecodeString(xStr)
+        yBytes, _ := base64.RawURLEncoding.DecodeString(yStr)
+
+        return &amp;ecdsa.PublicKey{
+                Curve: elliptic.P256(),
+                X:     new(big.Int).SetBytes(xBytes),
+                Y:     new(big.Int).SetBytes(yBytes),
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package auth
+
+import (
+        "context"
+        "fmt"
+        "net/http"
+        "strings"
+
+        "dual-job-date-server/internal/database" // Dein globaler DB Client!
+
+        "github.com/golang-jwt/jwt/v5"
+)
+
+// Die Signatur bleibt ganz normal, kein DB-Parameter nötig!
+func JWTMiddleware(next http.Handler) http.Handler <span class="cov0" title="0">{
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                authHeader := r.Header.Get("Authorization")
+                if authHeader == "" </span><span class="cov0" title="0">{
+                        http.Error(w, "Login erforderlich", http.StatusUnauthorized)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+
+                token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) </span><span class="cov0" title="0">{
+                        if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok </span><span class="cov0" title="0">{
+                                return nil, fmt.Errorf("Unerwarteter Algorithmus: %v", token.Header["alg"])
+                        }</span>
+                        <span class="cov0" title="0">return GetSupabasePublicKey(), nil</span>
+                })
+
+                <span class="cov0" title="0">if err != nil || !token.Valid </span><span class="cov0" title="0">{
+                        http.Error(w, "Ungültiger Token", http.StatusUnauthorized)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">claims, ok := token.Claims.(jwt.MapClaims)
+                if !ok || !token.Valid </span><span class="cov0" title="0">{
+                        http.Error(w, "Fehler beim Lesen der Claims", http.StatusUnauthorized)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">userID, ok := claims["sub"].(string)
+                if !ok </span><span class="cov0" title="0">{
+                        http.Error(w, "Keine User-ID im Token", http.StatusUnauthorized)
+                        return
+                }</span>
+
+                // --- NEU: Supabase Abfrage direkt hier! ---
+                <span class="cov0" title="0">var userResult []map[string]interface{}
+
+                // Wir fragen direkt deine 'users' Tabelle über den globalen SupabaseClient ab
+                dbErr := database.SupabaseClient.DB.From("users").Select("role").Eq("user_id", userID).Execute(&amp;userResult)
+
+                if dbErr != nil </span><span class="cov0" title="0">{
+                        http.Error(w, "Datenbankfehler bei Rollenprüfung", http.StatusInternalServerError)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">if len(userResult) == 0 </span><span class="cov0" title="0">{
+                        http.Error(w, "User in der Datenbank nicht gefunden", http.StatusUnauthorized)
+                        return
+                }</span>
+
+                // Rolle aus dem Ergebnis extrahieren (als String casten)
+                <span class="cov0" title="0">role, ok := userResult[0]["role"].(string)
+                if !ok </span><span class="cov0" title="0">{
+                        http.Error(w, "Rolle konnte nicht gelesen werden", http.StatusInternalServerError)
+                        return
+                }</span>
+
+                // 4. userID UND role in den Context packen
+                <span class="cov0" title="0">ctx := context.WithValue(r.Context(), "userID", userID)
+                ctx = context.WithValue(ctx, "role", role)
+
+                r = r.WithContext(ctx)
+
+                next.ServeHTTP(w, r)</span>
+        })
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package auth
+
+import (
+        "net/http"
+
+        "github.com/gorilla/mux"
+)
+
+// RequireRole prüft, ob der User eine der erlaubten Rollen hat (z.B. nur Admin)
+func RequireRole(allowedRoles ...string) func(http.HandlerFunc) http.HandlerFunc <span class="cov8" title="1">{
+        return func(next http.HandlerFunc) http.HandlerFunc </span><span class="cov8" title="1">{
+                return func(w http.ResponseWriter, r *http.Request) </span><span class="cov8" title="1">{
+                        // Hole die Rolle aus dem JWT-Context (muss deine JWTMiddleware setzen!)
+                        userRole, ok := r.Context().Value("role").(string)
+                        if !ok </span><span class="cov8" title="1">{
+                                http.Error(w, "Unauthorized", http.StatusUnauthorized)
+                                return
+                        }</span>
+
+                        // Check ob die Rolle in der Liste der erlaubten Rollen ist
+                        <span class="cov8" title="1">for _, role := range allowedRoles </span><span class="cov8" title="1">{
+                                if userRole == role </span><span class="cov8" title="1">{
+                                        next.ServeHTTP(w, r) // Erlaubt! Leite an den echten Handler weiter
+                                        return
+                                }</span>
+                        }
+
+                        // Keine passende Rolle gefunden
+                        <span class="cov8" title="1">http.Error(w, "Forbidden: Unzureichende Berechtigungen", http.StatusForbidden)</span>
+                }
+        }
+}
+
+// RequireSelfOrAdmin prüft bei Routen mit {id}, ob der User Admin ist oder die ID seine eigene ist
+func RequireSelfOrAdmin() func(http.HandlerFunc) http.HandlerFunc <span class="cov8" title="1">{
+        return func(next http.HandlerFunc) http.HandlerFunc </span><span class="cov8" title="1">{
+                return func(w http.ResponseWriter, r *http.Request) </span><span class="cov8" title="1">{
+                        userRole, _ := r.Context().Value("role").(string)
+                        userID, _ := r.Context().Value("userID").(string) // Die ID aus dem Token
+
+                        vars := mux.Vars(r)
+                        targetID := vars["id"] // Die ID aus der URL
+
+                        // Admin darf alles, User darf seine eigenen Daten bearbeiten
+                        if userRole == "admin" || userID == targetID </span><span class="cov8" title="1">{
+                                next.ServeHTTP(w, r) // Erlaubt!
+                                return
+                        }</span>
+
+                        <span class="cov8" title="1">http.Error(w, "Forbidden: Du darfst nur deine eigenen Daten bearbeiten", http.StatusForbidden)</span>
+                }
+        }
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package database
+
+import (
+        "log"
+        "os"
+
+        "github.com/nedpals/supabase-go"
+)
+
+var SupabaseClient *supabase.Client
+
+func InitSupabase() <span class="cov0" title="0">{
+
+        url := os.Getenv("DATABASE_URL")
+
+        if url == "" </span><span class="cov0" title="0">{
+                log.Fatal("DATABASE_URL fehlt in .env")
+        }</span>
+
+        <span class="cov0" title="0">SupabaseClient = supabase.CreateClient(
+                os.Getenv("SUPABASE_URL"),
+                os.Getenv("SUPABASE_KEY"),
+        )
+
+        log.Println("Supabase verbunden")</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package handlers
+
+import (
+        "encoding/json"
+        "net/http"
+
+        "dual-job-date-server/internal/auth"
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository" // Dein Repo importieren
+)
+
+func GetMyIDHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        // Auth-UUID aus der Middleware
+        userID := auth.GetUserID(r.Context())
+
+        if userID == "" </span><span class="cov0" title="0">{
+                w.WriteHeader(http.StatusUnauthorized)
+                json.NewEncoder(w).Encode(map[string]string{"error": "Keine valide Session gefunden"})
+                return
+        }</span>
+
+        // 1. Repo aufrufen (Supabase Logik passiert unsichtbar im Hintergrund)
+        <span class="cov0" title="0">role, studentID, companyID, err := repository.GetUserAuthDetails(userID)
+
+        if err != nil </span><span class="cov0" title="0">{
+                w.WriteHeader(http.StatusNotFound)
+                json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+                return
+        }</span>
+
+        // 2. Response bauen
+        <span class="cov0" title="0">response := models.UserAuthResponse{
+                UserID:    userID,
+                Status:    "authenticated",
+                Role:      role,
+                StudentID: studentID,
+                CompanyID: companyID,
+        }
+
+        w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(response)</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/auth"
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+)
+
+func GetActiveCompaniesHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        onlyUnvoted := false
+        onlyUnvotedRaw := r.URL.Query().Get("only_unvoted")
+        if onlyUnvotedRaw != "" </span><span class="cov0" title="0">{
+                parsed, err := strconv.ParseBool(onlyUnvotedRaw)
+                if err != nil </span><span class="cov0" title="0">{
+                        http.Error(w, "Ungueltiger Query-Parameter only_unvoted (erlaubt: true/false)", http.StatusBadRequest)
+                        return
+                }</span>
+                <span class="cov0" title="0">onlyUnvoted = parsed</span>
+        }
+
+        <span class="cov0" title="0">userID := auth.GetUserID(r.Context())
+        companies, err := repository.GetActiveCompaniesForStudentUser(userID, onlyUnvoted)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler beim Laden der Unternehmen: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        // Hier wurde "models" verwendet, ohne dass es oben importiert war
+        <span class="cov0" title="0">if companies == nil </span><span class="cov0" title="0">{
+                companies = []models.Company{}
+        }</span>
+
+        <span class="cov0" title="0">json.NewEncoder(w).Encode(companies)</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "fmt"
+        "io"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func UploadCompanyImageHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+
+        vars := mux.Vars(r)
+        companyID, err := strconv.Atoi(vars["id"])
+        if err != nil || companyID &lt;= 0 </span><span class="cov8" title="1">{
+                http.Error(w, "ungueltige company id", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := r.ParseMultipartForm(8 &lt;&lt; 20); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "multipart/form-data erwartet", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">file, header, err := r.FormFile("image")
+        if err != nil </span><span class="cov0" title="0">{
+                file, header, err = r.FormFile("file")
+        }</span>
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "file feld 'image' oder 'file' fehlt", http.StatusBadRequest)
+                return
+        }</span>
+        <span class="cov0" title="0">defer file.Close()
+
+        fileData, err := io.ReadAll(file)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "datei konnte nicht gelesen werden", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">contentType := header.Header.Get("Content-Type")
+        if contentType == "" </span><span class="cov0" title="0">{
+                contentType = http.DetectContentType(fileData)
+        }</span>
+
+        <span class="cov0" title="0">result, err := repository.UploadCompanyImage(companyID, header.Filename, contentType, fileData)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("image upload fehlgeschlagen: %v", err), http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.WriteHeader(http.StatusCreated)
+        json.NewEncoder(w).Encode(result)</span>
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "fmt"
+        "io"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func UploadCompanyLogoHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+
+        vars := mux.Vars(r)
+        companyID, err := strconv.Atoi(vars["id"])
+        if err != nil || companyID &lt;= 0 </span><span class="cov8" title="1">{
+                http.Error(w, "ungueltige company id", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if err := r.ParseMultipartForm(8 &lt;&lt; 20); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "multipart/form-data erwartet", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">file, header, err := r.FormFile("logo")
+        if err != nil </span><span class="cov0" title="0">{
+                file, header, err = r.FormFile("file")
+        }</span>
+        <span class="cov0" title="0">if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "file feld 'logo' oder 'file' fehlt", http.StatusBadRequest)
+                return
+        }</span>
+        <span class="cov0" title="0">defer file.Close()
+
+        fileData, err := io.ReadAll(file)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "datei konnte nicht gelesen werden", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">contentType := header.Header.Get("Content-Type")
+        if contentType == "" </span><span class="cov0" title="0">{
+                contentType = http.DetectContentType(fileData)
+        }</span>
+
+        <span class="cov0" title="0">result, err := repository.UploadCompanyLogo(companyID, header.Filename, contentType, fileData)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("logo upload fehlgeschlagen: %v", err), http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.WriteHeader(http.StatusCreated)
+        json.NewEncoder(w).Encode(result)</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package handlers
+
+import (
+    "encoding/json"
+    "net/http"
+    "dual-job-date-server/internal/repository"
+)
+
+func GetActiveEventHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+    w.Header().Set("Content-Type", "application/json")
+
+    event, err := repository.GetActiveEvent()
+    if err != nil </span><span class="cov0" title="0">{
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }</span>
+
+    <span class="cov0" title="0">json.NewEncoder(w).Encode(event)</span>
+}</pre>
+		
+		<pre class="file" id="file11" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "fmt"
+        "net/http"
+)
+
+func InviteUserHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var req models.InviteRequest
+
+        if err := json.NewDecoder(r.Body).Decode(&amp;req); err != nil </span><span class="cov8" title="1">{
+                fmt.Printf("[ERROR] JSON Decoding failed: %v\n", err)
+                http.Error(w, "Ungültiges JSON", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">fmt.Printf("[INFO] Start Invite für Email: %s, Rolle: %s\n", req.Email, req.Role)
+
+        // 1. User im Auth-System einladen
+        // JETZT NEU: Wir geben req.Role mit, damit die Funktion weiß, ob App oder Web-Link!
+        authUUID, err := repository.InviteAuthUser(req.Email, req.Role)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("[ERROR] Auth Invite failed for %s: %v\n", req.Email, err)
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">fmt.Printf("[DEBUG] Auth User erstellt. UUID: %s\n", authUUID)
+
+        // 2. Die "Weiche" (bleibt gleich, da req.Role hier ja schon genutzt wird)
+        switch req.Role </span>{
+        case "student":<span class="cov0" title="0">
+                fmt.Println("[DEBUG] Versuche Student-Profil anzulegen...")
+                err = repository.CreateStudentProfile(authUUID, req)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("[ERROR] CreateStudentProfile failed: %v\n", err)
+                        http.Error(w, "Student-Profil konnte nicht erstellt werden: "+err.Error(), http.StatusInternalServerError)
+                        return
+                }</span>
+        case "company":<span class="cov0" title="0">
+                fmt.Println("[DEBUG] Versuche Company-Profil anzulegen...")
+                err = repository.CreateCompanyProfile(authUUID, req)
+                if err != nil </span><span class="cov0" title="0">{
+                        fmt.Printf("[ERROR] CreateCompanyProfile failed: %v\n", err)
+                        http.Error(w, "Company-Profil konnte nicht erstellt werden: "+err.Error(), http.StatusInternalServerError)
+                        return
+                }</span>
+        default:<span class="cov0" title="0">
+                fmt.Printf("[WARN] Unbekannte Rolle empfangen: %s\n", req.Role)
+                http.Error(w, "Unbekannte Rolle", http.StatusBadRequest)
+                return</span>
+        }
+
+        <span class="cov0" title="0">fmt.Printf("[SUCCESS] Alles erledigt für %s\n", req.Email)
+        w.WriteHeader(http.StatusCreated)
+        w.Write([]byte("Einladung verschickt und Profil in DB angelegt!"))</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "io"
+        "net/http"
+)
+
+type assignMeetingsRequest struct {
+        DryRun                   bool `json:"dry_run"`
+        IncludeInactiveCompanies bool `json:"include_inactive_companies"`
+        ReplaceExisting          bool `json:"replace_existing"`
+}
+
+func AssignMeetingsByPreferencesHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+
+        var req assignMeetingsRequest
+        if err := json.NewDecoder(r.Body).Decode(&amp;req); err != nil &amp;&amp; err != io.EOF </span><span class="cov8" title="1">{
+                http.Error(w, "Ungültiger JSON-Body", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">result, err := repository.AssignMeetingsByPreferences(repository.AssignMeetingsOptions{
+                DryRun:                   req.DryRun,
+                IncludeInactiveCompanies: req.IncludeInactiveCompanies,
+                ReplaceExisting:          req.ReplaceExisting,
+        })
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler bei der Zuteilung: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if !req.DryRun &amp;&amp; result.InsertedMeetings &gt; 0 </span><span class="cov0" title="0">{
+                w.WriteHeader(http.StatusCreated)
+        }</span>
+
+        <span class="cov0" title="0">json.NewEncoder(w).Encode(result)</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package handlers
+
+import (
+    "encoding/json"
+    "net/http"
+    "strconv"
+    "dual-job-date-server/internal/repository"
+    "github.com/gorilla/mux"
+)
+
+func GetMeetingsByStudentHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+    w.Header().Set("Content-Type", "application/json")
+
+    vars := mux.Vars(r)
+    studentID, err := strconv.Atoi(vars["id"])
+    if err != nil </span><span class="cov8" title="1">{
+        http.Error(w, "Ungültige Studenten-ID", http.StatusBadRequest)
+        return
+    }</span>
+
+    <span class="cov0" title="0">meetings, err := repository.GetMeetingsByStudent(studentID)
+    if err != nil </span><span class="cov0" title="0">{
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }</span>
+
+    <span class="cov0" title="0">json.NewEncoder(w).Encode(meetings)</span>
+}</pre>
+		
+		<pre class="file" id="file14" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/auth"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func GetPreferencesByStudentHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+
+        // Holt die {id} aus der URL
+        vars := mux.Vars(r)
+        studentID, err := strconv.Atoi(vars["id"])
+        if err != nil </span><span class="cov8" title="1">{
+                http.Error(w, "Ungültige Studenten-ID", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">preferences, err := repository.GetPreferencesByStudent(studentID)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        <span class="cov0" title="0">json.NewEncoder(w).Encode(preferences)</span>
+}
+
+type VoteCompanyRequest struct {
+        Vote string `json:"vote"`
+}
+
+func VoteCompanyHandler(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        w.Header().Set("Content-Type", "application/json")
+
+        userID := auth.GetUserID(r.Context())
+        if userID == "" </span><span class="cov8" title="1">{
+                http.Error(w, "Keine valide Session gefunden", http.StatusUnauthorized)
+                return
+        }</span>
+
+        <span class="cov8" title="1">vars := mux.Vars(r)
+        companyID, err := strconv.Atoi(vars["id"])
+        if err != nil || companyID &lt;= 0 </span><span class="cov8" title="1">{
+                http.Error(w, "Ungueltige Company-ID", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov8" title="1">var req VoteCompanyRequest
+        if err := json.NewDecoder(r.Body).Decode(&amp;req); err != nil </span><span class="cov8" title="1">{
+                http.Error(w, "Ungueltiger Request-Body", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">savedPreference, err := repository.SaveVoteForStudentUser(userID, companyID, req.Vote)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, err.Error(), http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.WriteHeader(http.StatusCreated)
+        json.NewEncoder(w).Encode(savedPreference)</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+)
+
+func HandleResendInvite(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        var req models.InviteRequest
+
+        // JSON parsen
+        if err := json.NewDecoder(r.Body).Decode(&amp;req); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Invalid Request", http.StatusBadRequest)
+                return
+        }</span>
+
+        // WICHTIG: Wir rufen ReinviteAuthUser auf.
+        // Wir fangen ID (_) und Error (err) ab -&gt; Assignment Mismatch gelöst!
+        <span class="cov0" title="0">_, err := repository.ReinviteAuthUser(req.Email, req.Role)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler beim Resend: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.Header().Set("Content-Type", "application/json")
+        w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Einladung wurde erfolgreich erneut versendet.",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package handlers
+
+import (
+        "bytes"
+        "dual-job-date-server/internal/database"
+        "encoding/json"
+        "fmt"
+        "net/http"
+        "os"
+        "strings"
+        "time"
+
+        "github.com/google/uuid"
+)
+
+// Hilfsfunktion: Legt den User im Supabase Auth an und gibt die ECHTE UUID zurück
+func createAuthUser(email, password string) (string, error) <span class="cov0" title="0">{
+        supabaseURL := os.Getenv("SUPABASE_URL")
+        supabaseKey := os.Getenv("SUPABASE_KEY") // MUSS der service_role key sein!
+
+        url := supabaseURL + "/auth/v1/admin/users"
+        payload := map[string]interface{}{
+                "email":         email,
+                "password":      password,
+                "email_confirm": true, // Direkt bestätigen, sonst können sie sich nicht einloggen
+        }
+        body, _ := json.Marshal(payload)
+
+        req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">req.Header.Add("Authorization", "Bearer "+supabaseKey)
+        req.Header.Add("apikey", supabaseKey)
+        req.Header.Add("Content-Type", "application/json")
+
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        // 422 bedeutet meistens: User existiert schon.
+        if resp.StatusCode != http.StatusOK &amp;&amp; resp.StatusCode != http.StatusCreated </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("auth creation failed with status: %d", resp.StatusCode)
+        }</span>
+
+        <span class="cov0" title="0">var result map[string]interface{}
+        if err := json.NewDecoder(resp.Body).Decode(&amp;result); err != nil </span><span class="cov0" title="0">{
+                return "", err
+        }</span>
+
+        <span class="cov0" title="0">authID, ok := result["id"].(string)
+        if !ok </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("could not parse auth ID")
+        }</span>
+
+        <span class="cov0" title="0">return authID, nil</span>
+}
+
+func SeedDatabase(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        insertRows := func(table string, rows []map[string]interface{}) error </span><span class="cov0" title="0">{
+                var result interface{}
+                if err := database.SupabaseClient.DB.From(table).Insert(rows).Execute(&amp;result); err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("failed to insert into %s: %w", table, err)
+                }</span>
+                <span class="cov0" title="0">return nil</span>
+        }
+
+        <span class="cov0" title="0">var users, students, companies, events, slots, preferences, meetings []map[string]interface{}
+
+        // ---------- GAME OF THRONES STUDENTEN (15) ----------
+        studentNames := [][]string{
+                {"Jon", "Snow", "Night's Watch Defense"},
+                {"Daenerys", "Targaryen", "Dragon Management"},
+                {"Arya", "Stark", "Assassination Arts"},
+                {"Tyrion", "Lannister", "Political Science"},
+                {"Sansa", "Stark", "Kingdom Administration"},
+                {"Bran", "Stark", "Historical Visioning"},
+                {"Samwell", "Tarly", "Maester Studies"},
+                {"Robb", "Stark", "Military Strategy"},
+                {"Margaery", "Tyrell", "Public Relations"},
+                {"Brienne", "of_Tarth", "Honor &amp; Ethics"},
+                {"Jorah", "Mormont", "Exile Survival"},
+                {"Theon", "Greyjoy", "Maritime Navigation"},
+                {"Gendry", "Baratheon", "Advanced Blacksmithing"},
+                {"Podrick", "Payne", "Squire Fundamentals"},
+                {"Missandei", "of_Naath", "Multilingual Translation"},
+        }
+
+        for i, data := range studentNames </span><span class="cov0" title="0">{
+                // 1. E-Mail generieren (z.B. jon.snow@westeros.com)
+                email := strings.ToLower(data[0] + "." + data[1] + "@westeros.com")
+
+                // 2. User ECHT in Supabase Auth anlegen
+                authUUID, err := createAuthUser(email, "WinterIsComing123!")
+                if err != nil </span><span class="cov0" title="0">{
+                        http.Error(w, "Auth Fehler bei "+email+": "+err.Error(), http.StatusInternalServerError)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">idUUID := uuid.New().String()
+                studentID := i + 1
+
+                users = append(users, map[string]interface{}{
+                        "id":         idUUID,
+                        "user_id":    authUUID, // HIER IST DIE MAGIE!
+                        "role":       "student",
+                        "first_name": data[0],
+                        "last_name":  data[1],
+                })
+
+                students = append(students, map[string]interface{}{
+                        "id":            studentID,
+                        "user_id":       idUUID,
+                        "study_program": data[2],
+                        "semester":      (i % 6) + 1,
+                })</span>
+        }
+
+        // ---------- GAME OF THRONES COMPANIES (8) ----------
+        <span class="cov0" title="0">companyData := []struct {
+                First, Last, Name, ShortDesc, Desc, Web string
+                Active                                  bool
+        }{
+                {"Tywin", "Lannister", "Lannister Gold &amp; Loans", "Finanzierung fuer ambitionierte Talente.", "A Lannister always pays his debts.", "https://lannister.gold", true},
+                {"Ned", "Stark", "Winterfell Logistics", "Supply Chain in rauem Klima.", "Winter is coming.", "https://winterfell.net", true},
+                {"Olenna", "Tyrell", "Highgarden Agriculture", "Agrar-Innovation mit Fokus auf Nachhaltigkeit.", "Growing strong.", "https://highgarden.ag", true},
+                {"Euron", "Greyjoy", "Iron Fleet Shipping", "Maritime Loesungen fuer globale Routen.", "What is dead may never die.", "https://ironfleet.sea", true},
+                {"Petyr", "Baelish", "Vale Investments", "Strategische Investments fuer Wachstum.", "Chaos is a ladder.", "https://baelish.info", false},
+                {"Jeor", "Mormont", "The Wall Security", "Sicherheitsdienst fuer kritische Infrastrukturen.", "Sword in the darkness.", "https://nightswatch.gov", true},
+                {"Roose", "Bolton", "Dreadfort Flaying", "Spezialisierte Fertigung fuer Nischenbranchen.", "Our blades are sharp.", "https://dreadfort.co", false},
+                {"Khal", "Drogo", "Dothraki Equine", "Mobilitaetskonzepte rund um Pferdewirtschaft.", "Best horses.", "https://dothraki.horse", true},
+        }
+
+        for i, data := range companyData </span><span class="cov0" title="0">{
+                email := strings.ToLower(data.First + "." + data.Last + "@" + strings.Split(data.Web, "://")[1])
+
+                authUUID, err := createAuthUser(email, "WinterIsComing123!")
+                if err != nil </span><span class="cov0" title="0">{
+                        http.Error(w, "Auth Fehler bei "+email+": "+err.Error(), http.StatusInternalServerError)
+                        return
+                }</span>
+
+                <span class="cov0" title="0">idUUID := uuid.New().String()
+                companyID := i + 1
+
+                users = append(users, map[string]interface{}{
+                        "id":         idUUID,
+                        "user_id":    authUUID, // UND HIER!
+                        "role":       "company",
+                        "first_name": data.First,
+                        "last_name":  data.Last,
+                })
+
+                companies = append(companies, map[string]interface{}{
+                        "id":                companyID,
+                        "user_id":           idUUID,
+                        "name":              data.Name,
+                        "short_description": data.ShortDesc,
+                        "description":       data.Desc,
+                        "website":           data.Web,
+                        "logo_url":          fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
+                        "image_urls": strings.Join([]string{
+                                fmt.Sprintf("https://logo.clearbit.com/%s", data.Name),
+                                fmt.Sprintf("https://picsum.photos/seed/%s-1/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
+                                fmt.Sprintf("https://picsum.photos/seed/%s-2/800/600", strings.ToLower(strings.ReplaceAll(data.Name, " ", "-"))),
+                        }, ";"),
+                        "active":       data.Active,
+                        "last_updated": time.Now().Format(time.RFC3339),
+                })</span>
+        }
+
+        // ---------- EVENTS (3) ----------
+        <span class="cov0" title="0">events = append(events,
+                map[string]interface{}{"id": 1, "name": "Westeros Career Fair", "location": "King's Landing", "description": "Meet all the high lords.", "event_date": time.Now().AddDate(0, 1, 0).Format("2006-01-02"), "is_active": true},
+                map[string]interface{}{"id": 2, "name": "Essos Start-Up Meet", "location": "Meereen", "description": "Innovation across the narrow sea.", "event_date": time.Now().AddDate(0, 2, 0).Format("2006-01-02"), "is_active": true},
+                map[string]interface{}{"id": 3, "name": "Winterfell Networking", "location": "The North", "description": "Cold weather, warm contacts.", "event_date": time.Now().AddDate(0, -1, 0).Format("2006-01-02"), "is_active": false},
+        )
+
+        // ---------- SLOTS (16) ----------
+        for i := 0; i &lt; 16; i++ </span><span class="cov0" title="0">{
+                hour := 9 + (i / 4)
+                minute := (i % 4) * 15
+                endMinute := minute + 15
+                endHour := hour
+                if endMinute == 60 </span><span class="cov0" title="0">{
+                        endMinute = 0
+                        endHour++
+                }</span>
+                <span class="cov0" title="0">slots = append(slots, map[string]interface{}{
+                        "id":         i + 1,
+                        "start_time": fmt.Sprintf("%02d:%02d:00", hour, minute),
+                        "end_time":   fmt.Sprintf("%02d:%02d:00", endHour, endMinute),
+                })</span>
+        }
+
+        // ---------- PREFERENCES (120) ----------
+        <span class="cov0" title="0">prefID := 1
+        for sID := 1; sID &lt;= 15; sID++ </span><span class="cov0" title="0">{
+                for cID := 1; cID &lt;= 8; cID++ </span><span class="cov0" title="0">{
+                        preferences = append(preferences, map[string]interface{}{
+                                "id":              prefID,
+                                "student_id":      sID,
+                                "company_id":      cID,
+                                "preference_type": "none", // Hier fest auf "none" gesetzt
+                        })
+                        prefID++
+                }</span>
+        }
+        // ---------- MEETINGS (40+) ----------
+        <span class="cov0" title="0">meetingID := 1
+        for cID := 1; cID &lt;= 8; cID++ </span><span class="cov0" title="0">{
+                for slotID := 1; slotID &lt;= 6; slotID++ </span><span class="cov0" title="0">{
+                        sID := ((cID * slotID) % 15) + 1
+                        meetings = append(meetings, map[string]interface{}{
+                                "id":         meetingID,
+                                "slot_id":    slotID,
+                                "student_id": sID,
+                                "company_id": cID,
+                        })
+                        meetingID++
+                }</span>
+        }
+
+        // ==========================================
+        // INSERTS AUSFÜHREN
+        // ==========================================
+        <span class="cov0" title="0">if err := insertRows("users", users); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Users Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("students", students); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Students Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("companies", companies); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Companies Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("events", events); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Events Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("slots", slots); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Slots Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("preferences", preferences); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Preferences Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+        <span class="cov0" title="0">if err := insertRows("meetings", meetings); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, fmt.Sprintf("Meetings Error: %v", err), http.StatusInternalServerError)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        w.Write([]byte("Westeros database successfully seeded! Winter is here 🐺🐉❄️"))</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package handlers
+
+import (
+    "encoding/json"
+    "net/http"
+    "dual-job-date-server/internal/repository"
+)
+
+func GetAllSlotsHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+    w.Header().Set("Content-Type", "application/json")
+
+    slots, err := repository.GetAllSlots()
+    if err != nil </span><span class="cov0" title="0">{
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }</span>
+
+    <span class="cov0" title="0">json.NewEncoder(w).Encode(slots)</span>
+}</pre>
+		
+		<pre class="file" id="file18" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func DeleteSlotHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        // 1. ID aus der URL holen (/api/slots/3)
+        vars := mux.Vars(r)
+        idStr := vars["id"]
+
+        slotID, err := strconv.Atoi(idStr)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Ungültige Slot-ID: '"+idStr+"'", http.StatusBadRequest)
+                return
+        }</span>
+
+        // 2. Das Repository aufrufen (erst Meetings löschen, dann den Slot)
+        <span class="cov0" title="0">err = repository.DeleteSlot(slotID)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler beim Löschen des Slots: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        // 3. Erfolgsmeldung zurückgeben
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Slot und zugehörige Meetings erfolgreich gelöscht",
+                "status":  "success",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package handlers
+
+import (
+    "encoding/json"
+    "net/http"
+    "dual-job-date-server/internal/repository"
+)
+
+func GetAllStudentsHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+    w.Header().Set("Content-Type", "application/json")
+
+    students, err := repository.GetAllStudents()
+    if err != nil </span><span class="cov0" title="0">{
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }</span>
+
+    <span class="cov0" title="0">json.NewEncoder(w).Encode(students)</span>
+}</pre>
+		
+		<pre class="file" id="file20" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func UpdateStudentHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        vars := mux.Vars(r)
+        idStr := vars["id"]
+
+        studentID, err := strconv.Atoi(idStr)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Ungültige Studenten-ID: '"+idStr+"'", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">var input models.UpdateStudentInput
+        if err := json.NewDecoder(r.Body).Decode(&amp;input); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">if input.StudyProgram == nil &amp;&amp; input.Semester == nil &amp;&amp; input.FirstName == nil &amp;&amp; input.LastName == nil </span><span class="cov0" title="0">{
+                http.Error(w, "Mindestens eines der Felder study_program, semester, first_name oder last_name muss gesetzt sein", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">err = repository.UpdateStudent(studentID, input)
+        if err != nil </span><span class="cov0" title="0">{
+                if err == repository.ErrStudentNotFound </span><span class="cov0" title="0">{
+                        http.Error(w, err.Error(), http.StatusNotFound)
+                        return
+                }</span>
+                <span class="cov0" title="0">http.Error(w, "Fehler beim Updaten des Studenten: "+err.Error(), http.StatusInternalServerError)
+                return</span>
+        }
+
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Student erfolgreich aktualisiert",
+                "status":  "success",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file21" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux"
+)
+
+func DeleteStudentHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        vars := mux.Vars(r)
+        idStr := vars["id"]
+
+        studentID, err := strconv.Atoi(idStr)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Ungültige Studenten-ID: '"+idStr+"'", http.StatusBadRequest)
+                return
+        }</span>
+
+        // Die neue All-in-One Löschfunktion aufrufen
+        <span class="cov0" title="0">err = repository.HardDeleteStudentAndUser(studentID)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        // Wenn wir hier ankommen, ist der User komplett pulverisiert.
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Student, alle Daten und Auth-Account restlos gelöscht",
+                "status":  "success",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+        "strconv"
+
+        "github.com/gorilla/mux" // &lt;-- NEU: Gorilla Mux importiert
+)
+
+func UpdateCompanyHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        // 1. ID sicher über Gorilla Mux aus der URL ({id}) holen
+        vars := mux.Vars(r)
+        idStr := vars["id"]
+
+        companyID, err := strconv.Atoi(idStr)
+        if err != nil </span><span class="cov0" title="0">{
+                // Etwas detailliertere Fehlermeldung, falls mal wieder was schiefgeht
+                http.Error(w, "Ungültige Firmen-ID: '"+idStr+"'", http.StatusBadRequest)
+                return
+        }</span>
+
+        // 2. Das JSON aus dem Request-Body in unser Pointer-Struct übersetzen
+        <span class="cov0" title="0">var input models.UpdateCompanyInput
+        if err := json.NewDecoder(r.Body).Decode(&amp;input); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+                return
+        }</span>
+
+        // 3. Das Repository aufrufen und die Daten übergeben
+        <span class="cov0" title="0">err = repository.UpdateCompany(companyID, input)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler beim Updaten der Firma: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        // 4. Erfolgsmeldung zurückgeben
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Firma erfolgreich aktualisiert",
+                "status":  "success",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">package handlers
+
+import (
+        "dual-job-date-server/internal/models"
+        "dual-job-date-server/internal/repository"
+        "encoding/json"
+        "net/http"
+
+        "github.com/google/uuid"
+        "github.com/gorilla/mux"
+)
+
+func UpdateUserNamesHandler(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        w.Header().Set("Content-Type", "application/json")
+
+        // 1. ID sicher über Gorilla Mux aus der URL ({id}) holen
+        vars := mux.Vars(r)
+        idStr := vars["id"]
+
+        // ACHTUNG: Users nutzen UUIDs als Primary Key, keine Integers!
+        userID, err := uuid.Parse(idStr)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Ungültige User-ID Format: '"+idStr+"'", http.StatusBadRequest)
+                return
+        }</span>
+
+        // 2. Das JSON aus dem Request-Body in unser Pointer-Struct übersetzen
+        <span class="cov0" title="0">var input models.UpdateUserNameInput
+        if err := json.NewDecoder(r.Body).Decode(&amp;input); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+                return
+        }</span>
+
+        // Optionaler Check: Wenn beide Werte im JSON fehlen, können wir uns den DB-Call sparen
+        <span class="cov0" title="0">if input.FirstName == nil &amp;&amp; input.LastName == nil </span><span class="cov0" title="0">{
+                http.Error(w, "Mindestens first_name oder last_name muss im JSON angegeben werden", http.StatusBadRequest)
+                return
+        }</span>
+
+        // 3. Das Repository aufrufen und die Daten übergeben
+        <span class="cov0" title="0">err = repository.UpdateUserNames(userID, input)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "Fehler beim Updaten des Benutzers: "+err.Error(), http.StatusInternalServerError)
+                return
+        }</span>
+
+        // 4. Erfolgsmeldung zurückgeben
+        <span class="cov0" title="0">w.WriteHeader(http.StatusOK)
+        json.NewEncoder(w).Encode(map[string]string{
+                "message": "Benutzer erfolgreich aktualisiert",
+                "status":  "success",
+        })</span>
+}
+</pre>
+		
+		<pre class="file" id="file24" style="display: none">package repository
+
+import (
+        "bytes"
+        "encoding/json"
+        "fmt"
+        "io"
+        "log"
+        "net/http"
+        "os"
+)
+
+// InviteAuthUser schickt den Magic-Invite-Link inkl. Redirect-URL und gibt die Supabase Auth-UUID zurück
+func InviteAuthUser(email string, role string) (string, error) <span class="cov0" title="0">{
+        supabaseURL := os.Getenv("SUPABASE_URL")
+        // Wichtig: Hier sollte der SERVICE_ROLE_KEY genutzt werden, damit Admin-Invites erlaubt sind
+        supabaseKey := os.Getenv("SUPABASE_KEY")
+
+        inviteURL := supabaseURL + "/auth/v1/invite"
+
+        // --- Logik für die Ziel-URL (Redirect) ---
+        var redirectTo string
+        if role == "student" </span><span class="cov0" title="0">{
+                // Deep Link für die App (Prüfe nochmal die Schreibweise 'setPassowort'!)
+                redirectTo = "http://localhost:5173/"
+        }</span> else<span class="cov0" title="0"> {
+                // Platzhalter für das Web-Team (Company)
+                // Sobald die "Lazy Dawgs" die URL liefern, hier anpassen:
+                redirectTo = "https://dual-job-webportal-placeholder.de/auth/callback"
+        }</span>
+
+        // Body für den Request vorbereiten (jetzt als interface-map für verschiedene Typen)
+        <span class="cov0" title="0">bodyData := map[string]interface{}{
+                "email":      email,
+                "redirectTo": redirectTo,
+        }
+        bodyBytes, _ := json.Marshal(bodyData)
+
+        req, _ := http.NewRequest("POST", inviteURL, bytes.NewBuffer(bodyBytes))
+        req.Header.Add("Authorization", "Bearer "+supabaseKey)
+        req.Header.Add("apikey", supabaseKey)
+        req.Header.Add("Content-Type", "application/json")
+
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("netzwerkfehler beim invite: %v", err)
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        // 1. Den kompletten Body lesen
+        respBodyBytes, _ := io.ReadAll(resp.Body)
+
+        // 2. Auf Fehler-Statuscodes prüfen
+        if resp.StatusCode != http.StatusOK &amp;&amp; resp.StatusCode != http.StatusCreated </span><span class="cov0" title="0">{
+                log.Printf("[SUPER-DEBUG] Supabase Auth Error. Status: %d, Body: %s", resp.StatusCode, string(respBodyBytes))
+                return "", fmt.Errorf("supabase fehler (status %d): %s", resp.StatusCode, string(respBodyBytes))
+        }</span>
+
+        // 3. Bei Erfolg JSON parsen
+        <span class="cov0" title="0">var result map[string]interface{}
+        if err := json.Unmarshal(respBodyBytes, &amp;result); err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("json parsing fehler: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">authID, ok := result["id"].(string)
+        if !ok </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("konnte auth_id nicht auslesen. Antwort war: %s", string(respBodyBytes))
+        }</span>
+
+        <span class="cov0" title="0">return authID, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file25" style="display: none">package repository
+
+import (
+        "bytes"
+        "encoding/json"
+        "fmt"
+        "io"
+        "log"
+        "net/http"
+        "os"
+)
+
+// ReinviteAuthUser sendet einen frischen Link für bestehende oder neue User
+func ReinviteAuthUser(email string, role string) (string, error) <span class="cov0" title="0">{
+        supabaseURL := os.Getenv("SUPABASE_URL")
+        supabaseKey := os.Getenv("SUPABASE_KEY") // SERVICE_ROLE_KEY nutzen!
+
+        inviteURL := supabaseURL + "/auth/v1/invite"
+
+        var redirectTo string
+        if role == "student" </span><span class="cov0" title="0">{
+                // Hier der Branch.io / Smart Link für das Deferred Deep Linking
+                redirectTo = "https://dualjob.app.link/invite"
+        }</span> else<span class="cov0" title="0"> {
+                // Web-Portal URL für Companies
+                redirectTo = "https://portal.dualjob.de/auth/callback"
+        }</span>
+
+        <span class="cov0" title="0">bodyData := map[string]interface{}{
+                "email":      email,
+                "redirectTo": redirectTo,
+        }
+        bodyBytes, _ := json.Marshal(bodyData)
+
+        req, _ := http.NewRequest("POST", inviteURL, bytes.NewBuffer(bodyBytes))
+        req.Header.Add("Authorization", "Bearer "+supabaseKey)
+        req.Header.Add("apikey", supabaseKey)
+        req.Header.Add("Content-Type", "application/json")
+
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("netzwerkfehler: %v", err)
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        respBodyBytes, _ := io.ReadAll(resp.Body)
+
+        if resp.StatusCode != http.StatusOK &amp;&amp; resp.StatusCode != http.StatusCreated </span><span class="cov0" title="0">{
+                log.Printf("[DEBUG] Resend Error. Status: %d, Body: %s", resp.StatusCode, string(respBodyBytes))
+                return "", fmt.Errorf("supabase fehler (status %d)", resp.StatusCode)
+        }</span>
+
+        <span class="cov0" title="0">var result map[string]interface{}
+        json.Unmarshal(respBodyBytes, &amp;result)
+
+        authID, ok := result["id"].(string)
+        if !ok </span><span class="cov0" title="0">{
+                return "", fmt.Errorf("id nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">return authID, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file26" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "fmt"
+)
+
+type userRow struct {
+        ID   string `json:"id"`
+        Role string `json:"role"`
+}
+
+type profileRow struct {
+        ID int `json:"id"`
+}
+
+func GetUserAuthDetails(authUUID string) (role string, studentID *int, companyID *int, err error) <span class="cov0" title="0">{
+        var users []userRow
+
+        // FIX: Kein Leerzeichen bei "id,role" !!!
+        err = database.SupabaseClient.DB.From("users").Select("id,role").Eq("user_id", authUUID).Execute(&amp;users)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return "", nil, nil, fmt.Errorf("datenbankfehler bei user-abfrage: %v", err)
+        }</span>
+        <span class="cov0" title="0">if len(users) == 0 </span><span class="cov0" title="0">{
+                return "", nil, nil, fmt.Errorf("user nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">user := users[0]
+
+        if user.Role == "student" </span><span class="cov0" title="0">{
+                var students []profileRow
+                err = database.SupabaseClient.DB.From("students").Select("id").Eq("user_id", user.ID).Execute(&amp;students)
+                if err == nil &amp;&amp; len(students) &gt; 0 </span><span class="cov0" title="0">{
+                        studentID = &amp;students[0].ID
+                }</span>
+        } else<span class="cov0" title="0"> if user.Role == "company" </span><span class="cov0" title="0">{
+                var companies []profileRow
+                err = database.SupabaseClient.DB.From("companies").Select("id").Eq("user_id", user.ID).Execute(&amp;companies)
+                if err == nil &amp;&amp; len(companies) &gt; 0 </span><span class="cov0" title="0">{
+                        companyID = &amp;companies[0].ID
+                }</span>
+        }
+
+        <span class="cov0" title="0">return user.Role, studentID, companyID, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file27" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+
+        "github.com/google/uuid"
+)
+
+func CreateCompanyProfile(authUUID string, req models.InviteRequest) error <span class="cov0" title="0">{
+        internalUUID := uuid.New().String()
+
+        // 1. Eintrag in public.users
+        userInsert := map[string]interface{}{
+                "id":         internalUUID,
+                "user_id":    authUUID,
+                "role":       "company",
+                "first_name": req.FirstName,
+                "last_name":  req.LastName,
+        }
+
+        err := database.SupabaseClient.DB.From("users").Insert(userInsert).Execute(nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // 2. Eintrag in public.companies
+        <span class="cov0" title="0">companyInsert := map[string]interface{}{
+                "user_id":           internalUUID,
+                "name":              req.CompanyName, // Feldname aus deinem Modell
+                "short_description": "",
+                "description":       "",
+                "image_urls":        "",
+        }
+
+        err = database.SupabaseClient.DB.From("companies").Insert(companyInsert).Execute(nil)
+        return err</span>
+}
+</pre>
+		
+		<pre class="file" id="file28" style="display: none">package repository
+
+import (
+        "bytes"
+        "dual-job-date-server/internal/models"
+        "encoding/json"
+        "fmt"
+        "io"
+        "mime"
+        "net/http"
+        "net/url"
+        "os"
+        "path/filepath"
+        "strconv"
+        "strings"
+        "time"
+)
+
+const (
+        defaultCompanyLogoBucket  = "company-logos"
+        defaultCompanyImageBucket = "company-images"
+        defaultLogoMaxBytes       = 5 * 1024 * 1024
+)
+
+type CompanyLogoUploadResult struct {
+        CompanyID int    `json:"company_id"`
+        Bucket    string `json:"bucket"`
+        ObjectKey string `json:"object_key"`
+        LogoURL   string `json:"logo_url"`
+}
+
+type CompanyImageUploadResult struct {
+        CompanyID int    `json:"company_id"`
+        Bucket    string `json:"bucket"`
+        ObjectKey string `json:"object_key"`
+        ImageURL  string `json:"image_url"`
+}
+
+type storageBucketInfo struct {
+        ID     string `json:"id"`
+        Name   string `json:"name"`
+        Public bool   `json:"public"`
+}
+
+func UploadCompanyLogo(companyID int, originalName, contentType string, fileData []byte) (CompanyLogoUploadResult, error) <span class="cov0" title="0">{
+        if len(fileData) == 0 </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, fmt.Errorf("leere datei")
+        }</span>
+
+        <span class="cov0" title="0">company, err := GetCompanyByID(companyID)
+        if err != nil </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, err
+        }</span>
+        <span class="cov0" title="0">if company.ID == 0 </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, fmt.Errorf("company nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">normalizedContentType := normalizeContentType(contentType)
+        if !isSupportedLogoContentType(normalizedContentType) </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, fmt.Errorf("nur png, jpg, jpeg oder webp erlaubt")
+        }</span>
+
+        <span class="cov0" title="0">maxBytes := getLogoMaxBytes()
+        if len(fileData) &gt; maxBytes </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, fmt.Errorf("datei zu gross: max %d bytes", maxBytes)
+        }</span>
+
+        <span class="cov0" title="0">bucket := getCompanyLogoBucket()
+        if err := ensurePublicBucket(bucket); err != nil </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">objectKey := buildCompanyLogoObjectKey(company, originalName, normalizedContentType)
+        if err := uploadToBucket(bucket, objectKey, normalizedContentType, fileData); err != nil </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">logoURL := buildPublicObjectURL(bucket, objectKey)
+        if err := UpdateCompanyLogoURL(companyID, logoURL); err != nil </span><span class="cov0" title="0">{
+                return CompanyLogoUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">return CompanyLogoUploadResult{
+                CompanyID: companyID,
+                Bucket:    bucket,
+                ObjectKey: objectKey,
+                LogoURL:   logoURL,
+        }, nil</span>
+}
+
+func UploadCompanyImage(companyID int, originalName, contentType string, fileData []byte) (CompanyImageUploadResult, error) <span class="cov0" title="0">{
+        if len(fileData) == 0 </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, fmt.Errorf("leere datei")
+        }</span>
+
+        <span class="cov0" title="0">company, err := GetCompanyByID(companyID)
+        if err != nil </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, err
+        }</span>
+        <span class="cov0" title="0">if company.ID == 0 </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, fmt.Errorf("company nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">normalizedContentType := normalizeContentType(contentType)
+        if !isSupportedLogoContentType(normalizedContentType) </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, fmt.Errorf("nur png, jpg, jpeg oder webp erlaubt")
+        }</span>
+
+        <span class="cov0" title="0">maxBytes := getLogoMaxBytes()
+        if len(fileData) &gt; maxBytes </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, fmt.Errorf("datei zu gross: max %d bytes", maxBytes)
+        }</span>
+
+        <span class="cov0" title="0">bucket := getCompanyImageBucket()
+        if err := ensurePublicBucket(bucket); err != nil </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">objectKey := buildCompanyLogoObjectKey(company, originalName, normalizedContentType)
+        if err := uploadToBucket(bucket, objectKey, normalizedContentType, fileData); err != nil </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">imageURL := buildPublicObjectURL(bucket, objectKey)
+        if err := AddCompanyImageURL(companyID, imageURL); err != nil </span><span class="cov0" title="0">{
+                return CompanyImageUploadResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">return CompanyImageUploadResult{
+                CompanyID: companyID,
+                Bucket:    bucket,
+                ObjectKey: objectKey,
+                ImageURL:  imageURL,
+        }, nil</span>
+}
+
+func ensurePublicBucket(bucket string) error <span class="cov0" title="0">{
+        info, found, err := getBucketByID(bucket)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">if !found </span><span class="cov0" title="0">{
+                return createPublicBucket(bucket)
+        }</span>
+
+        <span class="cov0" title="0">if !info.Public </span><span class="cov0" title="0">{
+                return setBucketPublic(bucket, info.Name)
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func getBucketByID(bucket string) (storageBucketInfo, bool, error) <span class="cov0" title="0">{
+        url := fmt.Sprintf("%s/storage/v1/bucket/%s", getSupabaseURL(), bucket)
+        req, err := http.NewRequest(http.MethodGet, url, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return storageBucketInfo{}, false, err
+        }</span>
+        <span class="cov0" title="0">attachSupabaseAuthHeaders(req)
+
+        client := &amp;http.Client{Timeout: 30 * time.Second}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return storageBucketInfo{}, false, err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        if resp.StatusCode == http.StatusNotFound </span><span class="cov0" title="0">{
+                return storageBucketInfo{}, false, nil
+        }</span>
+        <span class="cov0" title="0">if resp.StatusCode &lt; 200 || resp.StatusCode &gt;= 300 </span><span class="cov0" title="0">{
+                body, _ := io.ReadAll(resp.Body)
+                bodyText := strings.ToLower(string(body))
+                // Supabase can return 400 with a payload-level 404 when bucket is missing.
+                if strings.Contains(bodyText, "bucket not found") || strings.Contains(bodyText, `"statuscode":"404"`) </span><span class="cov0" title="0">{
+                        return storageBucketInfo{}, false, nil
+                }</span>
+                <span class="cov0" title="0">return storageBucketInfo{}, false, fmt.Errorf("bucket lookup fehlgeschlagen (%d): %s", resp.StatusCode, string(body))</span>
+        }
+
+        <span class="cov0" title="0">var info storageBucketInfo
+        if err := json.NewDecoder(resp.Body).Decode(&amp;info); err != nil </span><span class="cov0" title="0">{
+                return storageBucketInfo{}, false, err
+        }</span>
+
+        <span class="cov0" title="0">return info, true, nil</span>
+}
+
+func createPublicBucket(bucket string) error <span class="cov0" title="0">{
+        payload := map[string]interface{}{
+                "id":     bucket,
+                "name":   bucket,
+                "public": true,
+        }
+        body, _ := json.Marshal(payload)
+
+        url := fmt.Sprintf("%s/storage/v1/bucket", getSupabaseURL())
+        req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(body))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">attachSupabaseAuthHeaders(req)
+        req.Header.Set("Content-Type", "application/json")
+
+        client := &amp;http.Client{Timeout: 30 * time.Second}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        if resp.StatusCode &gt;= 200 &amp;&amp; resp.StatusCode &lt; 300 </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+
+        <span class="cov0" title="0">resBody, _ := io.ReadAll(resp.Body)
+        // If bucket already exists (race/parallel), continue safely.
+        if strings.Contains(strings.ToLower(string(resBody)), "already exists") || resp.StatusCode == http.StatusConflict </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+
+        <span class="cov0" title="0">return fmt.Errorf("bucket erstellen fehlgeschlagen (%d): %s", resp.StatusCode, string(resBody))</span>
+}
+
+func setBucketPublic(bucket, name string) error <span class="cov0" title="0">{
+        if name == "" </span><span class="cov0" title="0">{
+                name = bucket
+        }</span>
+
+        <span class="cov0" title="0">payload := map[string]interface{}{
+                "id":     bucket,
+                "name":   name,
+                "public": true,
+        }
+        body, _ := json.Marshal(payload)
+
+        url := fmt.Sprintf("%s/storage/v1/bucket/%s", getSupabaseURL(), bucket)
+        req, err := http.NewRequest(http.MethodPut, url, bytes.NewReader(body))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">attachSupabaseAuthHeaders(req)
+        req.Header.Set("Content-Type", "application/json")
+
+        client := &amp;http.Client{Timeout: 30 * time.Second}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        if resp.StatusCode &lt; 200 || resp.StatusCode &gt;= 300 </span><span class="cov0" title="0">{
+                resBody, _ := io.ReadAll(resp.Body)
+                return fmt.Errorf("bucket update fehlgeschlagen (%d): %s", resp.StatusCode, string(resBody))
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func uploadToBucket(bucket, objectKey, contentType string, fileData []byte) error <span class="cov0" title="0">{
+        url := fmt.Sprintf("%s/storage/v1/object/%s/%s", getSupabaseURL(), bucket, objectKey)
+        req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(fileData))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">attachSupabaseAuthHeaders(req)
+        req.Header.Set("Content-Type", contentType)
+        req.Header.Set("x-upsert", "true")
+
+        client := &amp;http.Client{Timeout: 60 * time.Second}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        if resp.StatusCode &lt; 200 || resp.StatusCode &gt;= 300 </span><span class="cov0" title="0">{
+                body, _ := io.ReadAll(resp.Body)
+                return fmt.Errorf("upload fehlgeschlagen (%d): %s", resp.StatusCode, string(body))
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+func deleteObjectFromBucket(bucket, objectKey string) error <span class="cov0" title="0">{
+        url := fmt.Sprintf("%s/storage/v1/object/%s/%s", getSupabaseURL(), bucket, objectKey)
+        req, err := http.NewRequest(http.MethodDelete, url, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">attachSupabaseAuthHeaders(req)
+
+        client := &amp;http.Client{Timeout: 60 * time.Second}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        if resp.StatusCode == http.StatusNotFound </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">if resp.StatusCode &lt; 200 || resp.StatusCode &gt;= 300 </span><span class="cov0" title="0">{
+                body, _ := io.ReadAll(resp.Body)
+                return fmt.Errorf("delete fehlgeschlagen (%d): %s", resp.StatusCode, string(body))
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func buildCompanyLogoObjectKey(company models.Company, originalName, contentType string) string <span class="cov0" title="0">{
+        ext := strings.ToLower(filepath.Ext(originalName))
+        if ext == "" </span><span class="cov0" title="0">{
+                extensions, _ := mime.ExtensionsByType(contentType)
+                if len(extensions) &gt; 0 </span><span class="cov0" title="0">{
+                        ext = extensions[0]
+                }</span>
+        }
+        <span class="cov0" title="0">if ext == "" </span><span class="cov0" title="0">{
+                ext = ".png"
+        }</span>
+
+        <span class="cov0" title="0">companyPart := sanitizeFilePart(company.Name)
+        if companyPart == "" </span><span class="cov0" title="0">{
+                companyPart = "company"
+        }</span>
+
+        <span class="cov0" title="0">return fmt.Sprintf("company-%d/%d-%s%s", company.ID, time.Now().UTC().Unix(), companyPart, ext)</span>
+}
+
+func buildPublicObjectURL(bucket, objectKey string) string <span class="cov0" title="0">{
+        return fmt.Sprintf("%s/storage/v1/object/public/%s/%s", getSupabaseURL(), bucket, objectKey)
+}</span>
+
+func DeleteCompanyImageObjectByURL(rawURL string) error <span class="cov0" title="0">{
+        bucket, objectKey, ok := parsePublicObjectURL(rawURL)
+        if !ok </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">if bucket != getCompanyImageBucket() </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">return deleteObjectFromBucket(bucket, objectKey)</span>
+}
+
+func parsePublicObjectURL(raw string) (bucket, objectKey string, ok bool) <span class="cov0" title="0">{
+        parsed, err := url.Parse(strings.TrimSpace(raw))
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+        <span class="cov0" title="0">base, err := url.Parse(getSupabaseURL())
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+        <span class="cov0" title="0">if !strings.EqualFold(parsed.Scheme, base.Scheme) || !strings.EqualFold(parsed.Host, base.Host) </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+
+        <span class="cov0" title="0">path := parsed.EscapedPath()
+        const prefix = "/storage/v1/object/public/"
+        if !strings.HasPrefix(path, prefix) </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+        <span class="cov0" title="0">rest := strings.TrimPrefix(path, prefix)
+        parts := strings.SplitN(rest, "/", 2)
+        if len(parts) != 2 || parts[0] == "" || parts[1] == "" </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+
+        <span class="cov0" title="0">unescapedKey, err := url.PathUnescape(parts[1])
+        if err != nil </span><span class="cov0" title="0">{
+                return "", "", false
+        }</span>
+        <span class="cov0" title="0">return parts[0], unescapedKey, true</span>
+}
+
+func attachSupabaseAuthHeaders(req *http.Request) <span class="cov0" title="0">{
+        key := os.Getenv("SUPABASE_KEY")
+        req.Header.Set("Authorization", "Bearer "+key)
+        req.Header.Set("apikey", key)
+}</span>
+
+func getSupabaseURL() string <span class="cov0" title="0">{
+        return strings.TrimRight(os.Getenv("SUPABASE_URL"), "/")
+}</span>
+
+func getCompanyLogoBucket() string <span class="cov0" title="0">{
+        if bucket := strings.TrimSpace(os.Getenv("COMPANY_LOGO_BUCKET")); bucket != "" </span><span class="cov0" title="0">{
+                return bucket
+        }</span>
+        <span class="cov0" title="0">return defaultCompanyLogoBucket</span>
+}
+
+func getCompanyImageBucket() string <span class="cov0" title="0">{
+        if bucket := strings.TrimSpace(os.Getenv("COMPANY_IMAGE_BUCKET")); bucket != "" </span><span class="cov0" title="0">{
+                return bucket
+        }</span>
+        <span class="cov0" title="0">return defaultCompanyImageBucket</span>
+}
+
+func getLogoMaxBytes() int <span class="cov0" title="0">{
+        raw := strings.TrimSpace(os.Getenv("COMPANY_LOGO_MAX_BYTES"))
+        if raw == "" </span><span class="cov0" title="0">{
+                return defaultLogoMaxBytes
+        }</span>
+
+        <span class="cov0" title="0">parsed, err := strconv.Atoi(raw)
+        if err != nil || parsed &lt;= 0 </span><span class="cov0" title="0">{
+                return defaultLogoMaxBytes
+        }</span>
+        <span class="cov0" title="0">return parsed</span>
+}
+
+func sanitizeFilePart(value string) string <span class="cov0" title="0">{
+        value = strings.ToLower(strings.TrimSpace(value))
+        value = strings.ReplaceAll(value, " ", "-")
+
+        var builder strings.Builder
+        for _, ch := range value </span><span class="cov0" title="0">{
+                if (ch &gt;= 'a' &amp;&amp; ch &lt;= 'z') || (ch &gt;= '0' &amp;&amp; ch &lt;= '9') || ch == '-' || ch == '_' </span><span class="cov0" title="0">{
+                        builder.WriteRune(ch)
+                }</span>
+        }
+
+        <span class="cov0" title="0">result := builder.String()
+        result = strings.Trim(result, "-_")
+        return result</span>
+}
+
+func normalizeContentType(contentType string) string <span class="cov0" title="0">{
+        contentType = strings.ToLower(strings.TrimSpace(contentType))
+        if idx := strings.Index(contentType, ";"); idx &gt;= 0 </span><span class="cov0" title="0">{
+                contentType = strings.TrimSpace(contentType[:idx])
+        }</span>
+        <span class="cov0" title="0">return contentType</span>
+}
+
+func isSupportedLogoContentType(contentType string) bool <span class="cov0" title="0">{
+        switch contentType </span>{
+        case "image/png", "image/jpeg", "image/jpg", "image/webp":<span class="cov0" title="0">
+                return true</span>
+        default:<span class="cov0" title="0">
+                return false</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file29" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "strconv"
+        "strings"
+        "time"
+)
+
+func GetActiveCompanies() ([]models.Company, error) <span class="cov0" title="0">{
+        var companies []models.Company
+
+        // Wir rufen die Tabelle "companies" ab und filtern nach aktiven Firmen
+        err := database.SupabaseClient.DB.From("companies").Select("*").Eq("active", "true").Execute(&amp;companies)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return companies, nil</span>
+}
+
+func GetActiveCompaniesForStudentUser(userID string, onlyUnvoted bool) ([]models.Company, error) <span class="cov0" title="0">{
+        companies, err := GetActiveCompanies()
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">if !onlyUnvoted </span><span class="cov0" title="0">{
+                return companies, nil
+        }</span>
+
+        <span class="cov0" title="0">studentID, err := getStudentIDByUserID(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">var preferences []models.Preference
+        err = database.SupabaseClient.DB.
+                From("preferences").
+                Select("company_id").
+                Eq("student_id", strconv.Itoa(studentID)).
+                Execute(&amp;preferences)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">votedCompanyIDs := make(map[int]struct{}, len(preferences))
+        for _, preference := range preferences </span><span class="cov0" title="0">{
+                votedCompanyIDs[preference.CompanyID] = struct{}{}
+        }</span>
+
+        <span class="cov0" title="0">filtered := make([]models.Company, 0, len(companies))
+        for _, company := range companies </span><span class="cov0" title="0">{
+                if _, voted := votedCompanyIDs[company.ID]; voted </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">filtered = append(filtered, company)</span>
+        }
+
+        <span class="cov0" title="0">return filtered, nil</span>
+}
+
+func GetCompanyByID(companyID int) (models.Company, error) <span class="cov0" title="0">{
+        var companies []models.Company
+
+        err := database.SupabaseClient.DB.
+                From("companies").
+                Select("*").
+                Eq("id", strconv.Itoa(companyID)).
+                Execute(&amp;companies)
+        if err != nil </span><span class="cov0" title="0">{
+                return models.Company{}, err
+        }</span>
+
+        <span class="cov0" title="0">if len(companies) == 0 </span><span class="cov0" title="0">{
+                return models.Company{}, nil
+        }</span>
+
+        <span class="cov0" title="0">return companies[0], nil</span>
+}
+
+func UpdateCompanyLogoURL(companyID int, logoURL string) error <span class="cov0" title="0">{
+        update := map[string]interface{}{
+                "logo_url":     logoURL,
+                "last_updated": time.Now().UTC().Format(time.RFC3339),
+        }
+
+        var updated []models.Company
+        return database.SupabaseClient.DB.
+                From("companies").
+                Update(update).
+                Eq("id", strconv.Itoa(companyID)).
+                Execute(&amp;updated)
+}</span>
+
+func AddCompanyImageURL(companyID int, imageURL string) error <span class="cov0" title="0">{
+        company, err := GetCompanyByID(companyID)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">if company.ID == 0 </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+
+        <span class="cov0" title="0">rawEntries := strings.Split(company.ImageURLs, ";")
+        imageURLs := make([]string, 0, len(rawEntries)+1)
+        seen := make(map[string]struct{}, len(rawEntries)+1)
+        for _, raw := range rawEntries </span><span class="cov0" title="0">{
+                existing := strings.TrimSpace(raw)
+                if existing == "" </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">if _, ok := seen[existing]; ok </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">seen[existing] = struct{}{}
+                imageURLs = append(imageURLs, existing)</span>
+        }
+        <span class="cov0" title="0">candidate := strings.TrimSpace(imageURL)
+        if _, ok := seen[candidate]; !ok &amp;&amp; candidate != "" </span><span class="cov0" title="0">{
+                imageURLs = append(imageURLs, candidate)
+        }</span>
+
+        <span class="cov0" title="0">update := map[string]interface{}{
+                "image_urls":   strings.Join(imageURLs, ";"),
+                "last_updated": time.Now().UTC().Format(time.RFC3339),
+        }
+        var updated []models.Company
+        return database.SupabaseClient.DB.
+                From("companies").
+                Update(update).
+                Eq("id", strconv.Itoa(companyID)).
+                Execute(&amp;updated)</span>
+}
+</pre>
+		
+		<pre class="file" id="file30" style="display: none">package repository
+
+import (
+    "dual-job-date-server/internal/database"
+    "dual-job-date-server/internal/models"
+)
+
+func GetActiveEvent() (models.Event, error) <span class="cov0" title="0">{
+    var events []models.Event
+
+    // Wir lassen .Limit(1) weg, da die Library es an dieser Stelle nicht unterstützt
+    err := database.SupabaseClient.DB.From("events").Select("*").Eq("is_active", "true").Execute(&amp;events)
+    if err != nil </span><span class="cov0" title="0">{
+        return models.Event{}, err
+    }</span>
+
+    // Wenn die Liste leer ist, geben wir ein leeres Modell zurück
+    <span class="cov0" title="0">if len(events) == 0 </span><span class="cov0" title="0">{
+        return models.Event{}, nil 
+    }</span>
+
+    // Wir geben einfach das erste gefundene aktive Event zurück
+    <span class="cov0" title="0">return events[0], nil</span>
+}</pre>
+		
+		<pre class="file" id="file31" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "sort"
+        "strconv"
+        "strings"
+)
+
+type AssignMeetingsOptions struct {
+        DryRun                   bool
+        IncludeInactiveCompanies bool
+        ReplaceExisting          bool
+}
+
+type AssignedMeeting struct {
+        SlotID         int    `json:"slot_id"`
+        StudentID      int    `json:"student_id"`
+        CompanyID      int    `json:"company_id"`
+        PreferenceType string `json:"preference_type"`
+}
+
+type UnassignedCompanySlot struct {
+        SlotID    int    `json:"slot_id"`
+        CompanyID int    `json:"company_id"`
+        Reason    string `json:"reason"`
+}
+
+type MeetingAssignmentSummary struct {
+        TotalCompanySlots       int `json:"total_company_slots"`
+        ExistingMeetingsKept    int `json:"existing_meetings_kept"`
+        ExistingMeetingsDeleted int `json:"existing_meetings_deleted"`
+        GeneratedMeetings       int `json:"generated_meetings"`
+        InsertedMeetings        int `json:"inserted_meetings"`
+        AssignedLike            int `json:"assigned_like"`
+        AssignedNeutral         int `json:"assigned_neutral"`
+        AssignedDislike         int `json:"assigned_dislike"`
+        DislikeAvoidedSlots     int `json:"dislike_avoided_slots"`
+        UnassignedCompanySlots  int `json:"unassigned_company_slots"`
+}
+
+type MeetingAssignmentResult struct {
+        DryRun                 bool                     `json:"dry_run"`
+        PlannedMeetings        []AssignedMeeting        `json:"planned_meetings"`
+        UnassignedCompanySlots []UnassignedCompanySlot  `json:"unassigned_company_slots"`
+        InsertedMeetings       int                      `json:"inserted_meetings"`
+        Summary                MeetingAssignmentSummary `json:"summary"`
+}
+
+func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentResult, error) <span class="cov0" title="0">{
+        students, err := getStudentsForAssignment()
+        if err != nil </span><span class="cov0" title="0">{
+                return MeetingAssignmentResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">companies, err := getCompaniesForAssignment(opts.IncludeInactiveCompanies)
+        if err != nil </span><span class="cov0" title="0">{
+                return MeetingAssignmentResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">slots, err := GetAllSlots()
+        if err != nil </span><span class="cov0" title="0">{
+                return MeetingAssignmentResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">preferences, err := getAllPreferences()
+        if err != nil </span><span class="cov0" title="0">{
+                return MeetingAssignmentResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">existingMeetings, err := getAllMeetings()
+        if err != nil </span><span class="cov0" title="0">{
+                return MeetingAssignmentResult{}, err
+        }</span>
+
+        <span class="cov0" title="0">deletedMeetingsCount := 0
+        if opts.ReplaceExisting </span><span class="cov0" title="0">{
+                deletedMeetingsCount = len(existingMeetings)
+                if !opts.DryRun &amp;&amp; deletedMeetingsCount &gt; 0 </span><span class="cov0" title="0">{
+                        if err := deleteAllMeetings(); err != nil </span><span class="cov0" title="0">{
+                                return MeetingAssignmentResult{}, err
+                        }</span>
+                }
+                // Re-assignment starts from scratch when replacement is requested.
+                <span class="cov0" title="0">existingMeetings = []models.Meeting{}</span>
+        }
+
+        <span class="cov0" title="0">sort.Slice(students, func(i, j int) bool </span><span class="cov0" title="0">{ return students[i].ID &lt; students[j].ID }</span>)
+        <span class="cov0" title="0">sort.Slice(companies, func(i, j int) bool </span><span class="cov0" title="0">{ return companies[i].ID &lt; companies[j].ID }</span>)
+        <span class="cov0" title="0">sort.Slice(slots, func(i, j int) bool </span><span class="cov0" title="0">{ return slots[i].ID &lt; slots[j].ID }</span>)
+
+        <span class="cov0" title="0">prefMap := buildPreferenceMap(preferences)
+
+        studentLoad := make(map[int]int, len(students))
+        companySlotFilled := make(map[string]bool)
+        studentSlotTaken := make(map[string]bool)
+        studentCompanySeen := make(map[string]bool)
+
+        for _, meeting := range existingMeetings </span><span class="cov0" title="0">{
+                studentLoad[meeting.StudentID]++
+                companySlotFilled[companySlotKey(meeting.CompanyID, meeting.SlotID)] = true
+                studentSlotTaken[studentSlotKey(meeting.StudentID, meeting.SlotID)] = true
+                studentCompanySeen[studentCompanyKey(meeting.StudentID, meeting.CompanyID)] = true
+        }</span>
+
+        <span class="cov0" title="0">result := MeetingAssignmentResult{
+                DryRun:                 opts.DryRun,
+                PlannedMeetings:        []AssignedMeeting{},
+                UnassignedCompanySlots: []UnassignedCompanySlot{},
+                Summary: MeetingAssignmentSummary{
+                        TotalCompanySlots:       len(companies) * len(slots),
+                        ExistingMeetingsDeleted: deletedMeetingsCount,
+                },
+        }
+
+        for _, slot := range slots </span><span class="cov0" title="0">{
+                for _, company := range companies </span><span class="cov0" title="0">{
+                        companySlot := companySlotKey(company.ID, slot.ID)
+                        if companySlotFilled[companySlot] </span><span class="cov0" title="0">{
+                                result.Summary.ExistingMeetingsKept++
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">likeCandidates := make([]int, 0)
+                        neutralCandidates := make([]int, 0)
+                        dislikeCandidates := make([]int, 0)
+
+                        for _, student := range students </span><span class="cov0" title="0">{
+                                if studentSlotTaken[studentSlotKey(student.ID, slot.ID)] </span><span class="cov0" title="0">{
+                                        continue</span>
+                                }
+                                <span class="cov0" title="0">if studentCompanySeen[studentCompanyKey(student.ID, company.ID)] </span><span class="cov0" title="0">{
+                                        continue</span>
+                                }
+
+                                <span class="cov0" title="0">switch getPreference(prefMap, student.ID, company.ID) </span>{
+                                case "like":<span class="cov0" title="0">
+                                        likeCandidates = append(likeCandidates, student.ID)</span>
+                                case "dislike":<span class="cov0" title="0">
+                                        dislikeCandidates = append(dislikeCandidates, student.ID)</span>
+                                default:<span class="cov0" title="0">
+                                        neutralCandidates = append(neutralCandidates, student.ID)</span>
+                                }
+                        }
+
+                        <span class="cov0" title="0">if len(likeCandidates) == 0 &amp;&amp; len(neutralCandidates) == 0 &amp;&amp; len(dislikeCandidates) == 0 </span><span class="cov0" title="0">{
+                                result.UnassignedCompanySlots = append(result.UnassignedCompanySlots, UnassignedCompanySlot{
+                                        SlotID:    slot.ID,
+                                        CompanyID: company.ID,
+                                        Reason:    "kein verfuegbarer student (slot bereits belegt oder bereits meeting mit firma)",
+                                })
+                                continue</span>
+                        }
+
+                        <span class="cov0" title="0">if len(dislikeCandidates) &gt; 0 &amp;&amp; (len(likeCandidates) &gt; 0 || len(neutralCandidates) &gt; 0) </span><span class="cov0" title="0">{
+                                result.Summary.DislikeAvoidedSlots++
+                        }</span>
+
+                        <span class="cov0" title="0">selectedPreference := "dislike"
+                        selectedCandidates := dislikeCandidates
+
+                        if len(likeCandidates) &gt; 0 </span><span class="cov0" title="0">{
+                                selectedPreference = "like"
+                                selectedCandidates = likeCandidates
+                        }</span> else<span class="cov0" title="0"> if len(neutralCandidates) &gt; 0 </span><span class="cov0" title="0">{
+                                selectedPreference = "neutral"
+                                selectedCandidates = neutralCandidates
+                        }</span>
+
+                        <span class="cov0" title="0">studentID := pickStudentWithLowestLoad(selectedCandidates, studentLoad)
+                        meeting := AssignedMeeting{
+                                SlotID:         slot.ID,
+                                StudentID:      studentID,
+                                CompanyID:      company.ID,
+                                PreferenceType: selectedPreference,
+                        }
+
+                        result.PlannedMeetings = append(result.PlannedMeetings, meeting)
+                        result.Summary.GeneratedMeetings++
+
+                        switch selectedPreference </span>{
+                        case "like":<span class="cov0" title="0">
+                                result.Summary.AssignedLike++</span>
+                        case "neutral":<span class="cov0" title="0">
+                                result.Summary.AssignedNeutral++</span>
+                        case "dislike":<span class="cov0" title="0">
+                                result.Summary.AssignedDislike++</span>
+                        }
+
+                        <span class="cov0" title="0">companySlotFilled[companySlot] = true
+                        studentSlotTaken[studentSlotKey(studentID, slot.ID)] = true
+                        studentCompanySeen[studentCompanyKey(studentID, company.ID)] = true
+                        studentLoad[studentID]++</span>
+                }
+        }
+
+        <span class="cov0" title="0">if !opts.DryRun &amp;&amp; len(result.PlannedMeetings) &gt; 0 </span><span class="cov0" title="0">{
+                if err := insertAssignedMeetings(result.PlannedMeetings); err != nil </span><span class="cov0" title="0">{
+                        return MeetingAssignmentResult{}, err
+                }</span>
+                <span class="cov0" title="0">result.InsertedMeetings = len(result.PlannedMeetings)
+                result.Summary.InsertedMeetings = len(result.PlannedMeetings)</span>
+        }
+
+        <span class="cov0" title="0">result.Summary.UnassignedCompanySlots = len(result.UnassignedCompanySlots)
+        return result, nil</span>
+}
+
+func getStudentsForAssignment() ([]models.Student, error) <span class="cov0" title="0">{
+        var students []models.Student
+
+        err := database.SupabaseClient.DB.
+                From("students").
+                Select("*").
+                Execute(&amp;students)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return students, nil</span>
+}
+
+func getCompaniesForAssignment(includeInactive bool) ([]models.Company, error) <span class="cov0" title="0">{
+        var companies []models.Company
+
+        query := database.SupabaseClient.DB.From("companies").Select("*")
+        if includeInactive </span><span class="cov0" title="0">{
+                err := query.Execute(&amp;companies)
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, err
+                }</span>
+                <span class="cov0" title="0">return companies, nil</span>
+        }
+
+        <span class="cov0" title="0">err := query.Eq("active", "true").Execute(&amp;companies)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return companies, nil</span>
+}
+
+func getAllPreferences() ([]models.Preference, error) <span class="cov0" title="0">{
+        var preferences []models.Preference
+
+        err := database.SupabaseClient.DB.
+                From("preferences").
+                Select("*").
+                Execute(&amp;preferences)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return preferences, nil</span>
+}
+
+func getAllMeetings() ([]models.Meeting, error) <span class="cov0" title="0">{
+        var meetings []models.Meeting
+
+        err := database.SupabaseClient.DB.
+                From("meetings").
+                Select("*").
+                Execute(&amp;meetings)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return meetings, nil</span>
+}
+
+func insertAssignedMeetings(planned []AssignedMeeting) error <span class="cov0" title="0">{
+        rows := make([]map[string]interface{}, 0, len(planned))
+        for _, meeting := range planned </span><span class="cov0" title="0">{
+                rows = append(rows, map[string]interface{}{
+                        "slot_id":    meeting.SlotID,
+                        "student_id": meeting.StudentID,
+                        "company_id": meeting.CompanyID,
+                })
+        }</span>
+
+        <span class="cov0" title="0">var inserted interface{}
+        return database.SupabaseClient.DB.
+                From("meetings").
+                Insert(rows).
+                Execute(&amp;inserted)</span>
+}
+
+func deleteAllMeetings() error <span class="cov0" title="0">{
+        var deleted interface{}
+        return database.SupabaseClient.DB.
+                From("meetings").
+                Delete().
+                Execute(&amp;deleted)
+}</span>
+
+func buildPreferenceMap(preferences []models.Preference) map[int]map[int]string <span class="cov0" title="0">{
+        result := make(map[int]map[int]string)
+        for _, preference := range preferences </span><span class="cov0" title="0">{
+                if _, ok := result[preference.StudentID]; !ok </span><span class="cov0" title="0">{
+                        result[preference.StudentID] = make(map[int]string)
+                }</span>
+                <span class="cov0" title="0">result[preference.StudentID][preference.CompanyID] = strings.ToLower(preference.PreferenceType)</span>
+        }
+        <span class="cov0" title="0">return result</span>
+}
+
+func getPreference(prefMap map[int]map[int]string, studentID, companyID int) string <span class="cov0" title="0">{
+        if prefByCompany, ok := prefMap[studentID]; ok </span><span class="cov0" title="0">{
+                if preference, ok := prefByCompany[companyID]; ok </span><span class="cov0" title="0">{
+                        return preference
+                }</span>
+        }
+        <span class="cov0" title="0">return "neutral"</span>
+}
+
+func pickStudentWithLowestLoad(candidates []int, studentLoad map[int]int) int <span class="cov0" title="0">{
+        selected := candidates[0]
+        selectedLoad := studentLoad[selected]
+
+        for _, candidate := range candidates[1:] </span><span class="cov0" title="0">{
+                load := studentLoad[candidate]
+                if load &lt; selectedLoad || (load == selectedLoad &amp;&amp; candidate &lt; selected) </span><span class="cov0" title="0">{
+                        selected = candidate
+                        selectedLoad = load
+                }</span>
+        }
+
+        <span class="cov0" title="0">return selected</span>
+}
+
+func companySlotKey(companyID, slotID int) string <span class="cov0" title="0">{
+        return strconv.Itoa(companyID) + ":" + strconv.Itoa(slotID)
+}</span>
+
+func studentSlotKey(studentID, slotID int) string <span class="cov0" title="0">{
+        return strconv.Itoa(studentID) + ":" + strconv.Itoa(slotID)
+}</span>
+
+func studentCompanyKey(studentID, companyID int) string <span class="cov0" title="0">{
+        return strconv.Itoa(studentID) + ":" + strconv.Itoa(companyID)
+}</span>
+</pre>
+		
+		<pre class="file" id="file32" style="display: none">package repository
+
+import (
+    "dual-job-date-server/internal/database"
+    "dual-job-date-server/internal/models"
+    "strconv"
+)
+
+func GetMeetingsByStudent(studentID int) ([]models.Meeting, error) <span class="cov0" title="0">{
+    var meetings []models.Meeting
+
+    err := database.SupabaseClient.DB.From("meetings").Select("*").Eq("student_id", strconv.Itoa(studentID)).Execute(&amp;meetings)
+    if err != nil </span><span class="cov0" title="0">{
+        return nil, err
+    }</span>
+
+    <span class="cov0" title="0">return meetings, nil</span>
+}</pre>
+		
+		<pre class="file" id="file33" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "fmt"
+        "strconv"
+        "strings"
+)
+
+func GetPreferencesByStudent(studentID int) ([]models.Preference, error) <span class="cov0" title="0">{
+        var preferences []models.Preference
+
+        err := database.SupabaseClient.DB.From("preferences").Select("*").Eq("student_id", strconv.Itoa(studentID)).Execute(&amp;preferences)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">return preferences, nil</span>
+}
+
+func SaveVoteForStudentUser(userID string, companyID int, vote string) (models.Preference, error) <span class="cov0" title="0">{
+        if userID == "" </span><span class="cov0" title="0">{
+                return models.Preference{}, fmt.Errorf("keine user id vorhanden")
+        }</span>
+        <span class="cov0" title="0">if companyID &lt;= 0 </span><span class="cov0" title="0">{
+                return models.Preference{}, fmt.Errorf("ungueltige company id")
+        }</span>
+
+        <span class="cov0" title="0">normalizedVote := strings.ToLower(strings.TrimSpace(vote))
+        if normalizedVote != "like" &amp;&amp; normalizedVote != "dislike" &amp;&amp; normalizedVote != "neutral" </span><span class="cov0" title="0">{
+                return models.Preference{}, fmt.Errorf("ungueltiger vote, erlaubt: like, dislike, neutral")
+        }</span>
+
+        <span class="cov0" title="0">studentID, err := getStudentIDByUserID(userID)
+        if err != nil </span><span class="cov0" title="0">{
+                return models.Preference{}, err
+        }</span>
+
+        <span class="cov0" title="0">company, err := GetCompanyByID(companyID)
+        if err != nil </span><span class="cov0" title="0">{
+                return models.Preference{}, err
+        }</span>
+        <span class="cov0" title="0">if company.ID == 0 </span><span class="cov0" title="0">{
+                return models.Preference{}, fmt.Errorf("company nicht gefunden")
+        }</span>
+        <span class="cov0" title="0">if !company.Active </span><span class="cov0" title="0">{
+                return models.Preference{}, fmt.Errorf("company ist nicht aktiv")
+        }</span>
+
+        <span class="cov0" title="0">var existing []models.Preference
+        err = database.SupabaseClient.DB.
+                From("preferences").
+                Select("*").
+                Eq("student_id", strconv.Itoa(studentID)).
+                Eq("company_id", strconv.Itoa(companyID)).
+                Execute(&amp;existing)
+        if err != nil </span><span class="cov0" title="0">{
+                return models.Preference{}, err
+        }</span>
+
+        <span class="cov0" title="0">if len(existing) &gt; 0 </span><span class="cov0" title="0">{
+                update := map[string]interface{}{
+                        "preference_type": normalizedVote,
+                }
+                var updated []models.Preference
+                err = database.SupabaseClient.DB.
+                        From("preferences").
+                        Update(update).
+                        Eq("id", strconv.Itoa(existing[0].ID)).
+                        Execute(&amp;updated)
+                if err != nil </span><span class="cov0" title="0">{
+                        return models.Preference{}, err
+                }</span>
+                <span class="cov0" title="0">if len(updated) == 0 </span><span class="cov0" title="0">{
+                        existing[0].PreferenceType = normalizedVote
+                        return existing[0], nil
+                }</span>
+                <span class="cov0" title="0">return updated[0], nil</span>
+        }
+
+        <span class="cov0" title="0">insert := map[string]interface{}{
+                "student_id":      studentID,
+                "company_id":      companyID,
+                "preference_type": normalizedVote,
+        }
+
+        var inserted []models.Preference
+        err = database.SupabaseClient.DB.
+                From("preferences").
+                Insert(insert).
+                Execute(&amp;inserted)
+        if err != nil </span><span class="cov0" title="0">{
+                return models.Preference{}, err
+        }</span>
+        <span class="cov0" title="0">if len(inserted) == 0 </span><span class="cov0" title="0">{
+                return models.Preference{
+                        StudentID:      studentID,
+                        CompanyID:      companyID,
+                        PreferenceType: normalizedVote,
+                }, nil
+        }</span>
+        <span class="cov0" title="0">return inserted[0], nil</span>
+}
+
+func getStudentIDByUserID(userID string) (int, error) <span class="cov0" title="0">{
+        // JWT "sub" liefert die echte Supabase-Auth-UUID.
+        // In diesem Projekt zeigt students.user_id aber auf users.id (interne UUID).
+        // Deshalb: auth-uuid -&gt; users.id -&gt; students.id
+        var users []map[string]interface{}
+        err := database.SupabaseClient.DB.
+                From("users").
+                Select("id").
+                Eq("user_id", userID).
+                Execute(&amp;users)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+        <span class="cov0" title="0">if len(users) == 0 </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("user nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">internalUserID, ok := users[0]["id"].(string)
+        if !ok || internalUserID == "" </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("ungueltige users.id")
+        }</span>
+
+        <span class="cov0" title="0">var students []models.Student
+        err = database.SupabaseClient.DB.
+                From("students").
+                Select("*").
+                Eq("user_id", internalUserID).
+                Execute(&amp;students)
+        if err != nil </span><span class="cov0" title="0">{
+                return 0, err
+        }</span>
+        <span class="cov0" title="0">if len(students) == 0 </span><span class="cov0" title="0">{
+                return 0, fmt.Errorf("student fuer user nicht gefunden")
+        }</span>
+        <span class="cov0" title="0">return students[0].ID, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file34" style="display: none">package repository
+
+import (
+    "dual-job-date-server/internal/database"
+    "dual-job-date-server/internal/models"
+)
+
+func GetAllSlots() ([]models.Slot, error) <span class="cov0" title="0">{
+    var slots []models.Slot
+
+    err := database.SupabaseClient.DB.From("slots").Select("*").Execute(&amp;slots)
+    if err != nil </span><span class="cov0" title="0">{
+        return nil, err
+    }</span>
+
+    <span class="cov0" title="0">return slots, nil</span>
+}</pre>
+		
+		<pre class="file" id="file35" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "strconv"
+)
+
+// DeleteSlot löscht einen Zeitslot und alle darin geplanten Meetings
+func DeleteSlot(slotID int) error <span class="cov0" title="0">{
+        idStr := strconv.Itoa(slotID)
+
+        // 1. Zuerst alle Meetings löschen, die in diesem Slot stattfinden (Foreign Key!)
+        var deletedMeetings []interface{}
+        err := database.SupabaseClient.DB.From("meetings").Delete().Eq("slot_id", idStr).Execute(&amp;deletedMeetings)
+        if err != nil </span><span class="cov0" title="0">{
+                return err // Abbruch, falls hier was schiefgeht
+        }</span>
+
+        // 2. Jetzt, wo der Slot frei ist, können wir ihn selbst gefahrlos löschen
+        <span class="cov0" title="0">var deletedSlot []interface{}
+        return database.SupabaseClient.DB.From("slots").Delete().Eq("id", idStr).Execute(&amp;deletedSlot)</span>
+}
+</pre>
+		
+		<pre class="file" id="file36" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "fmt"
+        "log"
+        "net/http"
+        "os"
+        "strconv"
+)
+
+func HardDeleteStudentAndUser(studentID int) error <span class="cov0" title="0">{
+        idStr := strconv.Itoa(studentID)
+        log.Printf("[DEBUG] Starte Löschvorgang für Student-ID: %s", idStr)
+
+        // 1. SCHRITT: Hol die interne UUID aus der 'students' Tabelle
+        var studentResult []map[string]interface{}
+        err := database.SupabaseClient.DB.From("students").Select("user_id").Eq("id", idStr).Execute(&amp;studentResult)
+
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("[ERROR] DB-Fehler beim Suchen des Studenten: %v", err)
+                return err
+        }</span>
+        <span class="cov0" title="0">if len(studentResult) == 0 </span><span class="cov0" title="0">{
+                log.Printf("[WARN] Student mit ID %s nicht in 'students' Tabelle gefunden", idStr)
+                return fmt.Errorf("student nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">internalUUID := studentResult[0]["user_id"].(string)
+        log.Printf("[DEBUG] Interne UUID gefunden: %s", internalUUID)
+
+        // 2. SCHRITT: Hol die ECHTE Auth-UUID aus der 'users' Tabelle
+        var userResult []map[string]interface{}
+        err = database.SupabaseClient.DB.From("users").Select("user_id").Eq("id", internalUUID).Execute(&amp;userResult)
+
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("[ERROR] DB-Fehler beim Suchen der Auth-UUID: %v", err)
+                return err
+        }</span>
+        <span class="cov0" title="0">if len(userResult) == 0 </span><span class="cov0" title="0">{
+                log.Printf("[WARN] Kein User-Eintrag für interne UUID %s gefunden", internalUUID)
+                return fmt.Errorf("user-daten nicht gefunden")
+        }</span>
+
+        <span class="cov0" title="0">realAuthUUID := userResult[0]["user_id"].(string)
+        log.Printf("[DEBUG] ECHTE Supabase-Auth-UUID identifiziert: %s", realAuthUUID)
+
+        // 3. SCHRITT: Tabellen leeren
+        log.Println("[DEBUG] Lösche verknüpfte Meetings und Preferences...")
+        database.SupabaseClient.DB.From("meetings").Delete().Eq("student_id", idStr).Execute(nil)
+        database.SupabaseClient.DB.From("preferences").Delete().Eq("student_id", idStr).Execute(nil)
+
+        log.Println("[DEBUG] Lösche Eintrag aus 'students'...")
+        database.SupabaseClient.DB.From("students").Delete().Eq("id", idStr).Execute(nil)
+
+        log.Println("[DEBUG] Lösche Eintrag aus 'users'...")
+        database.SupabaseClient.DB.From("users").Delete().Eq("id", internalUUID).Execute(nil)
+
+        // 4. SCHRITT: Den Auth-User bei Supabase löschen
+        log.Printf("[DEBUG] Sende DELETE-Request an Supabase Auth-API für UUID: %s", realAuthUUID)
+
+        supabaseURL := os.Getenv("SUPABASE_URL")
+        supabaseKey := os.Getenv("SUPABASE_KEY")
+        deleteURL := fmt.Sprintf("%s/auth/v1/admin/users/%s", supabaseURL, realAuthUUID)
+
+        req, _ := http.NewRequest("DELETE", deleteURL, nil)
+        req.Header.Add("Authorization", "Bearer "+supabaseKey)
+        req.Header.Add("apikey", supabaseKey)
+
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("[ERROR] Netzwerkfehler bei Auth-API: %v", err)
+                return err
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        log.Printf("[DEBUG] Supabase Auth-API Antwort-Status: %d", resp.StatusCode)
+
+        if resp.StatusCode != http.StatusOK </span><span class="cov0" title="0">{
+                log.Printf("[ERROR] Supabase hat das Löschen abgelehnt. Status: %d", resp.StatusCode)
+                return fmt.Errorf("auth-delete fehlgeschlagen (Status %d)", resp.StatusCode)
+        }</span>
+
+        <span class="cov0" title="0">log.Printf("[SUCCESS] Student %s (Auth: %s) wurde vollständig eliminiert.", idStr, realAuthUUID)
+        return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file37" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+
+        "github.com/google/uuid"
+)
+
+func CreateStudentProfile(authUUID string, req models.InviteRequest) error <span class="cov0" title="0">{
+        internalUUID := uuid.New().String()
+
+        // 1. Eintrag in public.users
+        userInsert := map[string]interface{}{
+                "id":         internalUUID, // Das ist der PK
+                "user_id":    authUUID,     // ID vom Supabase Auth
+                "role":       "student",
+                "first_name": req.FirstName,
+                "last_name":  req.LastName,
+        }
+
+        err := database.SupabaseClient.DB.From("users").Insert(userInsert).Execute(nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return err // Falls hier was schiefläuft, direkt raus
+        }</span>
+
+        // 2. Eintrag in public.students
+        <span class="cov0" title="0">studentInsert := map[string]interface{}{
+                "user_id":       internalUUID, // Muss exakt die ID von oben sein
+                "study_program": req.StudyProgram,
+        }
+
+        // Nur mitschicken, wenn vorhanden (bei 0 wird es in DB NULL)
+        if req.Semester &gt; 0 </span><span class="cov0" title="0">{
+                studentInsert["semester"] = req.Semester
+        }</span>
+
+        <span class="cov0" title="0">err = database.SupabaseClient.DB.From("students").Insert(studentInsert).Execute(nil)
+        return err</span>
+}
+</pre>
+		
+		<pre class="file" id="file38" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "encoding/json"
+        "errors"
+        "fmt"
+        "io"
+        "net/http"
+        "os"
+        "strconv"
+
+        "github.com/google/uuid"
+)
+
+// ErrStudentNotFound wird zurückgegeben, wenn keine Zeile in students zur ID existiert.
+var ErrStudentNotFound = errors.New("student nicht gefunden")
+
+// GetAllStudents holt alle Studenten und verknüpft sie mit den User-Daten
+func GetAllStudents() ([]models.Student, error) <span class="cov0" title="0">{
+        var students []models.Student
+
+        fmt.Println("--- DEBUG: Lade Studenten ---")
+        err := database.SupabaseClient.DB.From("students").Select("*").Execute(&amp;students)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("--- FEHLER STUDENTS: %v\n", err)
+                return nil, err
+        }</span>
+
+        <span class="cov0" title="0">fmt.Println("--- DEBUG: Lade User per RAW HTTP ---")
+
+        supabaseURL := os.Getenv("SUPABASE_URL")
+        supabaseKey := os.Getenv("SUPABASE_KEY")
+        url := fmt.Sprintf("%s/rest/v1/users?select=id,first_name,last_name", supabaseURL)
+
+        req, err := http.NewRequest("GET", url, nil)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("fehler beim Erstellen des Requests: %v", err)
+        }</span>
+
+        <span class="cov0" title="0">req.Header.Add("apikey", supabaseKey)
+        req.Header.Add("Authorization", "Bearer "+supabaseKey)
+
+        client := &amp;http.Client{}
+        resp, err := client.Do(req)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("HTTP Request fehlgeschlagen: %v", err)
+        }</span>
+        <span class="cov0" title="0">defer resp.Body.Close()
+
+        // Wir lesen die GANZ ROHE Antwort von Supabase
+        bodyBytes, _ := io.ReadAll(resp.Body)
+        bodyString := string(bodyBytes)
+
+        fmt.Printf("--- RAW SUPABASE ANTWORT USERS (Status %d) ---\n%s\n---------------------------------------\n", resp.StatusCode, bodyString)
+
+        if resp.StatusCode != 200 </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("supabase API Fehler: %s", bodyString)
+        }</span>
+
+        <span class="cov0" title="0">var rawUsers []map[string]interface{}
+        err = json.Unmarshal(bodyBytes, &amp;rawUsers)
+        if err != nil </span><span class="cov0" title="0">{
+                fmt.Printf("--- JSON PARSE FEHLER: %v\n", err)
+                return nil, err
+        }</span>
+
+        // Mapping bauen
+        <span class="cov0" title="0">nameMap := make(map[string]struct{ first, last string })
+        for _, u := range rawUsers </span><span class="cov0" title="0">{
+                id, _ := u["id"].(string)
+                fName, _ := u["first_name"].(string)
+                lName, _ := u["last_name"].(string)
+
+                if id != "" </span><span class="cov0" title="0">{
+                        nameMap[id] = struct{ first, last string }{fName, lName}
+                }</span>
+        }
+
+        // Zusammenführen
+        <span class="cov0" title="0">for i := range students </span><span class="cov0" title="0">{
+                if val, ok := nameMap[students[i].UserID]; ok </span><span class="cov0" title="0">{
+                        students[i].FirstName = val.first
+                        students[i].LastName = val.last
+                }</span>
+        }
+
+        <span class="cov0" title="0">fmt.Printf("--- ERFOLG: %d Studenten und %d User gemappt ---\n", len(students), len(rawUsers))
+        return students, nil</span>
+}
+
+// UpdateStudent wendet partielle Änderungen auf students an und optional Vor-/Nachname in users.
+func UpdateStudent(studentID int, input models.UpdateStudentInput) error <span class="cov0" title="0">{
+        idStr := strconv.Itoa(studentID)
+
+        var rows []struct {
+                UserID string `json:"user_id"`
+        }
+        err := database.SupabaseClient.DB.From("students").Select("user_id").Eq("id", idStr).Execute(&amp;rows)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">if len(rows) == 0 </span><span class="cov0" title="0">{
+                return ErrStudentNotFound
+        }</span>
+        <span class="cov0" title="0">internalUserUUID := rows[0].UserID
+
+        updateData := make(map[string]interface{})
+        if input.StudyProgram != nil </span><span class="cov0" title="0">{
+                updateData["study_program"] = *input.StudyProgram
+        }</span>
+        <span class="cov0" title="0">if input.Semester != nil </span><span class="cov0" title="0">{
+                updateData["semester"] = *input.Semester
+        }</span>
+
+        <span class="cov0" title="0">if len(updateData) &gt; 0 </span><span class="cov0" title="0">{
+                var updated []map[string]interface{}
+                err = database.SupabaseClient.DB.From("students").Update(updateData).Eq("id", idStr).Execute(&amp;updated)
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov0" title="0">if len(updated) == 0 </span><span class="cov0" title="0">{
+                        return ErrStudentNotFound
+                }</span>
+        }
+
+        <span class="cov0" title="0">if input.FirstName != nil || input.LastName != nil </span><span class="cov0" title="0">{
+                uid, err := uuid.Parse(internalUserUUID)
+                if err != nil </span><span class="cov0" title="0">{
+                        return fmt.Errorf("ungültige user_id für student: %w", err)
+                }</span>
+                <span class="cov0" title="0">return UpdateUserNames(uid, models.UpdateUserNameInput{
+                        FirstName: input.FirstName,
+                        LastName:  input.LastName,
+                })</span>
+        }
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file39" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "errors"
+        "strconv"
+        "strings"
+        "time"
+)
+
+func UpdateCompany(companyID int, input models.UpdateCompanyInput) error <span class="cov0" title="0">{
+        // 1. Wir bauen uns eine leere Map für die Felder, die sich wirklich ändern
+        updateData := make(map[string]interface{})
+        removedImageURLs := make([]string, 0)
+
+        // 2. Wir prüfen jeden Pointer: Ist er nicht nil, hat der User ihn im JSON mitgeschickt!
+        if input.Name != nil </span><span class="cov0" title="0">{
+                updateData["name"] = *input.Name // Den echten Wert (*input) in die Map legen
+        }</span>
+        <span class="cov0" title="0">if input.ShortDescription != nil </span><span class="cov0" title="0">{
+                updateData["short_description"] = *input.ShortDescription
+        }</span>
+        <span class="cov0" title="0">if input.Description != nil </span><span class="cov0" title="0">{
+                updateData["description"] = *input.Description
+        }</span>
+        <span class="cov0" title="0">if input.Website != nil </span><span class="cov0" title="0">{
+                updateData["website"] = *input.Website
+        }</span>
+        <span class="cov0" title="0">if input.LogoURL != nil </span><span class="cov0" title="0">{
+                updateData["logo_url"] = *input.LogoURL
+        }</span>
+        <span class="cov0" title="0">if input.ImageURLs != nil </span><span class="cov0" title="0">{
+                updateData["image_urls"] = *input.ImageURLs
+
+                company, err := GetCompanyByID(companyID)
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+
+                <span class="cov0" title="0">oldSet := splitImageURLsToSet(company.ImageURLs)
+                newSet := splitImageURLsToSet(*input.ImageURLs)
+                for oldURL := range oldSet </span><span class="cov0" title="0">{
+                        if _, stillPresent := newSet[oldURL]; !stillPresent </span><span class="cov0" title="0">{
+                                removedImageURLs = append(removedImageURLs, oldURL)
+                        }</span>
+                }
+        }
+        <span class="cov0" title="0">if input.Active != nil </span><span class="cov0" title="0">{
+                updateData["active"] = *input.Active
+        }</span>
+
+        // 3. Sicherheitscheck: Wurde überhaupt etwas mitgeschickt?
+        <span class="cov0" title="0">if len(updateData) == 0 </span><span class="cov0" title="0">{
+                return errors.New("keine daten zum updaten gefunden")
+        }</span>
+
+        // 4. Den Zeitstempel bei jedem Update automatisch erneuern
+        <span class="cov0" title="0">updateData["last_updated"] = time.Now().UTC().Format(time.RFC3339)
+
+        var updated []models.Company
+
+        // 5. Ab an Supabase damit!
+        err := database.SupabaseClient.DB.
+                From("companies").
+                Update(updateData).
+                Eq("id", strconv.Itoa(companyID)).
+                Execute(&amp;updated)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Best effort: entfernte URLs auch im Image-Bucket loeschen (ohne PATCH zu blockieren).
+        <span class="cov0" title="0">for _, removedURL := range removedImageURLs </span><span class="cov0" title="0">{
+                if err := DeleteCompanyImageObjectByURL(removedURL); err != nil </span><span class="cov0" title="0">{
+                        // no-op: DB-Update ist erfolgreich, Storage-Cleanup kann spaeter separat passieren
+                        continue</span>
+                }
+        }
+        <span class="cov0" title="0">return nil</span>
+}
+
+func splitImageURLsToSet(raw string) map[string]struct{} <span class="cov0" title="0">{
+        result := make(map[string]struct{})
+        for _, part := range strings.Split(raw, ";") </span><span class="cov0" title="0">{
+                value := strings.TrimSpace(part)
+                if value == "" </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov0" title="0">result[value] = struct{}{}</span>
+        }
+        <span class="cov0" title="0">return result</span>
+}
+</pre>
+		
+		<pre class="file" id="file40" style="display: none">package repository
+
+import (
+        "dual-job-date-server/internal/database"
+        "dual-job-date-server/internal/models"
+        "errors"
+
+        "github.com/google/uuid"
+)
+
+// UpdateUserNames aktualisiert Vor- und Nachname eines Users via Supabase.
+func UpdateUserNames(userID uuid.UUID, input models.UpdateUserNameInput) error <span class="cov0" title="0">{
+        // 1. Wir bauen uns eine leere Map für die Felder, die sich wirklich ändern
+        updateData := make(map[string]interface{})
+
+        // 2. Wir prüfen jeden Pointer: Ist er nicht nil, hat der User ihn im JSON mitgeschickt!
+        if input.FirstName != nil </span><span class="cov0" title="0">{
+                updateData["first_name"] = *input.FirstName
+        }</span>
+        <span class="cov0" title="0">if input.LastName != nil </span><span class="cov0" title="0">{
+                updateData["last_name"] = *input.LastName
+        }</span>
+
+        // 3. Sicherheitscheck: Wurde überhaupt etwas mitgeschickt?
+        <span class="cov0" title="0">if len(updateData) == 0 </span><span class="cov0" title="0">{
+                return errors.New("keine daten zum updaten gefunden")
+        }</span>
+
+        // Eine Variable für die Antwort von Supabase (wir nehmen hier eine generische Map,
+        // falls du noch kein komplettes models.User Struct hast. Ansonsten geht auch []models.User)
+        <span class="cov0" title="0">var updated []map[string]interface{}
+
+        // 4. Ab an Supabase damit!
+        // Wichtig: Supabase erwartet bei Eq() einen String, also machen wir userID.String()
+        err := database.SupabaseClient.DB.
+                From("users").
+                Update(updateData).
+                Eq("id", userID.String()).
+                Execute(&amp;updated)
+
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // 5. Optionaler Check: Existiert die ID überhaupt?
+        // Supabase wirft bei einem UPDATE auf eine nicht-existierende ID keinen Fehler,
+        // es gibt einfach ein leeres Array zurück.
+        <span class="cov0" title="0">if len(updated) == 0 </span><span class="cov0" title="0">{
+                return errors.New("kein benutzer mit dieser id gefunden")
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file41" style="display: none">package routes
+
+import (
+        "net/http"
+
+        "dual-job-date-server/internal/auth"
+        "dual-job-date-server/internal/handlers"
+
+        "github.com/gorilla/mux"
+)
+
+func NewRouter() *mux.Router <span class="cov8" title="1">{
+        r := mux.NewRouter()
+
+        r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) </span><span class="cov8" title="1">{
+                w.Write([]byte("Server läuft!"))
+        }</span>).Methods("GET")
+
+        <span class="cov8" title="1">r.HandleFunc("/api/resend-invite", handlers.HandleResendInvite).Methods("POST")
+
+        api := r.PathPrefix("/api").Subrouter()
+        // JWT Middleware für alle geschützten Routen
+        api.Use(auth.JWTMiddleware)
+
+        // Firmen-Endpunkte
+        // Studenten sehen hier die Liste zum Voten
+
+        // Firmen-Endpunkte
+        // Studenten &amp; Admins sehen hier die Liste zum Voten/Verwalten
+        api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
+        api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
+        api.HandleFunc("/companies/{id}/logo", auth.RequireSelfOrAdmin()(handlers.UploadCompanyLogoHandler)).Methods("POST")
+        api.HandleFunc("/companies/{id}/images", auth.RequireSelfOrAdmin()(handlers.UploadCompanyImageHandler)).Methods("POST")
+
+        // --- HELPER ---
+        // Nur Admin darf die Datenbank seeden
+        api.HandleFunc("/seed", auth.RequireRole("admin")(handlers.SeedDatabase)).Methods("GET")
+        api.HandleFunc("/invite", auth.RequireRole("admin")(handlers.InviteUserHandler)).Methods("POST")
+
+        // --- COMPANIES ---
+        // Studenten &amp; Admins dürfen die aktiven Firmen sehen
+        api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
+
+        // Nur Studenten dürfen voten
+        api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
+
+        // Admin oder Company selbst darf updaten/Logo hochladen
+        api.HandleFunc("/companies/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateCompanyHandler)).Methods("PATCH")
+        api.HandleFunc("/companies/{id}/logo", auth.RequireSelfOrAdmin()(handlers.UploadCompanyLogoHandler)).Methods("POST")
+
+        // --- STUDENTS ---
+        // Nur Admin darf alle Studenten sehen
+        api.HandleFunc("/students", auth.RequireRole("admin")(handlers.GetAllStudentsHandler)).Methods("GET")
+
+        // Eigene Daten: Admin oder Student selbst
+        api.HandleFunc("/students/{id}/preferences", auth.RequireSelfOrAdmin()(handlers.GetPreferencesByStudentHandler)).Methods("GET")
+        api.HandleFunc("/students/{id}/meetings", auth.RequireSelfOrAdmin()(handlers.GetMeetingsByStudentHandler)).Methods("GET")
+        api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateStudentHandler)).Methods("PATCH")
+        api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin()(handlers.DeleteStudentHandler)).Methods("DELETE")
+
+        // --- GENERAL / SYSTEM ---
+        // Admin triggert den Matching-Algo
+        api.HandleFunc("/meetings/assign", auth.RequireRole("admin")(handlers.AssignMeetingsByPreferencesHandler)).Methods("POST")
+
+        // Alle eingeloggten User dürfen Events, Slots und sich selbst sehen
+        api.HandleFunc("/events/active", handlers.GetActiveEventHandler).Methods("GET")
+        api.HandleFunc("/slots", handlers.GetAllSlotsHandler).Methods("GET")
+        api.HandleFunc("/me", handlers.GetMyIDHandler).Methods("GET")
+
+        // Admin ODER User selbst dürfen Account updaten
+        api.HandleFunc("/users/{id}", auth.RequireSelfOrAdmin()(handlers.UpdateUserNamesHandler)).Methods("PATCH")
+
+        // Nur Admin darf Slots löschen
+        api.HandleFunc("/slots/{id}", auth.RequireRole("admin")(handlers.DeleteSlotHandler)).Methods("DELETE")
+
+        return r</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
