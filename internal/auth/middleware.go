@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv" // 🟢 NEU: Wichtig für das sichere Parsen der ID
 	"strings"
 
 	"dual-job-date-server/internal/database" // Dein globaler DB Client!
@@ -46,10 +47,7 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// --- NEU: Supabase Abfrage direkt hier! ---
 		var userResult []map[string]interface{}
-
-		// Select("id, role") statt nur Select("role")
 		dbErr := database.SupabaseClient.DB.From("users").Select("id,role").Eq("user_id", userID).Execute(&userResult)
 
 		if dbErr != nil {
@@ -62,49 +60,59 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// Rolle und DB-ID aus dem Ergebnis extrahieren
 		role, roleOk := userResult[0]["role"].(string)
-		dbUserID, idOk := userResult[0]["id"].(string) // <-- HIER IST DIE ECHTE DB-UUID!
+		dbUserID, idOk := userResult[0]["id"].(string)
 
 		if !roleOk || !idOk {
 			http.Error(w, "User-Datenbankeintrag unvollständig", http.StatusInternalServerError)
 			return
 		}
 
-		// 1. Hier nutzen wir := (weil ctx neu erschaffen wird) und r.Context() als Basis
 		ctx := context.WithValue(r.Context(), "userID", userID)
-
-		// 2. Ab hier nutzen wir NUR NOCH = (weil ctx schon existiert) und stapeln auf dem aktuellen ctx!
 		ctx = context.WithValue(ctx, "auth_user_id", userID)
 		ctx = context.WithValue(ctx, "db_user_id", dbUserID)
 		ctx = context.WithValue(ctx, "role", role)
+
 		// ==========================================
-		// NEU: Spezifische Integer-IDs (Student / Company) laden
+		// 🟢 FIX: Sicheres Parsen der IDs
 		// ==========================================
 		if role == "student" {
 			var studentResult []map[string]interface{}
-			err := database.SupabaseClient.DB.From("students").Select("id").Eq("user_id", userID).Execute(&studentResult)
+			// TIPP: Falls 'students' auf die neue users-Tabelle verweist, ändere 'userID' in 'dbUserID'
+			err := database.SupabaseClient.DB.From("students").Select("id").Eq("user_id", dbUserID).Execute(&studentResult)
 
 			if err == nil && len(studentResult) > 0 {
-				// WICHTIG: Supabase/JSON-Unmarshaling macht aus Zahlen standardmäßig float64!
-				if sID, ok := studentResult[0]["id"].(float64); ok {
-					ctx = context.WithValue(ctx, "student_id", int(sID))
+				var sID int
+				// Robustes Abfangen: Egal ob Supabase Float oder String liefert!
+				switch v := studentResult[0]["id"].(type) {
+				case float64:
+					sID = int(v)
+				case string:
+					sID, _ = strconv.Atoi(v)
+				}
+				if sID != 0 {
+					ctx = context.WithValue(ctx, "student_id", sID)
 				}
 			}
 		} else if role == "company" {
 			var companyResult []map[string]interface{}
-			err := database.SupabaseClient.DB.From("companies").Select("id").Eq("user_id", userID).Execute(&companyResult)
+			err := database.SupabaseClient.DB.From("companies").Select("id").Eq("user_id", dbUserID).Execute(&companyResult)
 
 			if err == nil && len(companyResult) > 0 {
-				if cID, ok := companyResult[0]["id"].(float64); ok {
-					ctx = context.WithValue(ctx, "company_id", int(cID))
+				var cID int
+				switch v := companyResult[0]["id"].(type) {
+				case float64:
+					cID = int(v)
+				case string:
+					cID, _ = strconv.Atoi(v)
+				}
+				if cID != 0 {
+					ctx = context.WithValue(ctx, "company_id", cID)
 				}
 			}
 		}
 
-		// Den aktualisierten Context an den Request anhängen
 		r = r.WithContext(ctx)
-
 		next.ServeHTTP(w, r)
 	})
 }

@@ -43,9 +43,9 @@ func RequireSelfOrAdmin(entityType string) func(http.HandlerFunc) http.HandlerFu
 
 			role, _ := r.Context().Value("role").(string)
 
-			// 🟢 NEU: Wir laden die echte Datenbank-UUID aus dem Context!
+			// 🟢 Echte Datenbank-UUID & IDs laden
 			dbUserID, _ := r.Context().Value("db_user_id").(string)
-			authUserID, _ := r.Context().Value("auth_user_id").(string) // Fürs saubere Logging
+			authUserID, _ := r.Context().Value("auth_user_id").(string)
 
 			studentID, _ := r.Context().Value("student_id").(int)
 			companyID, _ := r.Context().Value("company_id").(int)
@@ -65,7 +65,6 @@ func RequireSelfOrAdmin(entityType string) func(http.HandlerFunc) http.HandlerFu
 			// USER (UUID)
 			// ==========================================
 			if entityType == "user" {
-				// 🟢 NEU: Vergleicht die URL-ID mit der Datenbank-ID
 				if targetID == dbUserID {
 					next.ServeHTTP(w, r)
 					return
