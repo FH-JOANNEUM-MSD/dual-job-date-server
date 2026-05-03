@@ -81,6 +81,9 @@ func main() {
 		{"PATCH", "/api/companies/" + otherCompanyID, `{"name": "Lannister Gold & Loans", "active": true}`},
 		{"POST", "/api/companies/" + companyID + "/logo", `{}`},
 		{"POST", "/api/companies/" + companyID + "/images", `{}`},
+		//NEU: Teste unsere neue GET-Route (Eigene ID vs Fremde ID)
+		{"GET", "/api/companies/" + companyID, ""},
+		{"GET", "/api/companies/" + otherCompanyID, ""},
 
 		{"GET", "/api/students", ""},
 		{"GET", "/api/students/" + studentID + "/preferences", ""},
