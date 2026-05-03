@@ -43,6 +43,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/companies/{id}", auth.RequireSelfOrAdmin("company")(handlers.UpdateCompanyHandler)).Methods("PATCH")
 	api.HandleFunc("/companies/{id}/logo", auth.RequireSelfOrAdmin("company")(handlers.UploadCompanyLogoHandler)).Methods("POST")
 	api.HandleFunc("/companies/{id}/images", auth.RequireSelfOrAdmin("company")(handlers.UploadCompanyImageHandler)).Methods("POST")
+	api.HandleFunc("/companies/{id}", auth.RequireSelfOrAdmin("company")(handlers.GetCompanyHandler)).Methods("GET")
 
 	// --- STUDENTS ---
 	// Listen
