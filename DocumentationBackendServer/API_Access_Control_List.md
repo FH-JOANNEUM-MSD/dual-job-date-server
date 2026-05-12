@@ -7,7 +7,8 @@
 | **User** | `/api/users/{id}` | `PATCH` | Admin, Student, Company | Nur eigene ID |
 | **Auth** | `/api/me` | `GET` | Alle | Authentifizierter User |
 | **Public-ish** | `/api/resend-invite` | `POST` | Alle (Public) | Kein Token nötig |
-| **Companies** | `/api/companies/active` | `GET` | Admin, Student | - |
+| **Companies** | `/api/companies` | `GET` | Admin | Alle Einträge inkl. inaktiver Firmen |
+| **Companies** | `/api/companies/active` | `GET` | Admin, Student | Nur aktive Firmen |
 | **Companies** | `/api/companies/{id}/vote` | `POST` | Student | - |
 | **Companies** | `/api/companies/{id}/logo` | `POST` | Admin, Company | Nur eigene Company-ID |
 | **Companies** | `/api/companies/{id}/images`| `POST` | Admin, Company | Nur eigene Company-ID |

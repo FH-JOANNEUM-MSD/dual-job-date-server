@@ -8,6 +8,18 @@ import (
 	"time"
 )
 
+// GetAllCompanies returns every company row (active and inactive). Intended for admin listing only.
+func GetAllCompanies() ([]models.Company, error) {
+	var companies []models.Company
+
+	err := database.SupabaseClient.DB.From("companies").Select("*").Execute(&companies)
+	if err != nil {
+		return nil, err
+	}
+
+	return companies, nil
+}
+
 func GetActiveCompanies() ([]models.Company, error) {
 	var companies []models.Company
 

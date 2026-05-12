@@ -37,3 +37,19 @@ func GetActiveCompaniesHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(companies)
 }
+
+func GetAllCompaniesHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	companies, err := repository.GetAllCompanies()
+	if err != nil {
+		http.Error(w, "Fehler beim Laden der Unternehmen: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if companies == nil {
+		companies = []models.Company{}
+	}
+
+	json.NewEncoder(w).Encode(companies)
+}

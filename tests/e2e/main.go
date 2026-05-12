@@ -52,7 +52,7 @@ func main() {
 	} else {
 		fmt.Printf("✅ Echte Datenbank-ID ermittelt: %s\n", currentUserID)
 	}
-	fmt.Println("=========================================\n")
+	fmt.Println("=========================================")
 
 	// Report-Datei erstellen
 	os.MkdirAll("reports", os.ModePerm)
@@ -75,6 +75,7 @@ func main() {
 		{"POST", "/api/invite", `{"email": "company.invite@example.com", "role": "company", "company_name": "Lannister Gold & Loans"}`},
 		{"POST", "/api/meetings/assign", `{"dry_run": true, "include_inactive_companies": false, "replace_existing": false}`},
 
+		{"GET", "/api/companies", ""},
 		{"GET", "/api/companies/active", ""},
 		{"POST", "/api/companies/" + companyID + "/vote", `{"vote": "like"}`},
 		{"PATCH", "/api/companies/" + companyID, `{"name": "Lannister Gold & Loans", "active": true}`},
