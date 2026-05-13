@@ -117,3 +117,27 @@ func TestUploadCompanyLogoHandler_InvalidCompanyID_ReturnsBadRequest(t *testing.
 		t.Fatalf("expected status %d, got %d", http.StatusBadRequest, rr.Code)
 	}
 }
+
+func TestGetMeetingsByCompanyHandler_CompanyIDValidation(t *testing.T) {
+	tests := []struct {
+		name string
+		id   string
+		want int
+	}{
+		{"non_numeric", "not-a-number", http.StatusBadRequest},
+		{"zero", "0", http.StatusBadRequest},
+		{"negative", "-3", http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodGet, "/companies/"+tt.id+"/meetings", nil)
+			req = mux.SetURLVars(req, map[string]string{"id": tt.id})
+			rr := httptest.NewRecorder()
+			GetMeetingsByCompanyHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}

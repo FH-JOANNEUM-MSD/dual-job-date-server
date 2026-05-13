@@ -52,7 +52,7 @@ func main() {
 	} else {
 		fmt.Printf("✅ Echte Datenbank-ID ermittelt: %s\n", currentUserID)
 	}
-	fmt.Println("=========================================\n")
+	fmt.Println("=========================================")
 
 	// Report-Datei erstellen
 	os.MkdirAll("reports", os.ModePerm)
@@ -81,6 +81,8 @@ func main() {
 		{"PATCH", "/api/companies/" + otherCompanyID, `{"name": "Lannister Gold & Loans", "active": true}`},
 		{"POST", "/api/companies/" + companyID + "/logo", `{}`},
 		{"POST", "/api/companies/" + companyID + "/images", `{}`},
+		{"GET", "/api/companies/" + companyID + "/meetings", ""},
+		{"GET", "/api/companies/" + otherCompanyID + "/meetings", ""},
 		//NEU: Teste unsere neue GET-Route (Eigene ID vs Fremde ID)
 		{"GET", "/api/companies/" + companyID, ""},
 		{"GET", "/api/companies/" + otherCompanyID, ""},

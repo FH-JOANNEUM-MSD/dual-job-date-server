@@ -36,6 +36,18 @@ func TestNewRouter_ProtectedApiRoute_RequiresJWT(t *testing.T) {
 	}
 }
 
+func TestNewRouter_GetCompanyMeetings_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/api/companies/1/meetings", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
 func TestNewRouter_ResendInviteRoute_IsPublicAndParsesBody(t *testing.T) {
 	router := NewRouter()
 

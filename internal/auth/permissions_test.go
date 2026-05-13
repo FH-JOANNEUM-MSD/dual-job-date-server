@@ -51,7 +51,7 @@ func TestRequireRole(t *testing.T) {
 }
 
 func TestRequireSelfOrAdmin(t *testing.T) {
-	protected := RequireSelfOrAdmin("admin")(func(w http.ResponseWriter, r *http.Request) {
+	protected := RequireSelfOrAdmin("user")(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -69,10 +69,11 @@ func TestRequireSelfOrAdmin(t *testing.T) {
 		}
 	})
 
-	t.Run("allows user for own id", func(t *testing.T) {
+	t.Run("allows user for own db id", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPatch, "/users/u-1", nil)
 		req = req.WithContext(context.WithValue(req.Context(), "role", "student"))
-		req = req.WithContext(context.WithValue(req.Context(), "userID", "u-1"))
+		req = req.WithContext(context.WithValue(req.Context(), "userID", "auth-subject-99"))
+		req = req.WithContext(context.WithValue(req.Context(), "db_user_id", "u-1"))
 		req = mux.SetURLVars(req, map[string]string{"id": "u-1"})
 		rr := httptest.NewRecorder()
 
@@ -87,6 +88,7 @@ func TestRequireSelfOrAdmin(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPatch, "/users/u-2", nil)
 		req = req.WithContext(context.WithValue(req.Context(), "role", "student"))
 		req = req.WithContext(context.WithValue(req.Context(), "userID", "u-1"))
+		req = req.WithContext(context.WithValue(req.Context(), "db_user_id", "u-1"))
 		req = mux.SetURLVars(req, map[string]string{"id": "u-2"})
 		rr := httptest.NewRecorder()
 
