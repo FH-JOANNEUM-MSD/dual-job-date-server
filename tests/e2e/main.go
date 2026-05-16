@@ -54,6 +54,11 @@ func main() {
 	}
 	fmt.Println("=========================================")
 
+	if os.Getenv("E2E_RUN_SEED") != "1" {
+		fmt.Println("Hinweis: GET /api/seed wird übersprungen (E2E_RUN_SEED=1 setzen für Seed-Endpunkt-Test — schreibt ggf. viele Daten in die DB).")
+		fmt.Println()
+	}
+
 	// Report-Datei erstellen
 	os.MkdirAll("reports", os.ModePerm)
 	timestamp := time.Now().Format("2006-01-02_15-04-05")
@@ -74,7 +79,13 @@ func main() {
 		{"POST", "/api/invite", `{"email": "student.invite@example.com", "role": "student", "study_program": "Software Engineering", "semester": 4}`},
 		{"POST", "/api/invite", `{"email": "company.invite@example.com", "role": "company", "company_name": "Lannister Gold & Loans"}`},
 		{"POST", "/api/meetings/assign", `{"dry_run": true, "include_inactive_companies": false, "replace_existing": false}`},
+	}
 
+	if os.Getenv("E2E_RUN_SEED") == "1" {
+		tests = append(tests, Test{"GET", "/api/seed", ""})
+	}
+
+	tests = append(tests, []Test{
 		{"GET", "/api/companies/active", ""},
 		{"POST", "/api/companies/" + companyID + "/vote", `{"vote": "like"}`},
 		{"PATCH", "/api/companies/" + companyID, `{"name": "Lannister Gold & Loans", "active": true}`},
@@ -100,7 +111,7 @@ func main() {
 		{"GET", "/api/events/active", ""},
 		{"GET", "/api/slots", ""},
 		{"GET", "/api/me", ""},
-	}
+	}...)
 
 	deleteTests := []Test{
 		{"DELETE", "/api/slots/1", ""},
