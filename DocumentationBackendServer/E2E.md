@@ -35,6 +35,7 @@ Typische Variablen sind:
 - `OTHER_STUDENT_ID`
 - `TEST_COMPANY_ID`
 - `OTHER_USER_ID` optional, sonst wird ein Fallback verwendet
+- **`E2E_RUN_SEED`** optional: nur wenn `1`, wird **`GET /api/seed`** in den Lauf aufgenommen. Ohne diese Variable (oder mit anderem Wert) wird dieser Endpunkt **nicht** aufgerufen, damit die Datenbank beim normalen E2E-Lauf nicht mit dem Seed beschrieben wird. **Nur** auf Wegwerf-/Test-Datenbanken mit `E2E_RUN_SEED=1` arbeiten.
 
 ## Den Runner starten
 
@@ -51,9 +52,17 @@ cd tests/e2e
 go run .
 ```
 
+**Optional — `GET /api/seed` mit testen** (fügt Daten in Supabase ein, siehe ACL [API_Access_Control_List.md](./API_Access_Control_List.md)):
+
+```bash
+cd tests/e2e
+E2E_RUN_SEED=1 go run .
+```
+
 Der Runner:
 
 - lädt `.env.test`
+- ohne `E2E_RUN_SEED=1`: kurzer Hinweis in der Konsole, dass **`GET /api/seed`** übersprungen wird
 - meldet sich als Admin, Student und Company-User an
 - ruft `/api/me` auf, um die echte DB-ID des Student-Users zu holen
 - führt dann eine Liste von GET, POST, PATCH und DELETE Requests gegen die API aus
@@ -64,6 +73,7 @@ Der Runner:
 Der manuelle Runner testet unter anderem:
 
 - die Root-Route `/`
+- **`GET /api/seed`** — nur wenn `E2E_RUN_SEED=1` gesetzt ist; sonst wird der Aufruf nicht ausgeführt. Erwartung bei aktivem Lauf: typischerweise **Admin** Zugriff, andere Rollen bzw. ungültiger Token **401/403** je nach Middleware (vgl. ACL). Bei erfolgreichem Seed antwortet der Server mit Datenbank-Schreibzugriffen — nur in passenden Umgebungen nutzen.
 - Invite- und Resend-Invite-Endpunkte
 - Meeting-Zuordnung
 - Company-Listen, Votes, Logo- und Bild-Endpunkte
@@ -90,5 +100,5 @@ Dieser Test erwartet auf `/` den Text `Server läuft!`.
 ## Kurz gesagt
 
 - `go test ./tests/e2e` prüft den einfachen Health-Check
-- `go run ./tests/e2e/main.go` führt den größeren manuellen API-Run aus
+- `go run ./tests/e2e/main.go` (oder von `tests/e2e/` aus `go run .`) führt den größeren manuellen API-Run aus; für **`GET /api/seed`** zusätzlich `E2E_RUN_SEED=1` setzen
 - beide sind auf echte Server-Antworten ausgelegt, nicht auf Mock-Daten
