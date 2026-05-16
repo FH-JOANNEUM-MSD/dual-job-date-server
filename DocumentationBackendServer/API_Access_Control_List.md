@@ -11,6 +11,7 @@
 | **Companies** | `/api/companies/{id}/vote` | `POST` | Student | - |
 | **Companies** | `/api/companies/{id}/logo` | `POST` | Admin, Company | Nur eigene Company-ID |
 | **Companies** | `/api/companies/{id}/images`| `POST` | Admin, Company | Nur eigene Company-ID |
+| **Companies** | `/api/companies/{id}/meetings` | `GET` | Admin, Company | Nur eigene Company-ID; enthält Slot-Zeiten + Studentenname |
 | **Companies** | `/api/companies/{id}` | `PATCH` | Admin, Company | Nur eigene Company-ID |
 | **Students** | `/api/students` | `GET` | Admin | - |
 | **Students** | `/api/students/{id}` | `PATCH` | Admin, Student | Nur eigene ID |

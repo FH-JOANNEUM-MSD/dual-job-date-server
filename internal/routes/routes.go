@@ -38,6 +38,7 @@ func NewRouter() *mux.Router {
 	// Listen & Interaktion
 	api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
 	api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
+	api.HandleFunc("/companies/{id}/meetings", auth.RequireSelfOrAdmin("company")(handlers.GetMeetingsByCompanyHandler)).Methods("GET")
 
 	// Self-Service (Entity-Typ: "company")
 	api.HandleFunc("/companies/{id}", auth.RequireSelfOrAdmin("company")(handlers.UpdateCompanyHandler)).Methods("PATCH")
