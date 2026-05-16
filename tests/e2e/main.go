@@ -76,6 +76,7 @@ func main() {
 		{"GET", "/", ""},
 		{"POST", "/api/resend-invite", `{"email": "arya.stark@westeros.com", "role": "student"}`},
 
+		{"GET", "/api/companies", ""},
 		{"POST", "/api/invite", `{"email": "student.invite@example.com", "role": "student", "study_program": "Software Engineering", "semester": 4}`},
 		{"POST", "/api/invite", `{"email": "company.invite@example.com", "role": "company", "company_name": "Lannister Gold & Loans"}`},
 		{"POST", "/api/meetings/assign", `{"dry_run": true, "include_inactive_companies": false, "replace_existing": false}`},

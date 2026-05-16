@@ -36,10 +36,22 @@ func TestNewRouter_ProtectedApiRoute_RequiresJWT(t *testing.T) {
 	}
 }
 
-func TestNewRouter_GetCompanyMeetings_RequiresJWT(t *testing.T) {
+func TestNewRouter_GetAllCompanies_RequiresJWT(t *testing.T) {
 	router := NewRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/api/companies/1/meetings", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/companies", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_GetActiveCompanies_StillRequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/api/companies/active", nil)
 	rr := httptest.NewRecorder()
 	router.ServeHTTP(rr, req)
 

@@ -35,7 +35,9 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/meetings/assign", auth.RequireRole("admin")(handlers.AssignMeetingsByPreferencesHandler)).Methods("POST")
 
 	// --- COMPANIES ---
-	// Listen & Interaktion
+	// Admin: alle Unternehmen (inkl. inaktive). Vor /companies/{id} registrieren, damit keine Kollision entsteht.
+	api.HandleFunc("/companies", auth.RequireRole("admin")(handlers.GetAllCompaniesHandler)).Methods("GET")
+	// Listen & Interaktion (nur aktive; Student + Admin für Voting/UI)
 	api.HandleFunc("/companies/active", auth.RequireRole("admin", "student")(handlers.GetActiveCompaniesHandler)).Methods("GET")
 	api.HandleFunc("/companies/{id}/vote", auth.RequireRole("student")(handlers.VoteCompanyHandler)).Methods("POST")
 	api.HandleFunc("/companies/{id}/meetings", auth.RequireSelfOrAdmin("company")(handlers.GetMeetingsByCompanyHandler)).Methods("GET")
