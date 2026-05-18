@@ -58,6 +58,9 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin("student")(handlers.UpdateStudentHandler)).Methods("PATCH")
 	api.HandleFunc("/students/{id}", auth.RequireSelfOrAdmin("student")(handlers.DeleteStudentHandler)).Methods("DELETE")
 
+	//Admin check
+	api.HandleFunc("/allPrefences", auth.RequireRole("admin")(handlers.GetAllPreferencesHandler)).Methods("GET")
+
 	// --- USERS (Generell) ---
 	// Self-Service (Entity-Typ: "user")
 	api.HandleFunc("/users/{id}", auth.RequireSelfOrAdmin("user")(handlers.UpdateUserNamesHandler)).Methods("PATCH")
