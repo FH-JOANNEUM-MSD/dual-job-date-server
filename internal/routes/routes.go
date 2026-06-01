@@ -73,5 +73,8 @@ func NewRouter() *mux.Router {
 	// Nur Admin darf Slots löschen
 	api.HandleFunc("/slots/{id}", auth.RequireRole("admin")(handlers.DeleteSlotHandler)).Methods("DELETE")
 
+	//Meetings
+	api.HandleFunc("/allMeetings", auth.RequireRole("admin")(handlers.GetAllMeetingsHandler)).Methods("GET")
+	api.HandleFunc("/allMeetings/{id}", auth.RequireSelfOrAdmin("company")(handlers.GetMeetingsByCompanyHandler)).Methods("GET")
 	return r
 }
