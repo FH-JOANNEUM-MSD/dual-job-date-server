@@ -20,6 +20,7 @@
 | **Students** | `/api/students/{id}/preferences` | `GET` | Admin, Student | Nur eigene ID |
 | **Students** | `/api/students/{id}/meetings` | `GET` | Admin, Student | Nur eigene ID |
 | **Matching** | `/api/meetings/assign` | `POST` | Admin | - |
+| **Matching** | `/api/meetings/{id}` | `PATCH` | Admin | `slot_id`, `student_id`, `company_id` (mind. eines) |
 | **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots/{id}` | `DELETE` | Admin | - |
