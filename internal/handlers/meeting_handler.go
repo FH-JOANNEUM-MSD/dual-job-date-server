@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"dual-job-date-server/internal/models"
 	"dual-job-date-server/internal/repository"
@@ -51,4 +53,52 @@ func GetMeetingsByCompanyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(meetings)
+}
+
+func UpdateMeetingHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+	meetingID, err := strconv.Atoi(vars["id"])
+	if err != nil || meetingID <= 0 {
+		http.Error(w, "Ungültige Meeting-ID", http.StatusBadRequest)
+		return
+	}
+
+	var input models.UpdateMeetingInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if input.SlotID == nil && input.StudentID == nil && input.CompanyID == nil {
+		http.Error(w, "Mindestens eines der Felder slot_id, student_id oder company_id muss gesetzt sein", http.StatusBadRequest)
+		return
+	}
+
+	updated, err := repository.UpdateMeeting(meetingID, input)
+	if err != nil {
+		if errors.Is(err, repository.ErrMeetingNotFound) {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		if errors.Is(err, repository.ErrMeetingConflict) {
+			http.Error(w, err.Error(), http.StatusConflict)
+			return
+		}
+		if isMeetingReferenceError(err) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		http.Error(w, "Fehler beim Updaten des Meetings: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(updated)
+}
+
+func isMeetingReferenceError(err error) bool {
+	msg := err.Error()
+	return strings.Contains(msg, "nicht gefunden") || strings.Contains(msg, "muss größer als 0 sein")
 }
