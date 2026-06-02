@@ -11,6 +11,7 @@ import (
 
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
+	r.Use(CORSMiddleware)
 
 	// ==========================================
 	// 🟢 ÖFFENTLICHE ROUTEN (Ohne Token)
