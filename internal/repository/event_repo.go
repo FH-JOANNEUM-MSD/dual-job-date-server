@@ -1,9 +1,14 @@
 package repository
 
 import (
+    "errors"
+    "strconv"
+
     "dual-job-date-server/internal/database"
     "dual-job-date-server/internal/models"
 )
+
+var ErrEventNotFound = errors.New("event nicht gefunden")
 
 func GetActiveEvent() (models.Event, error) {
     var events []models.Event
@@ -30,6 +35,56 @@ func GetAllEvents() ([]models.Event, error) {
         return nil, err
     }
     return events, nil
+}
+
+func GetEventByID(eventID int) (models.Event, error) {
+    var events []models.Event
+    err := database.SupabaseClient.DB.From("events").Select("*").Eq("id", strconv.Itoa(eventID)).Execute(&events)
+    if err != nil {
+        return models.Event{}, err
+    }
+    if len(events) == 0 {
+        return models.Event{}, ErrEventNotFound
+    }
+    return events[0], nil
+}
+
+func UpdateEvent(eventID int, input models.UpdateEventInput) (models.Event, error) {
+    if _, err := GetEventByID(eventID); err != nil {
+        return models.Event{}, err
+    }
+
+    updateData := make(map[string]interface{})
+    if input.Name != nil {
+        updateData["name"] = *input.Name
+    }
+    if input.Location != nil {
+        updateData["location"] = *input.Location
+    }
+    if input.Description != nil {
+        updateData["description"] = *input.Description
+    }
+    if input.EventDate != nil {
+        updateData["event_date"] = *input.EventDate
+    }
+    if input.IsActive != nil {
+        if *input.IsActive {
+            if err := deactivateAllEvents(); err != nil {
+                return models.Event{}, err
+            }
+        }
+        updateData["is_active"] = *input.IsActive
+    }
+
+    var updated []models.Event
+    err := database.SupabaseClient.DB.From("events").Update(updateData).Eq("id", strconv.Itoa(eventID)).Execute(&updated)
+    if err != nil {
+        return models.Event{}, err
+    }
+    if len(updated) == 0 {
+        return models.Event{}, ErrEventNotFound
+    }
+    return updated[0], nil
 }
 
 func deactivateAllEvents() error {

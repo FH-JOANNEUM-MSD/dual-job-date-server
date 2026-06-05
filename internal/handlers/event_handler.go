@@ -2,10 +2,14 @@ package handlers
 
 import (
     "encoding/json"
+    "errors"
     "net/http"
+    "strconv"
 
     "dual-job-date-server/internal/models"
     "dual-job-date-server/internal/repository"
+
+    "github.com/gorilla/mux"
 )
 
 func GetActiveEventHandler(w http.ResponseWriter, r *http.Request) {
@@ -58,4 +62,39 @@ func GetAllEventsHandler(w http.ResponseWriter, r *http.Request) {
     }
 
     json.NewEncoder(w).Encode(events)
+}
+
+func UpdateEventHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+
+    vars := mux.Vars(r)
+    eventID, err := strconv.Atoi(vars["id"])
+    if err != nil || eventID <= 0 {
+        http.Error(w, "Ungültige Event-ID", http.StatusBadRequest)
+        return
+    }
+
+    var input models.UpdateEventInput
+    if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+        http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+        return
+    }
+
+    if input.Name == nil && input.Location == nil && input.Description == nil && input.EventDate == nil && input.IsActive == nil {
+        http.Error(w, "Mindestens ein Feld muss gesetzt sein", http.StatusBadRequest)
+        return
+    }
+
+    event, err := repository.UpdateEvent(eventID, input)
+    if err != nil {
+        if errors.Is(err, repository.ErrEventNotFound) {
+            http.Error(w, err.Error(), http.StatusNotFound)
+            return
+        }
+        http.Error(w, "Fehler beim Updaten des Events: "+err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(event)
 }
