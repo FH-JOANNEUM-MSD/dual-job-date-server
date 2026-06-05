@@ -22,3 +22,38 @@ func GetActiveEvent() (models.Event, error) {
     // Wir geben einfach das erste gefundene aktive Event zurück
     return events[0], nil
 }
+
+func deactivateAllEvents() error {
+    var updated []models.Event
+    return database.SupabaseClient.DB.From("events").
+        Update(map[string]interface{}{"is_active": false}).
+        Eq("is_active", "true").
+        Execute(&updated)
+}
+
+func CreateEvent(input models.CreateEventInput) (models.Event, error) {
+    isActive := input.IsActive != nil && *input.IsActive
+    if isActive {
+        if err := deactivateAllEvents(); err != nil {
+            return models.Event{}, err
+        }
+    }
+
+    insertData := map[string]interface{}{
+        "name":        input.Name,
+        "location":    input.Location,
+        "description": input.Description,
+        "event_date":  input.EventDate,
+        "is_active":   isActive,
+    }
+
+    var created []models.Event
+    err := database.SupabaseClient.DB.From("events").Insert(insertData).Execute(&created)
+    if err != nil {
+        return models.Event{}, err
+    }
+    if len(created) == 0 {
+        return models.Event{}, nil
+    }
+    return created[0], nil
+}

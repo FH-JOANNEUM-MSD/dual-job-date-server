@@ -167,3 +167,26 @@ func TestGetMeetingsByCompanyHandler_CompanyIDValidation(t *testing.T) {
 		})
 	}
 }
+
+func TestCreateEventHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want int
+	}{
+		{"invalid json", `{"name":`, http.StatusBadRequest},
+		{"missing name", `{"event_date":"2026-07-01"}`, http.StatusBadRequest},
+		{"missing event_date", `{"name":"Career Fair"}`, http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/events", strings.NewReader(tt.body))
+			rr := httptest.NewRecorder()
+			CreateEventHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
