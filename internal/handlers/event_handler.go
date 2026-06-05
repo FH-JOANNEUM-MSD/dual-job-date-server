@@ -98,3 +98,25 @@ func UpdateEventHandler(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusOK)
     json.NewEncoder(w).Encode(event)
 }
+
+func DeleteEventHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+
+    vars := mux.Vars(r)
+    eventID, err := strconv.Atoi(vars["id"])
+    if err != nil || eventID <= 0 {
+        http.Error(w, "Ungültige Event-ID", http.StatusBadRequest)
+        return
+    }
+
+    if err := repository.DeleteEvent(eventID); err != nil {
+        http.Error(w, "Fehler beim Löschen des Events: "+err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(map[string]string{
+        "message": "Event erfolgreich gelöscht",
+        "status":  "success",
+    })
+}

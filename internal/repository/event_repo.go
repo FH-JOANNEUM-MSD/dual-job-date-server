@@ -95,6 +95,11 @@ func deactivateAllEvents() error {
         Execute(&updated)
 }
 
+func DeleteEvent(eventID int) error {
+    var deleted []interface{}
+    return database.SupabaseClient.DB.From("events").Delete().Eq("id", strconv.Itoa(eventID)).Execute(&deleted)
+}
+
 func CreateEvent(input models.CreateEventInput) (models.Event, error) {
     isActive := input.IsActive != nil && *input.IsActive
     if isActive {

@@ -216,3 +216,27 @@ func TestUpdateEventHandler_Validation(t *testing.T) {
 		})
 	}
 }
+
+func TestDeleteEventHandler_InvalidID(t *testing.T) {
+	tests := []struct {
+		name string
+		id   string
+		want int
+	}{
+		{"non_numeric", "not-a-number", http.StatusBadRequest},
+		{"zero", "0", http.StatusBadRequest},
+		{"negative", "-1", http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodDelete, "/events/"+tt.id, nil)
+			req = mux.SetURLVars(req, map[string]string{"id": tt.id})
+			rr := httptest.NewRecorder()
+			DeleteEventHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
