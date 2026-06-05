@@ -23,7 +23,7 @@
 | **Matching** | `/api/meetings/{id}` | `PATCH` | Admin | `slot_id`, `student_id`, `company_id` (mind. eines) |
 | **Events** | `/api/events` | `GET` | Admin | Alle Einträge inkl. inaktiver Events |
 | **Events** | `/api/events` | `POST` | Admin | - |
-| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update (`name`, `location`, `description`, `event_date`, `is_active`) |
+| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update; `is_active=true` deaktiviert andere Events |
 | **Events** | `/api/events/{id}` | `DELETE` | Admin | - |
 | **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User; gibt alle aktiven Events als Liste zurück |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
