@@ -43,3 +43,19 @@ func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusCreated)
     json.NewEncoder(w).Encode(event)
 }
+
+func GetAllEventsHandler(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+
+    events, err := repository.GetAllEvents()
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+
+    if events == nil {
+        events = []models.Event{}
+    }
+
+    json.NewEncoder(w).Encode(events)
+}

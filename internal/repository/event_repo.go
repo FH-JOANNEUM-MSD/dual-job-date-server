@@ -23,6 +23,15 @@ func GetActiveEvent() (models.Event, error) {
     return events[0], nil
 }
 
+func GetAllEvents() ([]models.Event, error) {
+    var events []models.Event
+    err := database.SupabaseClient.DB.From("events").Select("*").Execute(&events)
+    if err != nil {
+        return nil, err
+    }
+    return events, nil
+}
+
 func deactivateAllEvents() error {
     var updated []models.Event
     return database.SupabaseClient.DB.From("events").

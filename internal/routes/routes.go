@@ -75,6 +75,7 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/slots/{id}", auth.RequireRole("admin")(handlers.DeleteSlotHandler)).Methods("DELETE")
 
 	// --- EVENTS (Admin: Verwaltung) ---
+	api.HandleFunc("/events", auth.RequireRole("admin")(handlers.GetAllEventsHandler)).Methods("GET")
 	api.HandleFunc("/events", auth.RequireRole("admin")(handlers.CreateEventHandler)).Methods("POST")
 
 	//Meetings
