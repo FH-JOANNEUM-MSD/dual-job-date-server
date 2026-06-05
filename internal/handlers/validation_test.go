@@ -263,3 +263,29 @@ func TestCreateSlotHandler_Validation(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdateSlotHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		id   string
+		body string
+		want int
+	}{
+		{"invalid id", "not-a-number", `{"start_time":"09:00:00"}`, http.StatusBadRequest},
+		{"zero id", "0", `{"start_time":"09:00:00"}`, http.StatusBadRequest},
+		{"empty body fields", "1", `{}`, http.StatusBadRequest},
+		{"invalid json", "1", `{"start_time":`, http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPatch, "/slots/"+tt.id, strings.NewReader(tt.body))
+			req = mux.SetURLVars(req, map[string]string{"id": tt.id})
+			rr := httptest.NewRecorder()
+			UpdateSlotHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
