@@ -82,3 +82,79 @@ schickt, wird das Backend die Beschreibung in der Datenbank löschen!
 Zeitstempel: Das Feld last_updated wird vom Backend bei jedem PATCH-Request 
 automatisch auf die aktuelle Serverzeit gesetzt. 
 Ihr müsst euch darum nicht kümmern.
+
+---
+
+### Endpunkt: Event aktualisieren
+
+Aktualisiert spezifische Felder eines bestehenden Events anhand seiner ID. Nur für **Admins**.
+
+* **URL:** `/api/events/{id}`
+* **Methode:** `PATCH`
+* **Header:** `Content-Type: application/json`
+
+### 📦 Erlaubte Felder (Payload)
+Alle Felder sind **optional**. Schickt nur das mit, was aktualisiert werden soll. Die `id` wird von der Datenbank verwaltet und darf nicht im Body mitgeschickt werden.
+
+| Feldname | Typ | Beschreibung |
+| :--- | :--- | :--- |
+| `name` | String | Name des Events |
+| `location` | String | Veranstaltungsort |
+| `description` | String | Beschreibungstext |
+| `event_date` | String | Datum des Events (z. B. `2026-07-01`) |
+| `is_active` | Boolean | Aktiv-Status. Wird `true` gesetzt, werden **alle anderen** Events automatisch deaktiviert (es ist immer nur ein Event aktiv). |
+
+### 💡 Beispiel
+
+**Request:**
+```http
+PATCH /api/events/2
+Content-Type: application/json
+
+{
+  "is_active": true
+}
+```
+
+### 📥 Responses
+**✅ 200 OK** – Event erfolgreich aktualisiert (gibt das aktualisierte Event zurück).
+**❌ 400 Bad Request** – Ungültige ID, fehlerhaftes JSON oder kein einziges Feld im Body.
+**❌ 404 Not Found** – Es existiert kein Event mit dieser ID.
+**❌ 500 Internal Server Error** – Fehler bei der Kommunikation mit der Datenbank.
+
+---
+
+### Endpunkt: Slot aktualisieren
+
+Aktualisiert die Zeiten eines bestehenden Zeitslots anhand seiner ID. Nur für **Admins**.
+
+* **URL:** `/api/slots/{id}`
+* **Methode:** `PATCH`
+* **Header:** `Content-Type: application/json`
+
+### 📦 Erlaubte Felder (Payload)
+Alle Felder sind **optional**. Schickt nur das mit, was aktualisiert werden soll.
+
+| Feldname | Typ | Beschreibung |
+| :--- | :--- | :--- |
+| `start_time` | String | Startzeit (z. B. `09:00:00`) |
+| `end_time` | String | Endzeit (z. B. `09:15:00`) |
+
+### 💡 Beispiel
+
+**Request:**
+```http
+PATCH /api/slots/3
+Content-Type: application/json
+
+{
+  "start_time": "10:00:00",
+  "end_time": "10:15:00"
+}
+```
+
+### 📥 Responses
+**✅ 200 OK** – Slot erfolgreich aktualisiert (gibt den aktualisierten Slot zurück).
+**❌ 400 Bad Request** – Ungültige ID, fehlerhaftes JSON oder kein einziges Feld im Body.
+**❌ 404 Not Found** – Es existiert kein Slot mit dieser ID.
+**❌ 500 Internal Server Error** – Fehler bei der Kommunikation mit der Datenbank.

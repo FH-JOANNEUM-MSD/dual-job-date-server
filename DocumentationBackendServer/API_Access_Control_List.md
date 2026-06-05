@@ -21,8 +21,14 @@
 | **Students** | `/api/students/{id}/meetings` | `GET` | Admin, Student | Nur eigene ID |
 | **Matching** | `/api/meetings/assign` | `POST` | Admin | - |
 | **Matching** | `/api/meetings/{id}` | `PATCH` | Admin | `slot_id`, `student_id`, `company_id` (mind. eines) |
+| **Events** | `/api/events` | `GET` | Admin | Alle Einträge inkl. inaktiver Events |
+| **Events** | `/api/events` | `POST` | Admin | - |
+| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update; `is_active=true` deaktiviert andere Events |
+| **Events** | `/api/events/{id}` | `DELETE` | Admin | - |
 | **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
+| **Slots** | `/api/slots` | `POST` | Admin | - |
+| **Slots** | `/api/slots/{id}` | `PATCH` | Admin | Partial Update (`start_time`, `end_time`) |
 | **Slots** | `/api/slots/{id}` | `DELETE` | Admin | - |
 
 ---
