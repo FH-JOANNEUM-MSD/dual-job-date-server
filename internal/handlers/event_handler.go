@@ -15,17 +15,13 @@ import (
 func GetActiveEventHandler(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
 
-    events, err := repository.GetActiveEvents()
+    event, err := repository.GetActiveEvent()
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
 
-    if events == nil {
-        events = []models.Event{}
-    }
-
-    json.NewEncoder(w).Encode(events)
+    json.NewEncoder(w).Encode(event)
 }
 
 func CreateEventHandler(w http.ResponseWriter, r *http.Request) {
