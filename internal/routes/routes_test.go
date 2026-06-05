@@ -121,3 +121,15 @@ func TestNewRouter_DeleteEvent_RequiresJWT(t *testing.T) {
 		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
 	}
 }
+
+func TestNewRouter_CreateSlot_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodPost, "/api/slots", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}

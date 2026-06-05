@@ -80,6 +80,9 @@ func NewRouter() *mux.Router {
 	api.HandleFunc("/events/{id}", auth.RequireRole("admin")(handlers.UpdateEventHandler)).Methods("PATCH")
 	api.HandleFunc("/events/{id}", auth.RequireRole("admin")(handlers.DeleteEventHandler)).Methods("DELETE")
 
+	// --- SLOTS (Admin: Verwaltung) ---
+	api.HandleFunc("/slots", auth.RequireRole("admin")(handlers.CreateSlotHandler)).Methods("POST")
+
 	//Meetings
 	api.HandleFunc("/allMeetings", auth.RequireRole("admin")(handlers.GetAllMeetingsHandler)).Methods("GET")
 	api.HandleFunc("/allMeetings/{id}", auth.RequireSelfOrAdmin("company")(handlers.GetMeetingsByCompanyHandler)).Methods("GET")

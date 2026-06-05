@@ -240,3 +240,26 @@ func TestDeleteEventHandler_InvalidID(t *testing.T) {
 		})
 	}
 }
+
+func TestCreateSlotHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want int
+	}{
+		{"invalid json", `{"start_time":`, http.StatusBadRequest},
+		{"missing start_time", `{"end_time":"09:15:00"}`, http.StatusBadRequest},
+		{"missing end_time", `{"start_time":"09:00:00"}`, http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/slots", strings.NewReader(tt.body))
+			rr := httptest.NewRecorder()
+			CreateSlotHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
