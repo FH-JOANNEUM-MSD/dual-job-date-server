@@ -25,7 +25,7 @@
 | **Events** | `/api/events` | `POST` | Admin | - |
 | **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update (`name`, `location`, `description`, `event_date`, `is_active`) |
 | **Events** | `/api/events/{id}` | `DELETE` | Admin | - |
-| **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User |
+| **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User; gibt alle aktiven Events als Liste zurück |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots` | `POST` | Admin | - |
 | **Slots** | `/api/slots/{id}` | `PATCH` | Admin | Partial Update (`start_time`, `end_time`) |
