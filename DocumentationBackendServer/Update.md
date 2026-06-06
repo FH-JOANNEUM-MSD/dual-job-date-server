@@ -102,7 +102,7 @@ Alle Felder sind **optional**. Schickt nur das mit, was aktualisiert werden soll
 | `location` | String | Veranstaltungsort |
 | `description` | String | Beschreibungstext |
 | `event_date` | String | Datum des Events (z. B. `2026-07-01`) |
-| `is_active` | Boolean | Aktiv-Status. Wird `true` gesetzt, werden **alle anderen** Events automatisch deaktiviert (es ist immer nur ein Event aktiv). |
+| `is_active` | Boolean | Aktiv-Status. Mehrere Events können gleichzeitig aktiv sein. |
 
 ### 💡 Beispiel
 

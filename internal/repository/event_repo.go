@@ -68,11 +68,6 @@ func UpdateEvent(eventID int, input models.UpdateEventInput) (models.Event, erro
         updateData["event_date"] = *input.EventDate
     }
     if input.IsActive != nil {
-        if *input.IsActive {
-            if err := deactivateAllEvents(); err != nil {
-                return models.Event{}, err
-            }
-        }
         updateData["is_active"] = *input.IsActive
     }
 
@@ -87,14 +82,6 @@ func UpdateEvent(eventID int, input models.UpdateEventInput) (models.Event, erro
     return updated[0], nil
 }
 
-func deactivateAllEvents() error {
-    var updated []models.Event
-    return database.SupabaseClient.DB.From("events").
-        Update(map[string]interface{}{"is_active": false}).
-        Eq("is_active", "true").
-        Execute(&updated)
-}
-
 func DeleteEvent(eventID int) error {
     var deleted []interface{}
     return database.SupabaseClient.DB.From("events").Delete().Eq("id", strconv.Itoa(eventID)).Execute(&deleted)
@@ -102,11 +89,6 @@ func DeleteEvent(eventID int) error {
 
 func CreateEvent(input models.CreateEventInput) (models.Event, error) {
     isActive := input.IsActive != nil && *input.IsActive
-    if isActive {
-        if err := deactivateAllEvents(); err != nil {
-            return models.Event{}, err
-        }
-    }
 
     insertData := map[string]interface{}{
         "name":        input.Name,

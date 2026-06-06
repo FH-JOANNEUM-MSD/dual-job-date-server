@@ -28,7 +28,7 @@
 | **Matching** | `/api/allPrefences` | `GET` | Admin | Alle Präferenzen aller Studierenden |
 | **Events** | `/api/events` | `GET` | Admin | Alle Einträge inkl. inaktiver Events |
 | **Events** | `/api/events` | `POST` | Admin | - |
-| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update; `is_active=true` deaktiviert andere Events |
+| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update (`name`, `location`, `description`, `event_date`, `is_active`) |
 | **Events** | `/api/events/{id}` | `DELETE` | Admin | - |
 | **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
