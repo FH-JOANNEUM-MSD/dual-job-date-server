@@ -118,6 +118,55 @@ func TestUploadCompanyLogoHandler_InvalidCompanyID_ReturnsBadRequest(t *testing.
 	}
 }
 
+func TestCreateMeetingHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want int
+	}{
+		{"missing fields", `{}`, http.StatusBadRequest},
+		{"zero slot_id", `{"slot_id":0,"student_id":1,"company_id":1}`, http.StatusBadRequest},
+		{"zero student_id", `{"slot_id":1,"student_id":0,"company_id":1}`, http.StatusBadRequest},
+		{"zero company_id", `{"slot_id":1,"student_id":1,"company_id":0}`, http.StatusBadRequest},
+		{"invalid json", `{"slot_id":`, http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/meetings", strings.NewReader(tt.body))
+			rr := httptest.NewRecorder()
+			CreateMeetingHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
+
+func TestDeleteMeetingHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		id   string
+		want int
+	}{
+		{"invalid id", "not-a-number", http.StatusBadRequest},
+		{"zero id", "0", http.StatusBadRequest},
+		{"negative id", "-1", http.StatusBadRequest},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodDelete, "/meetings/"+tt.id, nil)
+			req = mux.SetURLVars(req, map[string]string{"id": tt.id})
+			rr := httptest.NewRecorder()
+			DeleteMeetingHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
+
 func TestUpdateMeetingHandler_Validation(t *testing.T) {
 	tests := []struct {
 		name string
