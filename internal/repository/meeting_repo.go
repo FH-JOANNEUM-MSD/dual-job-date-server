@@ -251,6 +251,53 @@ func ensureMeetingScheduleValid(meetingID, studentID, companyID, slotID int) err
 	return nil
 }
 
+// CreateMeeting legt ein einzelnes Meeting an (Admin).
+func CreateMeeting(input models.CreateMeetingInput) (models.Meeting, error) {
+	if input.SlotID <= 0 {
+		return models.Meeting{}, fmt.Errorf("slot_id muss größer als 0 sein")
+	}
+	if input.StudentID <= 0 {
+		return models.Meeting{}, fmt.Errorf("student_id muss größer als 0 sein")
+	}
+	if input.CompanyID <= 0 {
+		return models.Meeting{}, fmt.Errorf("company_id muss größer als 0 sein")
+	}
+
+	if err := ensureMeetingReferencesExist(input.StudentID, input.CompanyID, input.SlotID); err != nil {
+		return models.Meeting{}, err
+	}
+	if err := ensureMeetingScheduleValid(0, input.StudentID, input.CompanyID, input.SlotID); err != nil {
+		return models.Meeting{}, err
+	}
+
+	insertData := map[string]interface{}{
+		"slot_id":    input.SlotID,
+		"student_id": input.StudentID,
+		"company_id": input.CompanyID,
+	}
+
+	var created []models.Meeting
+	err := database.SupabaseClient.DB.From("meetings").Insert(insertData).Execute(&created)
+	if err != nil {
+		return models.Meeting{}, err
+	}
+	if len(created) == 0 {
+		return models.Meeting{}, fmt.Errorf("meeting konnte nicht angelegt werden")
+	}
+	return created[0], nil
+}
+
+// DeleteMeeting löscht ein einzelnes Meeting (Admin).
+func DeleteMeeting(meetingID int) error {
+	if _, err := GetMeetingByID(meetingID); err != nil {
+		return err
+	}
+
+	idStr := strconv.Itoa(meetingID)
+	var deleted interface{}
+	return database.SupabaseClient.DB.From("meetings").Delete().Eq("id", idStr).Execute(&deleted)
+}
+
 func meetingTakenByOther(excludeMeetingID int, field1 string, value1 int, field2 string, value2 int) (bool, error) {
 	var rows []models.Meeting
 	err := database.SupabaseClient.DB.

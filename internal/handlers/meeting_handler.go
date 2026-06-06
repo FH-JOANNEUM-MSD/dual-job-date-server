@@ -55,6 +55,59 @@ func GetMeetingsByCompanyHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(meetings)
 }
 
+func CreateMeetingHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var input models.CreateMeetingInput
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "Fehlerhaftes JSON-Format: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	created, err := repository.CreateMeeting(input)
+	if err != nil {
+		if errors.Is(err, repository.ErrMeetingConflict) {
+			http.Error(w, err.Error(), http.StatusConflict)
+			return
+		}
+		if isMeetingReferenceError(err) {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		http.Error(w, "Fehler beim Anlegen des Meetings: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(created)
+}
+
+func DeleteMeetingHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	vars := mux.Vars(r)
+	meetingID, err := strconv.Atoi(vars["id"])
+	if err != nil || meetingID <= 0 {
+		http.Error(w, "Ungültige Meeting-ID", http.StatusBadRequest)
+		return
+	}
+
+	if err := repository.DeleteMeeting(meetingID); err != nil {
+		if errors.Is(err, repository.ErrMeetingNotFound) {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		http.Error(w, "Fehler beim Löschen des Meetings: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Meeting erfolgreich gelöscht",
+		"status":  "success",
+	})
+}
+
 func UpdateMeetingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
