@@ -270,12 +270,18 @@ func getAllMeetings() ([]models.Meeting, error) {
 }
 
 func insertAssignedMeetings(planned []AssignedMeeting) error {
+	activeEventID, err := getActiveEventID()
+	if err != nil {
+		return err
+	}
+
 	rows := make([]map[string]interface{}, 0, len(planned))
 	for _, meeting := range planned {
 		rows = append(rows, map[string]interface{}{
 			"slot_id":    meeting.SlotID,
 			"student_id": meeting.StudentID,
 			"company_id": meeting.CompanyID,
+			"event_id":   activeEventID,
 		})
 	}
 

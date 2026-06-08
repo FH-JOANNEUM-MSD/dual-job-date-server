@@ -1,0 +1,4 @@
+./admin.go
+./auth.go
+./storage.go
+./supabase.go

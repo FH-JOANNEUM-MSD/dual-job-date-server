@@ -83,6 +83,29 @@ func TestInviteUserHandler_InvalidJSON_ReturnsBadRequest(t *testing.T) {
 	}
 }
 
+func TestBulkImportHandler_Validation(t *testing.T) {
+	tests := []struct {
+		name string
+		body string
+		want int
+	}{
+		{"invalid json", `{"students":`, http.StatusBadRequest},
+		{"empty payload", `{}`, http.StatusBadRequest},
+		{"student missing required fields", `{"students":[{"email":"","first_name":"A","last_name":"B","study_program":"CS"}]}`, http.StatusInternalServerError},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req := httptest.NewRequest(http.MethodPost, "/bulk-import", strings.NewReader(tt.body))
+			rr := httptest.NewRecorder()
+			BulkImportHandler(rr, req)
+			if rr.Code != tt.want {
+				t.Fatalf("expected status %d, got %d", tt.want, rr.Code)
+			}
+		})
+	}
+}
+
 func TestAssignMeetingsByPreferencesHandler_InvalidJSON_ReturnsBadRequest(t *testing.T) {
 	req := httptest.NewRequest(http.MethodPost, "/meetings/assign", strings.NewReader(`{"dry_run":`))
 	rr := httptest.NewRecorder()
