@@ -3,7 +3,9 @@
 Schön, dass du da bist! Dieses Dokument soll dir einen schnellen Überblick geben, worum es in diesem Projekt geht und vor allem, wo du was findest.
 
 ## 🚀 Worum geht's hier?
+
 > **Kurz gesagt:** Dies ist das zentrale Backend unseres Projekts. Es ist ein performanter Server, geschrieben in **Go (Golang)**, der sämtliche APIs bereitstellt, die von unseren Frontends / Apps / externen Clients konsumiert werden. Er kümmert sich um die Business-Logik, die Datenbankkommunikation und die Datenbereitstellung.
+
 ---
 
 ## 🗺️ Projektstruktur: Wo finde ich was?
@@ -128,6 +130,8 @@ dual-job-date-server/
 
 ## 📚 Weiterführende Dokumentation
 
+> 🔦 **Interaktive API-Referenz:** [Stoplight Doku](https://jobdatingbackend.stoplight.io/docs/dualjobdating/a54e0e5192a6d-dual-job-dating) — Alle Endpunkte direkt im Browser durchstöbern und ausprobieren.
+
 - **API Access Control List:** [API_Access_Control_List.md](./API_Access_Control_List.md) — Übersicht der API-Routen, Rollen und RBAC-Logik (wer darf welche Endpunkte nutzen; Self-Service-Regeln).
 - **Authentication:** [Authentication.md](./Authentication.md) — JWT- & Supabase-Auth-Guide für Frontend/Mobile (Login-Flow, Authorization-Header, Troubleshooting und Beispiele).
 - **Invite:** [Invite.md](./Invite.md) — Ablauf für Einladungen und initiales Passwort-Setup; Redirects und Deep-Link-Handling für Web/App.
@@ -146,16 +150,22 @@ Willst du das Projekt lokal bei dir ausführen? So geht's:
    # Mit SSH (Empfohlen)
    git clone git@github.com:FH-JOANNEUM-MSD/dual-job-date-server.git
    # Mit HTTPS
-   git clone [https://github.com/FH-JOANNEUM-MSD/dual-job-date-server.git](https://github.com/FH-JOANNEUM-MSD/dual-job-date-server.git)
-   # Installiere die Go-Dependencies
+   git clone https://github.com/FH-JOANNEUM-MSD/dual-job-date-server.git
+   ```
+
+2. **Installiere die Go-Dependencies:**
+   ```bash
    go mod download
-   # Starte den Server
+   ```
+
+3. **Starte den Server:**
+   ```bash
    go run ./cmd/server
    ```
 
-Umgebungsvariablen einrichten
-Stelle sicher, dass du eine .env-Datei im Hauptverzeichnis hast.
-(Um dieses zu erhalten bitte wende dich an [Andreas Öffl](mailto:andreas.oeffl@fh-joanneum.at)
+4. **Umgebungsvariablen einrichten:**
+   Stelle sicher, dass du eine `.env`-Datei im Hauptverzeichnis hast.
+   (Um diese zu erhalten, wende dich bitte an [Andreas Öffl](mailto:andreas.oeffl@fh-joanneum.at).)
 
 
 ## 🙋‍♂️ Noch Fragen?

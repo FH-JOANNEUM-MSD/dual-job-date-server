@@ -2,6 +2,7 @@
 
 | Kategorie | Route | Methode | Erlaubte Rollen | Bedingung (Self-Service) |
 | :--- | :--- | :--- | :--- | :--- |
+| **System** | `/` | `GET` | Alle (Public) | Health-Check; kein Token nötig |
 | **System** | `/api/seed` | `GET` | Admin | - |
 | **User** | `/api/invite` | `POST` | Admin | - |
 | **User** | `/api/users/{id}` | `PATCH` | Admin, Student, Company | Nur eigene ID |
@@ -14,6 +15,7 @@
 | **Companies** | `/api/companies/{id}/images`| `POST` | Admin, Company | Nur eigene Company-ID |
 | **Companies** | `/api/companies/{id}/meetings` | `GET` | Admin, Company | Nur eigene Company-ID; enthält Slot-Zeiten + Studentenname |
 | **Companies** | `/api/companies/{id}` | `PATCH` | Admin, Company | Nur eigene Company-ID |
+| **Companies** | `/api/companies/{id}` | `GET` | Admin, Company | Nur eigene Company-ID |
 | **Students** | `/api/students` | `GET` | Admin | - |
 | **Students** | `/api/students/{id}` | `PATCH` | Admin, Student | Nur eigene ID |
 | **Students** | `/api/students/{id}` | `DELETE` | Admin, Student | Nur eigene ID |
@@ -21,8 +23,17 @@
 | **Students** | `/api/students/{id}/meetings` | `GET` | Admin, Student | Nur eigene ID |
 | **Matching** | `/api/meetings/assign` | `POST` | Admin | - |
 | **Matching** | `/api/meetings/{id}` | `PATCH` | Admin | `slot_id`, `student_id`, `company_id` (mind. eines) |
+| **Matching** | `/api/allMeetings` | `GET` | Admin | Alle Meetings inkl. Slot-Zeiten + Studentenname |
+| **Matching** | `/api/allMeetings/{id}` | `GET` | Admin, Company | Nur eigene Company-ID; enthält Slot-Zeiten + Studentenname |
+| **Matching** | `/api/allPrefences` | `GET` | Admin | Alle Präferenzen aller Studierenden |
+| **Events** | `/api/events` | `GET` | Admin | Alle Einträge inkl. inaktiver Events |
+| **Events** | `/api/events` | `POST` | Admin | - |
+| **Events** | `/api/events/{id}` | `PATCH` | Admin | Partial Update (`name`, `location`, `description`, `event_date`, `is_active`) |
+| **Events** | `/api/events/{id}` | `DELETE` | Admin | - |
 | **Events** | `/api/events/active` | `GET` | Alle | Authentifizierter User |
 | **Slots** | `/api/slots` | `GET` | Alle | Authentifizierter User |
+| **Slots** | `/api/slots` | `POST` | Admin | - |
+| **Slots** | `/api/slots/{id}` | `PATCH` | Admin | Partial Update (`start_time`, `end_time`) |
 | **Slots** | `/api/slots/{id}` | `DELETE` | Admin | - |
 
 ---

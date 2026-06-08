@@ -73,3 +73,75 @@ func TestNewRouter_ResendInviteRoute_IsPublicAndParsesBody(t *testing.T) {
 		t.Fatalf("expected status %d, got %d", http.StatusBadRequest, rr.Code)
 	}
 }
+
+func TestNewRouter_CreateEvent_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodPost, "/api/events", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_GetAllEvents_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/api/events", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_UpdateEvent_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodPatch, "/api/events/1", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_DeleteEvent_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodDelete, "/api/events/1", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_CreateSlot_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodPost, "/api/slots", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
+
+func TestNewRouter_UpdateSlot_RequiresJWT(t *testing.T) {
+	router := NewRouter()
+
+	req := httptest.NewRequest(http.MethodPatch, "/api/slots/1", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusUnauthorized {
+		t.Fatalf("expected status %d, got %d", http.StatusUnauthorized, rr.Code)
+	}
+}
