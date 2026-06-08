@@ -209,6 +209,7 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 			prefID++
 		}
 	}
+
 	// ---------- MEETINGS (40+) ----------
 	meetingID := 1
 	for cID := 1; cID <= 8; cID++ {
@@ -216,6 +217,7 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 			sID := ((cID * slotID) % 15) + 1
 			meetings = append(meetings, map[string]interface{}{
 				"id":         meetingID,
+				"event_id":   1, // <--- HIER ANGEPASST: Alle Test-Meetings gehören zum Event 1
 				"slot_id":    slotID,
 				"student_id": sID,
 				"company_id": cID,
