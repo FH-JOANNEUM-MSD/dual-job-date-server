@@ -29,6 +29,9 @@ func ReinviteAuthUser(email string, role string) (string, error) {
 	bodyData := map[string]interface{}{
 		"email":      email,
 		"redirectTo": redirectTo,
+		"data": map[string]interface{}{
+			"role": role,
+		},
 	}
 	bodyBytes, _ := json.Marshal(bodyData)
 
