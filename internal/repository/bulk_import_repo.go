@@ -40,11 +40,16 @@ func importStudent(input models.BulkImportStudent) error {
 	if strings.TrimSpace(input.StudyProgram) == "" {
 		return fmt.Errorf("study_program darf nicht leer sein")
 	}
+	studentID, err := getNextNumericID("students")
+	if err != nil {
+		return err
+	}
 
+	authUserUUID := uuid.New().String()
 	internalUUID := uuid.New().String()
 	userInsert := map[string]interface{}{
 		"id":         internalUUID,
-		"user_id":    input.Email,
+		"user_id":    authUserUUID,
 		"role":       "student",
 		"first_name": input.FirstName,
 		"last_name":  input.LastName,
@@ -54,6 +59,7 @@ func importStudent(input models.BulkImportStudent) error {
 	}
 
 	studentInsert := map[string]interface{}{
+		"id":            studentID,
 		"user_id":       internalUUID,
 		"study_program": input.StudyProgram,
 	}
@@ -73,11 +79,16 @@ func importCompany(input models.BulkImportCompany) error {
 	if strings.TrimSpace(input.Name) == "" {
 		return fmt.Errorf("company name darf nicht leer sein")
 	}
+	companyID, err := getNextNumericID("companies")
+	if err != nil {
+		return err
+	}
 
+	authUserUUID := uuid.New().String()
 	internalUUID := uuid.New().String()
 	userInsert := map[string]interface{}{
 		"id":         internalUUID,
-		"user_id":    input.Email,
+		"user_id":    authUserUUID,
 		"role":       "company",
 		"first_name": input.FirstName,
 		"last_name":  input.LastName,
@@ -87,6 +98,7 @@ func importCompany(input models.BulkImportCompany) error {
 	}
 
 	companyInsert := map[string]interface{}{
+		"id":                companyID,
 		"user_id":           internalUUID,
 		"name":              input.Name,
 		"description":       input.Description,
@@ -97,4 +109,23 @@ func importCompany(input models.BulkImportCompany) error {
 		"active":            input.Active,
 	}
 	return database.SupabaseClient.DB.From("companies").Insert(companyInsert).Execute(nil)
+}
+
+func getNextNumericID(table string) (int, error) {
+	var rows []struct {
+		ID int `json:"id"`
+	}
+	if err := database.SupabaseClient.DB.From(table).Select("id").Execute(&rows); err != nil {
+		return 0, err
+	}
+	if len(rows) == 0 {
+		return 1, nil
+	}
+	maxID := rows[0].ID
+	for _, row := range rows[1:] {
+		if row.ID > maxID {
+			maxID = row.ID
+		}
+	}
+	return maxID + 1, nil
 }
