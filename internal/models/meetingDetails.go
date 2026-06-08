@@ -10,4 +10,5 @@ type MeetingDetail struct {
 	StudentFirstName string `json:"student_first_name"`
 	StudentLastName  string `json:"student_last_name"`
 	CompanyID        int    `json:"company_id"`
+	EventID          int    `json:"event_id"`
 }

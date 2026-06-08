@@ -124,8 +124,8 @@ func UpdateMeetingHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if input.SlotID == nil && input.StudentID == nil && input.CompanyID == nil {
-		http.Error(w, "Mindestens eines der Felder slot_id, student_id oder company_id muss gesetzt sein", http.StatusBadRequest)
+	if input.SlotID == nil && input.StudentID == nil && input.CompanyID == nil && input.EventID == nil {
+		http.Error(w, "Mindestens eines der Felder slot_id, student_id, company_id oder event_id muss gesetzt sein", http.StatusBadRequest)
 		return
 	}
 
