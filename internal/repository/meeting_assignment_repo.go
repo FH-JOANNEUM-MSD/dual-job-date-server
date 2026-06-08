@@ -49,6 +49,11 @@ type MeetingAssignmentResult struct {
 }
 
 func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentResult, error) {
+	activeEventID, err := getActiveEventID()
+	if err != nil {
+		return MeetingAssignmentResult{}, err
+	}
+
 	students, err := getStudentsForAssignment()
 	if err != nil {
 		return MeetingAssignmentResult{}, err
@@ -69,7 +74,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		return MeetingAssignmentResult{}, err
 	}
 
-	existingMeetings, err := getAllMeetings()
+	existingMeetings, err := getAllMeetingsForEvent(activeEventID)
 	if err != nil {
 		return MeetingAssignmentResult{}, err
 	}
@@ -78,7 +83,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 	if opts.ReplaceExisting {
 		deletedMeetingsCount = len(existingMeetings)
 		if !opts.DryRun && deletedMeetingsCount > 0 {
-			if err := deleteAllMeetings(); err != nil {
+			if err := deleteAllMeetingsForEvent(activeEventID); err != nil {
 				return MeetingAssignmentResult{}, err
 			}
 		}
@@ -255,12 +260,13 @@ func getAllPreferences() ([]models.Preference, error) {
 	return preferences, nil
 }
 
-func getAllMeetings() ([]models.Meeting, error) {
+func getAllMeetingsForEvent(eventID int) ([]models.Meeting, error) {
 	var meetings []models.Meeting
 
 	err := database.SupabaseClient.DB.
 		From("meetings").
 		Select("*").
+		Eq("event_id", strconv.Itoa(eventID)).
 		Execute(&meetings)
 	if err != nil {
 		return nil, err
@@ -292,11 +298,12 @@ func insertAssignedMeetings(planned []AssignedMeeting) error {
 		Execute(&inserted)
 }
 
-func deleteAllMeetings() error {
+func deleteAllMeetingsForEvent(eventID int) error {
 	var deleted interface{}
 	return database.SupabaseClient.DB.
 		From("meetings").
 		Delete().
+		Eq("event_id", strconv.Itoa(eventID)).
 		Execute(&deleted)
 }
 
