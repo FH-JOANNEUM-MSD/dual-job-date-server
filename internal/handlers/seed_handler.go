@@ -221,7 +221,6 @@ func SeedDatabase(w http.ResponseWriter, r *http.Request) {
 				"slot_id":    slotID,
 				"student_id": sID,
 				"company_id": cID,
-				"event_id":   1,
 			})
 			meetingID++
 		}
