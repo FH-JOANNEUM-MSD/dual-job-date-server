@@ -29,6 +29,17 @@ func GetMeetingsByStudent(studentID int) ([]models.Meeting, error) {
 	return meetings, nil
 }
 
+func getActiveEventID() (int, error) {
+	event, err := GetActiveEvent()
+	if err != nil {
+		return 0, err
+	}
+	if event.ID == 0 {
+		return 0, fmt.Errorf("kein aktives event gefunden")
+	}
+	return event.ID, nil
+}
+
 type studentProfileLink struct {
 	ID     int    `json:"id"`
 	UserID string `json:"user_id"`
@@ -73,6 +84,7 @@ func UpdateMeeting(meetingID int, input models.UpdateMeetingInput) (models.Meeti
 	slotID := current.SlotID
 	studentID := current.StudentID
 	companyID := current.CompanyID
+	eventID := current.EventID
 
 	if input.SlotID != nil {
 		if *input.SlotID <= 0 {
@@ -92,11 +104,20 @@ func UpdateMeeting(meetingID int, input models.UpdateMeetingInput) (models.Meeti
 		}
 		companyID = *input.CompanyID
 	}
+	if input.EventID != nil {
+		if *input.EventID <= 0 {
+			return models.Meeting{}, fmt.Errorf("event_id muss größer als 0 sein")
+		}
+		eventID = *input.EventID
+	}
 
 	if err := ensureMeetingReferencesExist(studentID, companyID, slotID); err != nil {
 		return models.Meeting{}, err
 	}
-	if err := ensureMeetingScheduleValid(meetingID, studentID, companyID, slotID); err != nil {
+	if !tableRowExists("events", eventID) {
+		return models.Meeting{}, fmt.Errorf("event mit id %d nicht gefunden", eventID)
+	}
+	if err := ensureMeetingScheduleValid(meetingID, eventID, studentID, companyID, slotID); err != nil {
 		return models.Meeting{}, err
 	}
 
@@ -109,6 +130,9 @@ func UpdateMeeting(meetingID int, input models.UpdateMeetingInput) (models.Meeti
 	}
 	if input.CompanyID != nil {
 		updateData["company_id"] = companyID
+	}
+	if input.EventID != nil {
+		updateData["event_id"] = eventID
 	}
 
 	idStr := strconv.Itoa(meetingID)
@@ -144,20 +168,20 @@ func tableRowExists(table string, id int) bool {
 	return err == nil && len(rows) > 0
 }
 
-func ensureMeetingScheduleValid(meetingID, studentID, companyID, slotID int) error {
-	if taken, err := meetingTakenByOther(meetingID, "company_id", companyID, "slot_id", slotID); err != nil {
+func ensureMeetingScheduleValid(meetingID, eventID, studentID, companyID, slotID int) error {
+	if taken, err := meetingTakenByOther(meetingID, eventID, "company_id", companyID, "slot_id", slotID); err != nil {
 		return err
 	} else if taken {
 		return meetingConflict("firma hat in diesem slot bereits ein meeting")
 	}
 
-	if taken, err := meetingTakenByOther(meetingID, "student_id", studentID, "slot_id", slotID); err != nil {
+	if taken, err := meetingTakenByOther(meetingID, eventID, "student_id", studentID, "slot_id", slotID); err != nil {
 		return err
 	} else if taken {
 		return meetingConflict("student hat in diesem slot bereits ein meeting")
 	}
 
-	if taken, err := meetingTakenByOther(meetingID, "student_id", studentID, "company_id", companyID); err != nil {
+	if taken, err := meetingTakenByOther(meetingID, eventID, "student_id", studentID, "company_id", companyID); err != nil {
 		return err
 	} else if taken {
 		return meetingConflict("student hat bereits ein meeting mit dieser firma")
@@ -166,11 +190,80 @@ func ensureMeetingScheduleValid(meetingID, studentID, companyID, slotID int) err
 	return nil
 }
 
-func meetingTakenByOther(excludeMeetingID int, field1 string, value1 int, field2 string, value2 int) (bool, error) {
+// CreateMeeting legt ein einzelnes Meeting an (Admin).
+func CreateMeeting(input models.CreateMeetingInput) (models.Meeting, error) {
+	var err error
+
+	if input.SlotID <= 0 {
+		return models.Meeting{}, fmt.Errorf("slot_id muss größer als 0 sein")
+	}
+	if input.StudentID <= 0 {
+		return models.Meeting{}, fmt.Errorf("student_id muss größer als 0 sein")
+	}
+	if input.CompanyID <= 0 {
+		return models.Meeting{}, fmt.Errorf("company_id muss größer als 0 sein")
+	}
+
+	if err := ensureMeetingReferencesExist(input.StudentID, input.CompanyID, input.SlotID); err != nil {
+		return models.Meeting{}, err
+	}
+	eventID := 0
+	if input.EventID != nil {
+		if *input.EventID <= 0 {
+			return models.Meeting{}, fmt.Errorf("event_id muss größer als 0 sein")
+		}
+		if _, err := GetEventByID(*input.EventID); err != nil {
+			return models.Meeting{}, err
+		}
+		eventID = *input.EventID
+	} else {
+		eventID, err = getActiveEventID()
+		if err != nil {
+			return models.Meeting{}, err
+		}
+	}
+	if err := ensureMeetingScheduleValid(0, eventID, input.StudentID, input.CompanyID, input.SlotID); err != nil {
+		return models.Meeting{}, err
+	}
+
+	insertData := map[string]interface{}{
+		"slot_id":    input.SlotID,
+		"student_id": input.StudentID,
+		"company_id": input.CompanyID,
+		"event_id":   eventID,
+	}
+
+	var created []models.Meeting
+	err = database.SupabaseClient.DB.From("meetings").Insert(insertData).Execute(&created)
+	if err != nil {
+		return models.Meeting{}, err
+	}
+	if len(created) == 0 {
+		return models.Meeting{}, fmt.Errorf("meeting konnte nicht angelegt werden")
+	}
+	if created[0].EventID == 0 {
+		created[0].EventID = eventID
+	}
+	return created[0], nil
+}
+
+// DeleteMeeting löscht ein einzelnes Meeting (Admin).
+func DeleteMeeting(meetingID int) error {
+	if _, err := GetMeetingByID(meetingID); err != nil {
+		return err
+	}
+
+	idStr := strconv.Itoa(meetingID)
+	var deleted interface{}
+	return database.SupabaseClient.DB.From("meetings").Delete().Eq("id", idStr).Execute(&deleted)
+}
+
+func meetingTakenByOther(excludeMeetingID, eventID int, field1 string, value1 int, field2 string, value2 int) (bool, error) {
 	var rows []models.Meeting
 	err := database.SupabaseClient.DB.
 		From("meetings").
 		Select("id").
+		Eq("event_id", strconv.Itoa(eventID)).
 		Eq(field1, strconv.Itoa(value1)).
 		Eq(field2, strconv.Itoa(value2)).
 		Execute(&rows)

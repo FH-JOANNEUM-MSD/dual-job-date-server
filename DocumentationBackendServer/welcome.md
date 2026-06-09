@@ -165,11 +165,11 @@ Willst du das Projekt lokal bei dir ausführen? So geht's:
 
 4. **Umgebungsvariablen einrichten:**
    Stelle sicher, dass du eine `.env`-Datei im Hauptverzeichnis hast.
-   (Um diese zu erhalten, wende dich bitte an [Andreas Öffl](mailto:andreas.oeffl@fh-joanneum.at).)
+   (Um diese zu erhalten, wende dich bitte an den Vortragenden von Mobile Software Solutions bei [Mobile Software Development](https://www.fh-joanneum.at/msd).)
 
 
 ## 🙋‍♂️ Noch Fragen?
 
-Melde dich bei [Andreas Öffl](mailto:andreas.oeffl@fh-joanneum.at)
+Melde dich bei dem Vortragenden von Mobile Software Solutions bei [Mobile Software Development](https://www.fh-joanneum.at/msd).
 
 Viel Spaß beim Coden! 💻

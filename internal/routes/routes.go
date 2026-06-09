@@ -32,8 +32,11 @@ func NewRouter() *mux.Router {
 	// --- HELPER / SYSTEM ---
 	api.HandleFunc("/seed", auth.RequireRole("admin")(handlers.SeedDatabase)).Methods("GET")
 	api.HandleFunc("/invite", auth.RequireRole("admin")(handlers.InviteUserHandler)).Methods("POST")
+	api.HandleFunc("/bulk-import", auth.RequireRole("admin")(handlers.BulkImportHandler)).Methods("POST")
 	api.HandleFunc("/meetings/assign", auth.RequireRole("admin")(handlers.AssignMeetingsByPreferencesHandler)).Methods("POST")
+	api.HandleFunc("/meetings", auth.RequireRole("admin")(handlers.CreateMeetingHandler)).Methods("POST")
 	api.HandleFunc("/meetings/{id}", auth.RequireRole("admin")(handlers.UpdateMeetingHandler)).Methods("PATCH")
+	api.HandleFunc("/meetings/{id}", auth.RequireRole("admin")(handlers.DeleteMeetingHandler)).Methods("DELETE")
 
 	// --- COMPANIES ---
 	// Admin: alle Unternehmen (inkl. inaktive). Vor /companies/{id} registrieren, damit keine Kollision entsteht.
