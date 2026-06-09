@@ -86,6 +86,29 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		existingMeetings = []models.Meeting{}
 	}
 
+	result := assignMeetingsCore(students, companies, slots, preferences, existingMeetings, opts, deletedMeetingsCount)
+
+	if !opts.DryRun && len(result.PlannedMeetings) > 0 {
+		if err := insertAssignedMeetings(result.PlannedMeetings); err != nil {
+			return MeetingAssignmentResult{}, err
+		}
+		result.InsertedMeetings = len(result.PlannedMeetings)
+		result.Summary.InsertedMeetings = len(result.PlannedMeetings)
+	}
+
+	return result, nil
+}
+
+// assignMeetingsCore is the pure greedy matcher: slices in, planned result out, no DB I/O.
+func assignMeetingsCore(
+	students []models.Student,
+	companies []models.Company,
+	slots []models.Slot,
+	preferences []models.Preference,
+	existingMeetings []models.Meeting,
+	opts AssignMeetingsOptions,
+	deletedMeetingsCount int,
+) MeetingAssignmentResult {
 	sort.Slice(students, func(i, j int) bool { return students[i].ID < students[j].ID })
 	sort.Slice(companies, func(i, j int) bool { return companies[i].ID < companies[j].ID })
 	sort.Slice(slots, func(i, j int) bool { return slots[i].ID < slots[j].ID })
@@ -195,16 +218,8 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		}
 	}
 
-	if !opts.DryRun && len(result.PlannedMeetings) > 0 {
-		if err := insertAssignedMeetings(result.PlannedMeetings); err != nil {
-			return MeetingAssignmentResult{}, err
-		}
-		result.InsertedMeetings = len(result.PlannedMeetings)
-		result.Summary.InsertedMeetings = len(result.PlannedMeetings)
-	}
-
 	result.Summary.UnassignedCompanySlots = len(result.UnassignedCompanySlots)
-	return result, nil
+	return result
 }
 
 func getStudentsForAssignment() ([]models.Student, error) {
