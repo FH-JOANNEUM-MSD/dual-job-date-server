@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"strconv"
+
 	"dual-job-date-server/internal/database"
 	"dual-job-date-server/internal/models"
 )
@@ -8,12 +10,27 @@ import (
 // GetAllMeetingsWithStudentAndSlot holt alle Meetings für den Admin
 func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 	var meetings []models.Meeting
-
-	// Keine Filterung (.Eq), holt einfach alle
-	err := database.SupabaseClient.DB.From("meetings").Select("*").Execute(&meetings)
-	if err != nil {
+	if err := database.SupabaseClient.DB.From("meetings").Select("*").Execute(&meetings); err != nil {
 		return nil, err
 	}
+	return enrichMeetings(meetings)
+}
+
+// GetMeetingsByEvent holt die Meetings eines Events (angereichert mit Slot-Zeiten + Studentennamen).
+func GetMeetingsByEvent(eventID int) ([]models.CompanyMeeting, error) {
+	var meetings []models.Meeting
+	if err := database.SupabaseClient.DB.
+		From("meetings").
+		Select("*").
+		Eq("event_id", strconv.Itoa(eventID)).
+		Execute(&meetings); err != nil {
+		return nil, err
+	}
+	return enrichMeetings(meetings)
+}
+
+// enrichMeetings joins slot times and student names onto raw meetings.
+func enrichMeetings(meetings []models.Meeting) ([]models.CompanyMeeting, error) {
 	if len(meetings) == 0 {
 		return []models.CompanyMeeting{}, nil
 	}
@@ -25,12 +42,8 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 		studentIDs[m.StudentID] = struct{}{}
 	}
 
-	slotStrs := intSetToStrings(slotIDs)
-	studentStrs := intSetToStrings(studentIDs)
-
 	var slots []models.Slot
-	err = database.SupabaseClient.DB.From("slots").Select("*").In("id", slotStrs).Execute(&slots)
-	if err != nil {
+	if err := database.SupabaseClient.DB.From("slots").Select("*").In("id", intSetToStrings(slotIDs)).Execute(&slots); err != nil {
 		return nil, err
 	}
 	slotByID := make(map[int]models.Slot, len(slots))
@@ -39,8 +52,7 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 	}
 
 	var studentRows []studentProfileLink
-	err = database.SupabaseClient.DB.From("students").Select("id,user_id").In("id", studentStrs).Execute(&studentRows)
-	if err != nil {
+	if err := database.SupabaseClient.DB.From("students").Select("id,user_id").In("id", intSetToStrings(studentIDs)).Execute(&studentRows); err != nil {
 		return nil, err
 	}
 
@@ -60,8 +72,7 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 	nameByUUID := map[string]struct{ first, last string }{}
 	if len(userIDs) > 0 {
 		var users []userDisplayRow
-		err = database.SupabaseClient.DB.From("users").Select("id,first_name,last_name").In("id", userIDs).Execute(&users)
-		if err != nil {
+		if err := database.SupabaseClient.DB.From("users").Select("id,first_name,last_name").In("id", userIDs).Execute(&users); err != nil {
 			return nil, err
 		}
 		for _, u := range users {
@@ -71,8 +82,7 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 
 	studentNameByID := make(map[int]struct{ first, last string }, len(studentRows))
 	for _, sr := range studentRows {
-		n := nameByUUID[sr.UserID]
-		studentNameByID[sr.ID] = n
+		studentNameByID[sr.ID] = nameByUUID[sr.UserID]
 	}
 
 	out := make([]models.CompanyMeeting, 0, len(meetings))
@@ -88,8 +98,17 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 			StudentFirstName: st.first,
 			StudentLastName:  st.last,
 			CompanyID:        m.CompanyID,
+			EventID:          m.EventID,
 		})
 	}
 
 	return out, nil
+}
+
+func intSetToStrings(set map[int]struct{}) []string {
+	out := make([]string, 0, len(set))
+	for id := range set {
+		out = append(out, strconv.Itoa(id))
+	}
+	return out
 }
