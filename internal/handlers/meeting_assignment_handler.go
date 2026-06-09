@@ -30,6 +30,15 @@ func AssignMeetingsByPreferencesHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	// 'replace_existing' is event-scoped: it deletes ALL meetings of the event before
+	// re-assigning. Combining it with a 'slot_ids'/'student_ids' subset would delete
+	// every meeting but only regenerate the requested subset, silently destroying
+	// meetings in the non-requested slots/students. Reject the ambiguous combination.
+	if req.ReplaceExisting && (len(req.SlotIDs) > 0 || len(req.StudentIDs) > 0) {
+		http.Error(w, "'replace_existing' kann nicht mit 'slot_ids' oder 'student_ids' kombiniert werden", http.StatusBadRequest)
+		return
+	}
+
 	result, err := repository.AssignMeetingsByPreferences(repository.AssignMeetingsOptions{
 		EventID:                  req.EventID,
 		SlotIDs:                  req.SlotIDs,
