@@ -39,3 +39,21 @@ func TestAssignMeetingsHandler_ReplaceExistingWithStudentIDs_ReturnsBadRequest(t
 		t.Fatalf("expected status %d, got %d (body: %s)", http.StatusBadRequest, rr.Code, rr.Body.String())
 	}
 }
+
+// A dry_run never deletes (deleteMeetingsForEvent only runs when !dry_run), so
+// replace_existing combined with a slot/student subset is SAFE for a preview and
+// must NOT be rejected by the guard — the web's "auto-generate" preview relies on it.
+// Without a live DB the handler panics/errors once it reaches the repository; we
+// recover and only assert that the guard itself did not 400 the request.
+func TestAssignMeetingsHandler_DryRunReplaceWithSubset_PassesGuard(t *testing.T) {
+	defer func() { _ = recover() }()
+
+	req := httptest.NewRequest(http.MethodPost, "/meetings/assign", strings.NewReader(`{"event_id":12,"dry_run":true,"replace_existing":true,"student_ids":[4,7]}`))
+	rr := httptest.NewRecorder()
+
+	AssignMeetingsByPreferencesHandler(rr, req)
+
+	if rr.Code == http.StatusBadRequest && strings.Contains(rr.Body.String(), "replace_existing") {
+		t.Fatalf("dry_run request was wrongly rejected by the replace_existing guard: %s", rr.Body.String())
+	}
+}
