@@ -88,6 +88,7 @@ func GetAllMeetingsWithStudentAndSlot() ([]models.CompanyMeeting, error) {
 			StudentFirstName: st.first,
 			StudentLastName:  st.last,
 			CompanyID:        m.CompanyID,
+			EventID:          m.EventID,
 		})
 	}
 

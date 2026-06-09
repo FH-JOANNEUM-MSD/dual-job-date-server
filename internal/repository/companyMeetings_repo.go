@@ -26,5 +26,15 @@ func GetMeetingsByCompanyID(companyID int) ([]models.Meeting, error) {
 		return []models.Meeting{}, nil
 	}
 
+	for i := range meetings {
+		if meetings[i].EventID == 0 {
+			activeEventID, err := getActiveEventID()
+			if err != nil {
+				return nil, err
+			}
+			meetings[i].EventID = activeEventID
+		}
+	}
+
 	return meetings, nil
 }
