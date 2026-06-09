@@ -15,7 +15,17 @@ import (
 func GetAllSlotsHandler(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Content-Type", "application/json")
 
-    slots, err := repository.GetAllSlots()
+    eventID := 0
+    if raw := r.URL.Query().Get("event_id"); raw != "" {
+        parsed, err := strconv.Atoi(raw)
+        if err != nil || parsed <= 0 {
+            http.Error(w, "Ungültige event_id", http.StatusBadRequest)
+            return
+        }
+        eventID = parsed
+    }
+
+    slots, err := repository.GetAllSlots(eventID)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -35,6 +45,10 @@ func CreateSlotHandler(w http.ResponseWriter, r *http.Request) {
 
     if input.StartTime == "" || input.EndTime == "" {
         http.Error(w, "Felder 'start_time' und 'end_time' sind erforderlich", http.StatusBadRequest)
+        return
+    }
+    if input.EventID <= 0 {
+        http.Error(w, "Feld 'event_id' ist erforderlich", http.StatusBadRequest)
         return
     }
 

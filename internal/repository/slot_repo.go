@@ -10,14 +10,20 @@ import (
 
 var ErrSlotNotFound = errors.New("slot nicht gefunden")
 
-func GetAllSlots() ([]models.Slot, error) {
+func GetAllSlots(eventID int) ([]models.Slot, error) {
     var slots []models.Slot
 
-    err := database.SupabaseClient.DB.From("slots").Select("*").Execute(&slots)
-    if err != nil {
-        return nil, err
+    query := database.SupabaseClient.DB.From("slots").Select("*")
+    if eventID > 0 {
+        if err := query.Eq("event_id", strconv.Itoa(eventID)).Execute(&slots); err != nil {
+            return nil, err
+        }
+        return slots, nil
     }
 
+    if err := query.Execute(&slots); err != nil {
+        return nil, err
+    }
     return slots, nil
 }
 
@@ -25,6 +31,7 @@ func CreateSlot(input models.CreateSlotInput) (models.Slot, error) {
     insertData := map[string]interface{}{
         "start_time": input.StartTime,
         "end_time":   input.EndTime,
+        "event_id":   input.EventID,
     }
 
     var created []models.Slot

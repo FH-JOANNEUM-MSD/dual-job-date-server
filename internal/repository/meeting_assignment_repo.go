@@ -59,7 +59,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		return MeetingAssignmentResult{}, err
 	}
 
-	slots, err := GetAllSlots()
+	slots, err := GetAllSlots(0)
 	if err != nil {
 		return MeetingAssignmentResult{}, err
 	}
