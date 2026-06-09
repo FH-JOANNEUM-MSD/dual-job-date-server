@@ -9,6 +9,9 @@ import (
 )
 
 type AssignMeetingsOptions struct {
+	EventID                  int
+	SlotIDs                  []int
+	StudentIDs               []int
 	DryRun                   bool
 	IncludeInactiveCompanies bool
 	ReplaceExisting          bool
@@ -49,7 +52,7 @@ type MeetingAssignmentResult struct {
 }
 
 func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentResult, error) {
-	students, err := getStudentsForAssignment()
+	students, err := getStudentsForAssignment(opts.StudentIDs)
 	if err != nil {
 		return MeetingAssignmentResult{}, err
 	}
@@ -59,7 +62,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		return MeetingAssignmentResult{}, err
 	}
 
-	slots, err := GetAllSlots(0)
+	slots, err := getSlotsForAssignment(opts.EventID, opts.SlotIDs)
 	if err != nil {
 		return MeetingAssignmentResult{}, err
 	}
@@ -69,7 +72,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 		return MeetingAssignmentResult{}, err
 	}
 
-	existingMeetings, err := getAllMeetings()
+	existingMeetings, err := getMeetingsForEvent(opts.EventID)
 	if err != nil {
 		return MeetingAssignmentResult{}, err
 	}
@@ -78,7 +81,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 	if opts.ReplaceExisting {
 		deletedMeetingsCount = len(existingMeetings)
 		if !opts.DryRun && deletedMeetingsCount > 0 {
-			if err := deleteAllMeetings(); err != nil {
+			if err := deleteMeetingsForEvent(opts.EventID); err != nil {
 				return MeetingAssignmentResult{}, err
 			}
 		}
@@ -89,7 +92,7 @@ func AssignMeetingsByPreferences(opts AssignMeetingsOptions) (MeetingAssignmentR
 	result := assignMeetingsCore(students, companies, slots, preferences, existingMeetings, opts, deletedMeetingsCount)
 
 	if !opts.DryRun && len(result.PlannedMeetings) > 0 {
-		if err := insertAssignedMeetings(result.PlannedMeetings); err != nil {
+		if err := insertAssignedMeetings(result.PlannedMeetings, opts.EventID); err != nil {
 			return MeetingAssignmentResult{}, err
 		}
 		result.InsertedMeetings = len(result.PlannedMeetings)
@@ -222,18 +225,60 @@ func assignMeetingsCore(
 	return result
 }
 
-func getStudentsForAssignment() ([]models.Student, error) {
+func getStudentsForAssignment(studentIDs []int) ([]models.Student, error) {
 	var students []models.Student
 
+	query := database.SupabaseClient.DB.From("students").Select("*")
+	if len(studentIDs) > 0 {
+		if err := query.In("id", intsToStrings(studentIDs)).Execute(&students); err != nil {
+			return nil, err
+		}
+		return students, nil
+	}
+
+	if err := query.Execute(&students); err != nil {
+		return nil, err
+	}
+	return students, nil
+}
+
+func getSlotsForAssignment(eventID int, slotIDs []int) ([]models.Slot, error) {
+	var slots []models.Slot
+
+	query := database.SupabaseClient.DB.From("slots").Select("*").Eq("event_id", strconv.Itoa(eventID))
+	if len(slotIDs) > 0 {
+		if err := query.In("id", intsToStrings(slotIDs)).Execute(&slots); err != nil {
+			return nil, err
+		}
+		return slots, nil
+	}
+
+	if err := query.Execute(&slots); err != nil {
+		return nil, err
+	}
+	return slots, nil
+}
+
+func getMeetingsForEvent(eventID int) ([]models.Meeting, error) {
+	var meetings []models.Meeting
 	err := database.SupabaseClient.DB.
-		From("students").
+		From("meetings").
 		Select("*").
-		Execute(&students)
+		Eq("event_id", strconv.Itoa(eventID)).
+		Execute(&meetings)
 	if err != nil {
 		return nil, err
 	}
+	return meetings, nil
+}
 
-	return students, nil
+func deleteMeetingsForEvent(eventID int) error {
+	var deleted interface{}
+	return database.SupabaseClient.DB.
+		From("meetings").
+		Delete().
+		Eq("event_id", strconv.Itoa(eventID)).
+		Execute(&deleted)
 }
 
 func getCompaniesForAssignment(includeInactive bool) ([]models.Company, error) {
@@ -270,27 +315,14 @@ func getAllPreferences() ([]models.Preference, error) {
 	return preferences, nil
 }
 
-func getAllMeetings() ([]models.Meeting, error) {
-	var meetings []models.Meeting
-
-	err := database.SupabaseClient.DB.
-		From("meetings").
-		Select("*").
-		Execute(&meetings)
-	if err != nil {
-		return nil, err
-	}
-
-	return meetings, nil
-}
-
-func insertAssignedMeetings(planned []AssignedMeeting) error {
+func insertAssignedMeetings(planned []AssignedMeeting, eventID int) error {
 	rows := make([]map[string]interface{}, 0, len(planned))
 	for _, meeting := range planned {
 		rows = append(rows, map[string]interface{}{
 			"slot_id":    meeting.SlotID,
 			"student_id": meeting.StudentID,
 			"company_id": meeting.CompanyID,
+			"event_id":   eventID,
 		})
 	}
 
@@ -301,12 +333,12 @@ func insertAssignedMeetings(planned []AssignedMeeting) error {
 		Execute(&inserted)
 }
 
-func deleteAllMeetings() error {
-	var deleted interface{}
-	return database.SupabaseClient.DB.
-		From("meetings").
-		Delete().
-		Execute(&deleted)
+func intsToStrings(ids []int) []string {
+	out := make([]string, 0, len(ids))
+	for _, id := range ids {
+		out = append(out, strconv.Itoa(id))
+	}
+	return out
 }
 
 func buildPreferenceMap(preferences []models.Preference) map[int]map[int]string {
