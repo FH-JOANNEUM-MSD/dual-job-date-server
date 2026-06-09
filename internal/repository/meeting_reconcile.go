@@ -3,6 +3,7 @@ package repository
 import (
 	"strconv"
 
+	"dual-job-date-server/internal/database"
 	"dual-job-date-server/internal/models"
 )
 
@@ -34,4 +35,38 @@ func diffMeetings(existing []models.Meeting, desired []AssignedMeeting) (toDelet
 		}
 	}
 	return toDeleteIDs, toInsert
+}
+
+// SetEventMeetings reconciles the persisted meetings of an event to exactly `desired`.
+// Delete-first ordering frees seats before inserting, avoiding swap conflicts.
+func SetEventMeetings(eventID int, desired []AssignedMeeting) ([]models.CompanyMeeting, error) {
+	existing, err := getMeetingsForEvent(eventID)
+	if err != nil {
+		return nil, err
+	}
+
+	toDeleteIDs, toInsert := diffMeetings(existing, desired)
+
+	for _, id := range toDeleteIDs {
+		if err := deleteMeetingByID(id); err != nil {
+			return nil, err
+		}
+	}
+
+	if len(toInsert) > 0 {
+		if err := insertAssignedMeetings(toInsert, eventID); err != nil {
+			return nil, err
+		}
+	}
+
+	return GetMeetingsByEvent(eventID)
+}
+
+func deleteMeetingByID(meetingID int) error {
+	var deleted interface{}
+	return database.SupabaseClient.DB.
+		From("meetings").
+		Delete().
+		Eq("id", strconv.Itoa(meetingID)).
+		Execute(&deleted)
 }
